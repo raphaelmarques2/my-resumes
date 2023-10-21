@@ -62,8 +62,10 @@ const backend = useBackend();
 const isOpen = ref(false);
 
 async function deleteExperience() {
-  await backend.api.experiences.deleteExperience(props.experience.id);
-  emit("deleted");
+  if (confirm("Please confirm you want to delete this experience.")) {
+    await backend.api.experiences.deleteExperience(props.experience.id);
+    emit("deleted");
+  }
 }
 async function updateExperience() {
   await backend.api.experiences.patchExperience(props.experience.id, {

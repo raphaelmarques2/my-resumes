@@ -5,7 +5,7 @@
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor aut, nihil,
       recusandae aliquam aliquid
     </p>
-    <TextButton label="Create new" icon="plus" />
+    <TextButton label="Create new" icon="plus" @click="createResume()" />
     <div class="">
       <ClientOnly>
         <ResumeListItem
@@ -23,6 +23,7 @@ import { ResumeDto } from "~/services/backend/generated";
 
 const backend = useBackend();
 const auth = useAuth();
+const router = useRouter();
 
 const { data: resumes } = await useAsyncData<ResumeDto[]>(
   "user-resumes",
@@ -35,6 +36,14 @@ const { data: resumes } = await useAsyncData<ResumeDto[]>(
     return resumes;
   }
 );
+
+async function createResume() {
+  const resume = await backend.api.resumes.createResume({
+    title: "Title",
+    userId: auth.state.user!.id,
+  });
+  router.push(`/resumes/${resume.id}`);
+}
 </script>
 
 <style scoped></style>

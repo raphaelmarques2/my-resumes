@@ -51,8 +51,8 @@ export class Resume implements ResumeProps {
     return new Resume({
       id: new Id(),
       experiences: [],
-      description: '',
       ...props,
+      description: props.description || '',
     });
   }
 
