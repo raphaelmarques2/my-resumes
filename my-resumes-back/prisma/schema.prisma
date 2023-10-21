@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    String @id @default(uuid())
+  name  String
+  email String
+
+  profiles    Profile[]
+  experiences Experience[]
+  resumes     Resume[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("user")
+}
+
+model Profile {
+  id       String  @id @default(uuid())
+  name     String
+  email    String
+  address  String?
+  linkedin String?
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("profile")
+}
+
+model Experience {
+  id          String    @id @default(uuid())
+  title       String
+  company     String
+  description String
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+
+  technologies String[]
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  experienceToResumes ExperienceToResume[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("experience")
+}
+
+model Resume {
+  id          String @id @default(uuid())
+  title       String
+  description String
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  experienceToResumes ExperienceToResume[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("resume")
+}
+
+model ExperienceToResume {
+  id String @id @default(uuid())
+
+  experienceId String     @map("experience_id")
+  experience   Experience @relation(fields: [experienceId], references: [id])
+
+  resumeId String @map("resume_id")
+  resume   Resume @relation(fields: [resumeId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("experience_to_resume")
+}

@@ -1,0 +1,25 @@
+@base = http://localhost:3001
+
+### ok
+GET {{base}}
+
+### login
+POST {{base}}/auth/login
+content-type: application/json
+
+{
+    "email": "a@test.com",
+    "password": "123"
+}
+
+### signup
+POST {{base}}/auth/signup
+content-type: application/json
+
+{
+    "name": "aaa",
+    "email": "a@test.com",
+    "password": "123"
+}
+
+###
