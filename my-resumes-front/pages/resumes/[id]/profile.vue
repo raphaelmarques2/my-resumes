@@ -14,7 +14,11 @@
         />
       </div>
     </div>
-    <div class="w-80 border">Right</div>
+    <div class="w-80 border">
+      <ClientOnly>
+        <PdfView />
+      </ClientOnly>
+    </div>
   </div>
 </template>
 
