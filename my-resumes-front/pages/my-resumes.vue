@@ -20,6 +20,9 @@
 
 <script setup lang="ts">
 import { ResumeDto } from "~/services/backend/generated";
+definePageMeta({
+  middleware: "auth",
+});
 
 const backend = useBackend();
 const auth = useAuth();
