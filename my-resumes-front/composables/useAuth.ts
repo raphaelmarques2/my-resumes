@@ -34,12 +34,13 @@ export function useAuth() {
 
   async function login(payload: LoginDto) {
     await wait(1000);
-    const response = await backend.api.auth
-      .login(payload)
-      .catch(() => undefined);
-    if (response) {
+    try {
+      const response = await backend.api.auth.login(payload);
       state.value.user = response.user;
       setToken(response.token);
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
   }
 
