@@ -15,4 +15,10 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+
+  runtimeConfig: {
+    public: {
+      BACKEND_URL: process.env.BACKEND_URL || "",
+    },
+  },
 });

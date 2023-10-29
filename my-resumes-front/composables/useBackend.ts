@@ -1,10 +1,16 @@
 import { BackendClient } from "~/services/backend/generated";
 
-const client = new BackendClient({
-  BASE: process.env.BACKEND_URL,
-});
+let client: BackendClient;
 
 export function useBackend() {
+  const runtimeConfig = useRuntimeConfig();
+
+  if (!client) {
+    client = new BackendClient({
+      BASE: runtimeConfig.public.BACKEND_URL as string,
+    });
+  }
+
   function setToken(newToken: string | null) {
     client.request.config.TOKEN = newToken || undefined;
   }
