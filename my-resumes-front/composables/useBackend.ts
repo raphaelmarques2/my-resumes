@@ -1,7 +1,7 @@
 import { BackendClient } from "~/services/backend/generated";
 
 const client = new BackendClient({
-  BASE: "http://localhost:3001",
+  BASE: process.env.BACKEND_URL,
 });
 
 export function useBackend() {
