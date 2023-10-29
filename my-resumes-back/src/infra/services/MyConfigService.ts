@@ -2,10 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 export const configurations = () => ({
   port: parseInt(process.env.PORT ?? '3000', 10),
-  database: {
-    host: process.env.DATABASE_HOST,
-    port: parseInt(process.env.DATABASE_PORT ?? '5432', 10),
-  },
+  databaseUrl: process.env.DATABASE_URL,
   jwtSecret: process.env.JWT_SECRET || '',
   populateDb: Boolean(process.env.POPULATE_DB),
   logDb: Boolean(process.env.LOG_DB),
@@ -20,11 +17,8 @@ export class MyConfigService {
   get port() {
     return parseInt(process.env.PORT ?? '3000', 10);
   }
-  get database() {
-    return {
-      host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.DATABASE_PORT ?? '5432', 10),
-    };
+  get databaseUrl() {
+    return process.env.DATABASE_URL || '';
   }
   get jwtSecret() {
     return process.env.JWT_SECRET || 'abc';
@@ -40,11 +34,8 @@ export class MyConfigService {
     if (!this.port) {
       throw new InternalServerErrorException('Missing env.PORT');
     }
-    if (!this.database.host) {
-      throw new InternalServerErrorException('Missing env.DATABASE_HOST');
-    }
-    if (!this.database.host) {
-      throw new InternalServerErrorException('Missing env.DATABASE_PORT');
+    if (!this.databaseUrl) {
+      throw new InternalServerErrorException('Missing env.DATABASE_URL');
     }
     if (!this.jwtSecret) {
       throw new InternalServerErrorException('Missing env.JWT_SECRET');
