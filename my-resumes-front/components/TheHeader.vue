@@ -7,6 +7,9 @@
       <NuxtLink to="/my-resumes" v-if="isLoggedIn">
         <TabItem label="My Resumes" :selected="isMyResumes" />
       </NuxtLink>
+      <NuxtLink to="/about">
+        <TabItem label="About" :selected="isAbout" />
+      </NuxtLink>
     </div>
     <div class="absolute right-6 top-0 bottom-0 flex items-center gap-1">
       <template v-if="!isLoggedIn">
@@ -14,7 +17,7 @@
           <TextButton label="Login" />
         </NuxtLink>
         <NuxtLink href="/signup">
-          <TextButton label="Signup" />
+          <MainButton label="Signup" />
         </NuxtLink>
       </template>
       <template v-if="isLoggedIn">
@@ -29,6 +32,7 @@ const route = useRoute();
 
 const isHome = computed(() => route.path == "/");
 const isMyResumes = computed(() => route.path === "/my-resumes");
+const isAbout = computed(() => route.path == "/about");
 
 const auth = useAuth();
 
