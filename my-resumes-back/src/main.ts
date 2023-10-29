@@ -31,8 +31,9 @@ async function bootstrap() {
   await app.listen(port).then(() => {
     console.log(`Running on http://localhost:${port}`);
   });
+
+  return { app };
 }
-bootstrap();
 
 async function runMigrations() {
   if (process.env.IN_MEMORY_DB) return;
@@ -40,3 +41,8 @@ async function runMigrations() {
   const url = process.env.DATABASE_URL;
   execSync(`set DATABASE_URL=${url} && npx prisma migrate deploy`);
 }
+
+module.exports = new Promise(async (resolve) => {
+  const { app } = await bootstrap();
+  resolve(app);
+});
