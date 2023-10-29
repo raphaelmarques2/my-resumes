@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 export const configurations = () => ({
   port: parseInt(process.env.PORT ?? '3000', 10),
@@ -34,5 +34,20 @@ export class MyConfigService {
   }
   get logDb() {
     return Boolean(process.env.LOG_DB);
+  }
+
+  validate() {
+    if (!this.port) {
+      throw new InternalServerErrorException('Missing env.PORT');
+    }
+    if (!this.database.host) {
+      throw new InternalServerErrorException('Missing env.DATABASE_HOST');
+    }
+    if (!this.database.host) {
+      throw new InternalServerErrorException('Missing env.DATABASE_PORT');
+    }
+    if (!this.jwtSecret) {
+      throw new InternalServerErrorException('Missing env.JWT_SECRET');
+    }
   }
 }

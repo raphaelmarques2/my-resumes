@@ -39,4 +39,8 @@ export abstract class BaseMemoryRepository<
       this.entities.delete(id.value);
     }
   }
+
+  async count(): Promise<number> {
+    return this.entities.size;
+  }
 }

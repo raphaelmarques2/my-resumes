@@ -46,6 +46,10 @@ export class DbUserRepository implements UserRepository {
     return this.transformToEntity(item);
   }
 
+  async count(): Promise<number> {
+    return await this.prisma.user.count();
+  }
+
   private transformToEntity(item: UserModel): User {
     return User.load({
       id: new Id(item.id),
