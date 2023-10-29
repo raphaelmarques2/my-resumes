@@ -42,8 +42,8 @@ import { ApiError } from "~/services/backend/generated/core/ApiError";
 const router = useRouter();
 const auth = useAuth();
 
-const email = ref("a@test.com");
-const password = ref("123");
+const email = ref("");
+const password = ref("");
 
 const isLoading = ref(false);
 
