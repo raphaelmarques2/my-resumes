@@ -46,6 +46,9 @@ export function useAuth() {
   async function logout() {
     state.value.user = null;
     setToken(null);
+    if (window) {
+      window.location.reload();
+    }
   }
 
   async function validateToken() {
