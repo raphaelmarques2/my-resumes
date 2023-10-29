@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "routes": [
+  "builds": [
     {
-      "handle": "filesystem"
-    },
+      "buildCommand": "npm run build"
+    }
+  ],
+  "routes": [
     {
       "src": "/.*",
       "dest": "dist/main.js"
