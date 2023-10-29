@@ -9,7 +9,7 @@ import { ConfigData } from './infra/services/MyConfigService';
 import { execSync } from 'child_process';
 
 async function bootstrap() {
-  await runMigrations();
+  //await runMigrations();
 
   const app = await NestFactory.create(AppModule, {});
   app.enableCors();
