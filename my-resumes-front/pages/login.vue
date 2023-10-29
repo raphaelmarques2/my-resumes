@@ -19,6 +19,9 @@
             type="submit"
             :loading="isLoading"
           />
+          <p class="text-red-500" v-if="errorMessage">
+            {{ errorMessage }}
+          </p>
         </div>
       </form>
       <div class="mt-6 text-center">
@@ -34,6 +37,8 @@
 </template>
 
 <script setup lang="ts">
+import { ApiError } from "~/services/backend/generated/core/ApiError";
+
 const router = useRouter();
 const auth = useAuth();
 
@@ -42,15 +47,22 @@ const password = ref("123");
 
 const isLoading = ref(false);
 
+const errorMessage = ref("");
+
 async function login() {
+  errorMessage.value = "";
   console.log("loginClick");
 
   isLoading.value = true;
-  await auth.login({ email: email.value, password: password.value });
+  await auth
+    .login({ email: email.value, password: password.value })
+    .catch((err: ApiError) => {
+      errorMessage.value = err.body.message || "Unknown error";
+    });
   isLoading.value = false;
 
   if (auth.isLoggedIn.value) {
-    router.push("/my-resumes");
+    await router.push("/my-resumes");
   }
 }
 </script>
