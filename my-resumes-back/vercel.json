@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "next build",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "builds": [
     {
       "src": "dist/main.js",
@@ -8,6 +9,9 @@
     }
   ],
   "routes": [
+    {
+      "handle": "filesystem"
+    },
     {
       "src": "/.*",
       "dest": "dist/main.js"
