@@ -14,10 +14,8 @@
         />
       </div>
     </div>
-    <div class="w-80 border">
-      <ClientOnly>
-        <PdfView />
-      </ClientOnly>
+    <div class="w-80 border p-2">
+      <FakePdfHeader :resume="resume" :profile="profile" />
     </div>
   </div>
 </template>
@@ -34,6 +32,7 @@ if (!auth.state.user) {
   await router.replace("/");
 }
 
+const { resume } = await useAsyncResume(id);
 const { profile } = await useAsyncProfile(auth.state.user!.id);
 
 const isLoading = ref(false);

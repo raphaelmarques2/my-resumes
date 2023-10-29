@@ -2,17 +2,20 @@ import jsPDF, { TextOptionsLight } from "jspdf";
 
 export class PdfGenerator {
   width = 220;
+  height = 310;
   leftBorder = 10;
   rightBorder = 10;
-  borderY = 20;
+  topBorder = 20;
   y = 20;
   maxWidth = 190;
 
   doc: jsPDF;
 
   constructor() {
+    //https://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html
     this.doc = new jsPDF();
     this.doc.setFontSize(12);
+
     console.log("fontsize", this.doc.getFontSize());
   }
 
@@ -63,7 +66,9 @@ export class PdfGenerator {
 
   addSpace(space: number = 1) {
     this.y += space;
+    this._checkNewPage();
   }
+
   addHorizontalLine() {
     this.doc.line(
       this.leftBorder,
@@ -72,6 +77,7 @@ export class PdfGenerator {
       this.y
     );
     this.y += this.doc.getLineHeight() * 0.5;
+    this._checkNewPage();
   }
 
   getPdfString() {
@@ -80,7 +86,7 @@ export class PdfGenerator {
 
   addPage() {
     this.doc.addPage();
-    this.y = this.borderY;
+    this.y = this.topBorder;
   }
 
   private _addText(
@@ -109,10 +115,19 @@ export class PdfGenerator {
 
     this.doc.setFontSize(fontSize);
     if (opt.bold) this.doc.setFont(font.fontName, "", "normal");
+
+    this._checkNewPage();
   }
 
   private getXByAlign(align: TextOptionsLight["align"]): number {
     if (align === "center") return this.width / 2;
     return this.leftBorder;
+  }
+
+  private _checkNewPage() {
+    if (this.y > this.height - this.topBorder) {
+      this.doc.addPage();
+      this.y = this.topBorder;
+    }
   }
 }

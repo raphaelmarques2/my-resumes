@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!isOpen"
-    class="border border-gray-100 rounded-lg shadow-md p-4 flex items-center space-x-4"
+    class="border border-gray-100 rounded-lg shadow-md px-4 py-1 flex items-center space-x-4"
   >
     <input
       type="checkbox"
@@ -40,6 +40,7 @@
       <TextField label="Description" v-model="experience.description" area />
       <TextField label="Start date" v-model="experience.startDate" />
       <TextField label="End date" v-model="experience.endDate" />
+      <TextField label="Main technologies" v-model="technologies" />
       <MainButton label="Update" @click="updateExperience()" class="w-full" />
     </div>
   </div>
@@ -56,6 +57,15 @@ const emit = defineEmits<{
   deleted: [];
   "update:checked": [checked: boolean];
 }>();
+
+const technologies = ref(props.experience.technologies.join(", "));
+
+watch(technologies, (newValue) => {
+  props.experience.technologies = newValue
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
+});
 
 const backend = useBackend();
 
@@ -74,6 +84,7 @@ async function updateExperience() {
     description: props.experience.description,
     startDate: props.experience.startDate,
     endDate: props.experience.endDate,
+    technologies: props.experience.technologies,
   });
   isOpen.value = false;
 }

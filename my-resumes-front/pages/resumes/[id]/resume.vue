@@ -21,7 +21,9 @@
         />
       </div>
     </div>
-    <div class="w-80 border">Right</div>
+    <div class="w-80 border p-2">
+      <FakePdfHeader :resume="resume" :profile="profile" />
+    </div>
   </div>
 </template>
 
@@ -29,10 +31,13 @@
 const route = useRoute();
 const id = route.params.id as string;
 
+const auth = useAuth();
 const backend = useBackend();
 const router = useRouter();
+const userId = auth.state.user!.id;
 
 const { resume } = await useAsyncResume(id);
+const { profile } = await useAsyncProfile(userId);
 
 const isLoading = ref(false);
 const isLoadingDelete = ref(false);

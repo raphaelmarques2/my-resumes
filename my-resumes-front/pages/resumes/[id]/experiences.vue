@@ -25,7 +25,15 @@
         />
       </div>
     </div>
-    <div class="w-80 border">Right</div>
+    <div class="w-80 border p-2">
+      <p class="text-sm font-bold">Work Experience</p>
+      <template v-for="experience in experiences" :key="experience.id">
+        <FakePdfExperience
+          v-if="resume.experiences.includes(experience.id)"
+          :experience="experience"
+        />
+      </template>
+    </div>
   </div>
 </template>
 
@@ -43,11 +51,14 @@ if (!auth.state.user) {
   await router.replace("/");
 }
 
+const userId = auth.state.user!.id;
+
 const { experiences, refresh: refreshExperiences } = await useAsyncExperiences(
-  auth.state.user!.id
+  userId
 );
 
 const { resume } = await useAsyncResume(id);
+const { profile } = await useAsyncProfile(userId);
 
 const isLoading = ref(false);
 

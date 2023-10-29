@@ -4,7 +4,7 @@
       <NuxtLink to="/">
         <TabItem label="Home" :selected="isHome" />
       </NuxtLink>
-      <NuxtLink to="/my-resumes">
+      <NuxtLink to="/my-resumes" v-if="isLoggedIn">
         <TabItem label="My Resumes" :selected="isMyResumes" />
       </NuxtLink>
     </div>
