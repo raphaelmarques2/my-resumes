@@ -2,14 +2,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { execSync } from 'child_process';
 import { AppModule } from './app.module';
 import { LoggingInterceptor } from './infra/middlewares/LoggingInterceptor';
 import { PopulateService } from './infra/services/PopulateService';
 import { ConfigData } from './infra/services/MyConfigService';
 
 async function bootstrap() {
-  await runMigrations();
+  //await runMigrations();
 
   const app = await NestFactory.create(AppModule, {});
   app.enableCors();
@@ -35,12 +34,12 @@ async function bootstrap() {
   return { app };
 }
 
-async function runMigrations() {
-  if (process.env.IN_MEMORY_DB) return;
-  console.log('Running migrations');
-  const url = process.env.DATABASE_URL;
-  execSync(`set DATABASE_URL=${url} && npx prisma migrate deploy`);
-}
+// async function runMigrations() {
+//   if (process.env.IN_MEMORY_DB) return;
+//   console.log('Running migrations');
+//   const url = process.env.DATABASE_URL;
+//   execSync(`set DATABASE_URL=${url} && npx prisma migrate deploy`);
+// }
 
 module.exports = new Promise(async (resolve) => {
   const { app } = await bootstrap();
