@@ -17,7 +17,7 @@ export class DbExperienceRepository implements ExperienceRepository {
   async listByUserId(userId: Id): Promise<Experience[]> {
     const items = await this.prisma.experience.findMany({
       where: { userId: userId.value },
-      orderBy: [{ createdAt: 'desc' }],
+      orderBy: [{ startDate: 'desc' }, { createdAt: 'desc' }],
     });
     return items.map((item) => this.transformToEntity(item));
   }
