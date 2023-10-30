@@ -5,10 +5,6 @@ export default defineNuxtConfig({
 
   headlessui: { prefix: "H" },
 
-  colorMode: {
-    preference: "light",
-  },
-
   components: [
     {
       path: "~/components",
@@ -18,7 +14,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      BACKEND_URL: process.env.BACKEND_URL || "",
+      BACKEND_URL: process.env.NUXT_BACKEND_URL || "http://localhost:3001",
     },
   },
 });

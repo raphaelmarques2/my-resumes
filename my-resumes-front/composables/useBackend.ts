@@ -4,10 +4,11 @@ let client: BackendClient;
 
 export function useBackend() {
   const runtimeConfig = useRuntimeConfig();
+  console.log("runtimeConfig", runtimeConfig.public);
 
   if (!client) {
     client = new BackendClient({
-      BASE: runtimeConfig.public.BACKEND_URL as string,
+      BASE: runtimeConfig.public.NUXT_BACKEND_URL as string,
     });
   }
 
