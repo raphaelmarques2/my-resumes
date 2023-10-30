@@ -5,6 +5,7 @@ import { LoginDto } from '../../domain/application/dtos/LoginDto';
 import { SignupDto } from '../../domain/application/dtos/SignupDto';
 import { UserDto } from '../../domain/application/dtos/UserDto';
 import { UserService } from '../../domain/application/services/UserService';
+import { ProfileService } from 'src/domain/application/services/ProfileService';
 
 type TokenPayload = {
   sub: string;
@@ -15,6 +16,7 @@ type TokenPayload = {
 export class AuthService {
   constructor(
     private userService: UserService,
+    private profileService: ProfileService,
     private jwtService: JwtService,
   ) {}
 
@@ -22,6 +24,11 @@ export class AuthService {
     const userDto = await this.userService.create({
       name: input.name,
       email: input.email,
+    });
+    await this.profileService.create({
+      name: userDto.name,
+      email: userDto.email,
+      userId: userDto.id,
     });
     const token = await this.generateToken(userDto);
     return {
