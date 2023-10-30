@@ -4,7 +4,7 @@ let client: BackendClient;
 
 export function useBackend() {
   const runtimeConfig = useRuntimeConfig();
-  console.log("runtimeConfig", runtimeConfig.public);
+  console.log("env", runtimeConfig.public);
 
   if (!client) {
     client = new BackendClient({
