@@ -8,7 +8,7 @@ export function useBackend() {
 
   if (!client) {
     client = new BackendClient({
-      BASE: runtimeConfig.public.NUXT_BACKEND_URL as string,
+      BASE: runtimeConfig.public.backendUrl as string,
     });
   }
 
