@@ -6,6 +6,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggingInterceptor } from './infra/middlewares/LoggingInterceptor';
 
+//v1
 async function bootstrap() {
   //await runMigrations();
 
