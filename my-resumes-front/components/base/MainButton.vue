@@ -1,6 +1,6 @@
 <template>
   <button
-    class="px-6 py-2 rounded"
+    class="px-6 py-2 rounded disabled:opacity-70"
     :class="[
       safeColor === 'primary'
         ? 'bg-blue-800 text-white hover:bg-blue-700 active:bg-blue-600'
@@ -10,6 +10,7 @@
         : '',
     ]"
     :type="type"
+    :disabled="loading"
     @click="(e) => onClick(e)"
   >
     <span v-if="loading" class="mr-2">
