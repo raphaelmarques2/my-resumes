@@ -107,7 +107,8 @@ async function addExperience() {
     userId: auth.state.user!.id,
   });
   await refreshExperiences();
-  expanded.value = newExperience.id;
+  await router.push(`/resumes/${id}/experiences/${newExperience.id}`);
+  //expanded.value = newExperience.id;
 }
 
 const expanded = ref("");

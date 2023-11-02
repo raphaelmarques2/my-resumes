@@ -96,6 +96,7 @@ const backend = useBackend();
 async function deleteExperience() {
   if (confirm("Please confirm you want to delete this experience.")) {
     await backend.api.experiences.deleteExperience(props.experience.id);
+    await experiencesLoader.refresh();
     emit("deleted");
   }
 }
