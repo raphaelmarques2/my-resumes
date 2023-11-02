@@ -12,7 +12,10 @@ async function bootstrap() {
   //await runMigrations();
 
   const app = await NestFactory.create(AppModule, {});
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  });
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new LoggingInterceptor());
 
