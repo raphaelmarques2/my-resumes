@@ -19,14 +19,20 @@
       <Icon name="chevrondown" />
     </button>
   </div>
-  <div v-else class="border border-gray-100 rounded-lg shadow-md p-4">
+  <div
+    v-else
+    class="border border-gray-100 rounded-lg shadow-md px-4 pt-1 pb-4"
+  >
     <div class="flex items-center space-x-4">
       <input
         type="checkbox"
         :checked="checked"
         @input="(e) => $emit('update:checked', (e.target as HTMLInputElement).checked)"
       />
-      <div class="flex-1"></div>
+      <div class="flex-1">
+        <div class="font-semibold">{{ experience.title }}</div>
+        <div class="text-sm">{{ experience.companyName }}</div>
+      </div>
       <button @click="deleteExperience()">
         <Icon name="delete" class="text-red-500" />
       </button>
@@ -34,6 +40,7 @@
         <Icon name="chevroup" />
       </button>
     </div>
+    <div class="border-b border-gra-500 my-4"></div>
     <div class="space-y-4">
       <TextField label="Title" v-model="experience.title" />
       <TextField label="Company" v-model="experience.companyName" />
