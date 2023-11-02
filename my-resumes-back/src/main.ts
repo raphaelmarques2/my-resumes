@@ -6,7 +6,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggingInterceptor } from './infra/middlewares/LoggingInterceptor';
 
-//v1
+const version = '0.0.1';
+
 async function bootstrap() {
   //await runMigrations();
 
@@ -28,7 +29,7 @@ async function bootstrap() {
   // }
 
   await app.listen(port).then(() => {
-    console.log(`Running on http://localhost:${port}`);
+    console.log(`Running v${version} on http://localhost:${port}`);
   });
 
   return { app };
