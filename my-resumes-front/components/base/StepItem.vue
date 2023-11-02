@@ -1,6 +1,6 @@
 <template>
   <div
-    class="inline-block rounded-full px-2 py space-x-1 border"
+    class="inline-block rounded-full pl-2 pr-3 py space-x-1 border"
     :class="[border ? 'border-blue-800' : 'border-white']"
   >
     <Icon :name="icon" class="text-blue-800" />

@@ -25,6 +25,7 @@ import {
   ResumeDto,
 } from "~/services/backend/generated";
 import moment from "moment";
+import { getExperienceTime } from "~/services/utils";
 
 const props = defineProps<{
   width?: number;
@@ -97,13 +98,8 @@ function printPdf() {
       gen.addSpace(4);
       gen.addTitle3(experience.title);
 
-      const start = experience.startDate
-        ? moment(experience.startDate).format("MMM YYYY")
-        : "";
-      const end = experience.endDate
-        ? moment(experience.startDate).format("MMM YYYY")
-        : "Now";
-      gen.addText(`${experience.companyName} - ${start} - ${end}`);
+      const time = getExperienceTime(experience);
+      gen.addText(`${experience.companyName} - ${time}`);
       gen.addSpace(2);
       gen.addText(experience.description);
       if (experience.technologies.length > 0) {

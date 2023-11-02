@@ -38,8 +38,8 @@
       <TextField label="Title" v-model="experience.title" />
       <TextField label="Company" v-model="experience.companyName" />
       <TextField label="Description" v-model="experience.description" area />
-      <TextField label="Start date" v-model="experience.startDate" />
-      <TextField label="End date" v-model="experience.endDate" />
+      <DateField label="Start date" v-model="experience.startDate" />
+      <DateField label="End date" v-model="experience.endDate" />
       <TextField label="Main technologies" v-model="technologies" />
       <MainButton label="Update" @click="updateExperience()" class="w-full" />
     </div>
