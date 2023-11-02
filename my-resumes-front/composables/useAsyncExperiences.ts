@@ -1,4 +1,4 @@
-import { ExperienceDto, ProfileDto } from "~/services/backend/generated";
+import { ExperienceDto } from "~/services/backend/generated";
 
 export async function useAsyncExperiences(userId: string) {
   const backend = useBackend();

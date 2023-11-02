@@ -1,6 +1,6 @@
 <template>
   <div class="space-x-2">
-    <NuxtLink :to="'resume'">
+    <NuxtLink :to="`/resumes/${id}/resume`">
       <StepItem
         label="Resume"
         :icon="step <= StepNumber.Resume ? 'info' : 'check'"
@@ -9,7 +9,7 @@
       />
     </NuxtLink>
     <StepSeparator />
-    <NuxtLink :to="'profile'">
+    <NuxtLink :to="`/resumes/${id}/profile`">
       <StepItem
         label="Profile"
         :icon="step <= StepNumber.Profile ? 'document' : 'check'"
@@ -18,7 +18,7 @@
       />
     </NuxtLink>
     <StepSeparator />
-    <NuxtLink :to="'experiences'">
+    <NuxtLink :to="`/resumes/${id}/experiences`">
       <StepItem
         label="Experiences"
         :icon="step <= StepNumber.Experiences ? 'list' : 'check'"
@@ -27,7 +27,7 @@
       />
     </NuxtLink>
     <StepSeparator />
-    <NuxtLink :to="'review'">
+    <NuxtLink :to="`/resumes/${id}/review`">
       <StepItem
         label="Review"
         :icon="step <= StepNumber.Review ? 'download' : 'check'"
@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 const route = useRoute();
+const id = route.params.id;
 
 enum StepNumber {
   Resume = 1,
@@ -51,7 +52,7 @@ enum StepNumber {
 function findStep(pathname: string): StepNumber {
   if (pathname.endsWith("/resume")) return 1;
   if (pathname.endsWith("/profile")) return 2;
-  if (pathname.endsWith("/experiences")) return 3;
+  if (pathname.includes("/experiences")) return 3;
   if (pathname.endsWith("/review")) return 4;
   return 1;
 }

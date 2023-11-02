@@ -18,6 +18,9 @@
     <button @click="$emit('open')">
       <Icon name="chevrondown" />
     </button>
+    <NuxtLink :to="`/resumes/${route.params.id}/experiences/${experience.id}`">
+      <Icon name="edit" />
+    </NuxtLink>
   </div>
   <div
     v-else
@@ -36,7 +39,7 @@
       <button @click="deleteExperience()">
         <Icon name="delete" class="text-red-500" />
       </button>
-      <button @click="$emit('close')">
+      <button v-if="!alwaysOpen" @click="$emit('close')">
         <Icon name="chevroup" />
       </button>
     </div>
@@ -56,10 +59,20 @@
 <script setup lang="ts">
 import { ExperienceDto } from "~/services/backend/generated";
 
+const route = useRoute();
+const router = useRouter();
+const auth = useAuth();
+
+const id = route.params.id;
+const userId = auth.state.user!.id;
+
+const experiencesLoader = await useAsyncExperiences(userId);
+
 const props = defineProps<{
   experience: ExperienceDto;
   checked: boolean;
   isOpen: boolean;
+  alwaysOpen?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -96,6 +109,8 @@ async function updateExperience() {
     technologies: props.experience.technologies,
   });
   emit("close");
+  await experiencesLoader.refresh();
+  await router.push(`/resumes/${id}/experiences`);
 }
 </script>
 
