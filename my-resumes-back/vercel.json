@@ -3,7 +3,7 @@
   "buildCommand": "npm install & npm run prisma:generate & npm run build",
   "builds": [
     {
-      "src": "dist/main.js",
+      "src": "my-resumes-back/dist/main.js",
       "use": "@vercel/node"
     }
   ],
@@ -13,8 +13,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "dist/main.js",
-      "methods": ["GET", "POST", "PUT", "DELETE"]
+      "dest": "my-resumes-back/dist/main.js"
     }
   ]
 }
