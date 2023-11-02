@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>TabItem</div>
-    <div className="space-x-4">
+    <div class="space-x-4">
       <TabItem label="Primeiro" :selected="false" />
       <TabItem label="Segundo" :selected="true" />
       <TabItem label="Terceiro" :selected="false" />

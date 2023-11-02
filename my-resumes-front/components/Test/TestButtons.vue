@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>Buttons</div>
-    <div className="space-x-2">
+    <div class="space-x-2">
       <MainButton label="Default" @click="console.log('default')" />
       <MainButton
         label="Primary"

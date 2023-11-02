@@ -1,18 +1,18 @@
 <template>
-  <div className="">
+  <div>
     <div>
       <label class="text-sm">{{ label }}</label>
     </div>
     <textarea
       v-if="area"
-      className="w-full border border-gray-200 rounded px-2 py-1"
+      class="w-full border border-gray-200 rounded px-2 py-1"
       :type="type ?? 'text'"
       :value="modelValue"
       @input="onChange($event)"
     />
     <input
       v-else
-      className="w-full border border-gray-200 rounded px-2 py-1"
+      class="w-full border border-gray-200 rounded px-2 py-1"
       :type="type ?? 'text'"
       :value="modelValue"
       @input="onChange($event)"

@@ -11,13 +11,13 @@
     ]"
     @click="(e) => onClick(e)"
   >
-    <span v-if="loading" className="mr-2">
+    <span v-if="loading" class="mr-2">
       <Icon name="spinner" :rotating="true" />
     </span>
 
     <span>{{ props.label }}</span>
 
-    <span v-if="icon" className="ml-2">
+    <span v-if="icon" class="ml-2">
       <Icon :name="icon" />
     </span>
   </button>

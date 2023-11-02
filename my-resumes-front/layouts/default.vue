@@ -1,6 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col relative">
     <Title>My Resumes</Title>
+    <NuxtLoadingIndicator color="#1d4ed8" />
     <TheHeader />
     <div class="h-20"></div>
     <slot></slot>
@@ -26,17 +27,4 @@ await useAsyncData("start-auth", async () => {
 });
 </script>
 
-<style>
-h1 {
-  @apply text-2xl font-semibold;
-}
-h2 {
-  @apply text-xl;
-}
-h3 {
-  @apply text-lg;
-}
-.debug {
-  @apply border border-red-500;
-}
-</style>
+<style></style>

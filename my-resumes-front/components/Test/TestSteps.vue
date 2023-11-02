@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>StepItem</div>
-    <div className="space-x-2">
+    <div class="space-x-2">
       <StepItem
         label="Primeiro"
         icon="check"

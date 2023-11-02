@@ -5,6 +5,11 @@ export default defineNuxtConfig({
 
   headlessui: { prefix: "H" },
 
+  tailwindcss: {
+    cssPath: "~/assets/css/tailwind.css",
+    configPath: "tailwind.config",
+  },
+
   components: [
     {
       path: "~/components",

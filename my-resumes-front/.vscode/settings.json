@@ -6,7 +6,7 @@
     "strings": true
   },
   "tailwindCSS.experimental.configFile": "tailwind.config.ts",
-  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "ui"],
+  "tailwindCSS.classAttributes": ["class", "ngClass", "ui"],
   "tailwindCSS.experimental.classRegex": [
     ["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["/\\*ui\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
