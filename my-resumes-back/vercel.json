@@ -1,9 +1,6 @@
 {
   "version": 2,
   "buildCommand": "npm install & npm run prisma:generate & npm run build",
-  "functions": {
-    "dist/main.js": { "memory": 3008, "maxDuration": 30 }
-  },
   "builds": [
     {
       "src": "dist/main.js",
