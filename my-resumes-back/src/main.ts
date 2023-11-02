@@ -1,6 +1,5 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { execSync } from 'child_process';
 import { ConfigData } from './infra/services/MyConfigService';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -34,12 +33,12 @@ async function bootstrap() {
   return { app };
 }
 
-async function runMigrations() {
-  if (process.env.IN_MEMORY_DB) return;
-  console.log('Running migrations');
-  const url = process.env.DATABASE_URL;
-  execSync(`set DATABASE_URL=${url} && npx prisma migrate deploy`);
-}
+// async function runMigrations() {
+//   if (process.env.IN_MEMORY_DB) return;
+//   console.log('Running migrations');
+//   const url = process.env.DATABASE_URL;
+//   execSync(`set DATABASE_URL=${url} && npx prisma migrate deploy`);
+// }
 
 bootstrap();
 // module.exports = new Promise(async (resolve) => {
