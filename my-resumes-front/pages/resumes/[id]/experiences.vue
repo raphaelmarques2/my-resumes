@@ -4,11 +4,17 @@
       <div v-for="experience in experiences" :key="experience.id">
         <ExperienceListItem
           :experience="experience"
-          @deleted="refreshExperiences()"
+          @deleted="
+            expanded = '';
+            refreshExperiences();
+          "
           :checked="isOnResume(experience)"
           @update:checked="
             (value) => updateExperienceOnResume(experience, value)
           "
+          :isOpen="expanded === experience.id"
+          @open="expanded = experience.id"
+          @close="expanded = ''"
         />
       </div>
       <div class="text-center space-y-4">
@@ -27,11 +33,18 @@
     </div>
     <div class="w-80 border p-2">
       <p class="text-sm font-bold">Work Experience</p>
-      <template v-for="experience in experiences" :key="experience.id">
+      <template v-if="expanded">
         <FakePdfExperience
-          v-if="resume.experiences.includes(experience.id)"
-          :experience="experience"
+          :experience="experiences.find(e => e.id === expanded)!"
         />
+      </template>
+      <template v-else>
+        <template v-for="experience in experiences" :key="experience.id">
+          <FakePdfExperience
+            v-if="resume.experiences.includes(experience.id)"
+            :experience="experience"
+          />
+        </template>
       </template>
     </div>
   </div>
@@ -58,7 +71,6 @@ const { experiences, refresh: refreshExperiences } = await useAsyncExperiences(
 );
 
 const { resume } = await useAsyncResume(id);
-const { profile } = await useAsyncProfile(userId);
 
 const isLoading = ref(false);
 
@@ -88,14 +100,17 @@ async function saveAndContinue() {
 }
 
 async function addExperience() {
-  await backend.api.experiences.createExperience({
+  const newExperience = await backend.api.experiences.createExperience({
     title: "(title)",
     companyName: "(company name)",
     technologies: [],
     userId: auth.state.user!.id,
   });
   await refreshExperiences();
+  expanded.value = newExperience.id;
 }
+
+const expanded = ref("");
 </script>
 
 <style scoped></style>

@@ -15,7 +15,7 @@
     <button @click="deleteExperience()">
       <Icon name="delete" class="text-red-500" />
     </button>
-    <button @click="isOpen = !isOpen">
+    <button @click="$emit('open')">
       <Icon name="chevrondown" />
     </button>
   </div>
@@ -36,7 +36,7 @@
       <button @click="deleteExperience()">
         <Icon name="delete" class="text-red-500" />
       </button>
-      <button @click="isOpen = !isOpen">
+      <button @click="$emit('close')">
         <Icon name="chevroup" />
       </button>
     </div>
@@ -59,10 +59,14 @@ import { ExperienceDto } from "~/services/backend/generated";
 const props = defineProps<{
   experience: ExperienceDto;
   checked: boolean;
+  isOpen: boolean;
 }>();
+
 const emit = defineEmits<{
   deleted: [];
   "update:checked": [checked: boolean];
+  open: [];
+  close: [];
 }>();
 
 const technologies = ref(props.experience.technologies.join(", "));
@@ -75,8 +79,6 @@ watch(technologies, (newValue) => {
 });
 
 const backend = useBackend();
-
-const isOpen = ref(false);
 
 async function deleteExperience() {
   if (confirm("Please confirm you want to delete this experience.")) {
@@ -93,7 +95,7 @@ async function updateExperience() {
     endDate: props.experience.endDate,
     technologies: props.experience.technologies,
   });
-  isOpen.value = false;
+  emit("close");
 }
 </script>
 
