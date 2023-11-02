@@ -8,6 +8,7 @@
   "scripts": {
     "start:dev": "nest start --watch",
     "build": "nest build",
+    "postinstall": "prisma generate",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",

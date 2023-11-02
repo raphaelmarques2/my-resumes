@@ -1,12 +1,11 @@
-import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AppModule } from './app.module';
-import { LoggingInterceptor } from './infra/middlewares/LoggingInterceptor';
-import { PopulateService } from './infra/services/PopulateService';
-import { ConfigData } from './infra/services/MyConfigService';
 import { execSync } from 'child_process';
+import { ConfigData } from './infra/services/MyConfigService';
+import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { LoggingInterceptor } from './infra/middlewares/LoggingInterceptor';
 
 async function bootstrap() {
   //await runMigrations();
@@ -23,10 +22,10 @@ async function bootstrap() {
   const configService = app.get<ConfigService<ConfigData>>(ConfigService);
   const port = configService.get('port');
 
-  if (configService.get('populateDb')) {
-    const populateService = app.get<PopulateService>(PopulateService);
-    await populateService.populate();
-  }
+  // if (configService.get('populateDb')) {
+  //   const populateService = app.get<PopulateService>(PopulateService);
+  //   await populateService.populate();
+  // }
 
   await app.listen(port).then(() => {
     console.log(`Running on http://localhost:${port}`);
@@ -42,7 +41,8 @@ async function runMigrations() {
   execSync(`set DATABASE_URL=${url} && npx prisma migrate deploy`);
 }
 
-module.exports = new Promise(async (resolve) => {
-  const { app } = await bootstrap();
-  resolve(app);
-});
+bootstrap();
+// module.exports = new Promise(async (resolve) => {
+//   const { app } = await bootstrap();
+//   resolve(app);
+// });
