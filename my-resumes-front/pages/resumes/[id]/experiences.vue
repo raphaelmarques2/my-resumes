@@ -1,7 +1,7 @@
 <template>
   <div class="flex space-x-10">
     <div class="w-80 border p-4 space-y-4">
-      <div v-for="experience in experiences" class="">
+      <div v-for="experience in experiences" :key="experience.id">
         <ExperienceListItem
           :experience="experience"
           @deleted="refreshExperiences()"
@@ -18,7 +18,7 @@
           @click="addExperience()"
         />
         <MainButton
-          label="Continue"
+          label="Save and Continue"
           class="w-60"
           :loading="isLoading"
           @click="saveAndContinue()"

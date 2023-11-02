@@ -7,7 +7,7 @@
       <TextField label="LinkedIn" v-model="profile.linkedin" />
       <div class="text-center">
         <MainButton
-          label="Continue"
+          label="Save and Continue"
           class="w-60"
           @click="saveAndContinue()"
           :loading="isLoading"

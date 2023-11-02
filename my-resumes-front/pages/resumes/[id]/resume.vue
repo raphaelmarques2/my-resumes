@@ -5,7 +5,7 @@
       <TextField label="Description" v-model="resume.description" area />
       <div class="text-center">
         <MainButton
-          label="Continue"
+          label="Save and Continue"
           class="w-60"
           @click="saveAndContinue()"
           :loading="isLoading"
