@@ -1,20 +1,13 @@
 <template>
-  <div class="flex space-x-10">
+  <div class="flex space-x-10 pb-4">
     <div class="w-80 border p-4 space-y-4">
       <div v-for="experience in experiences" :key="experience.id">
         <ExperienceListItem
           :experience="experience"
-          @deleted="
-            expanded = '';
-            refreshExperiences();
-          "
           :checked="isOnResume(experience)"
           @update:checked="
             (value) => updateExperienceOnResume(experience, value)
           "
-          :isOpen="expanded === experience.id"
-          @open="expanded = experience.id"
-          @close="expanded = ''"
         />
       </div>
       <div class="text-center space-y-4">
@@ -33,18 +26,11 @@
     </div>
     <div class="w-80 border p-2">
       <p class="text-sm font-bold">Work Experience</p>
-      <template v-if="expanded">
+      <template v-for="experience in experiences" :key="experience.id">
         <FakePdfExperience
-          :experience="experiences.find(e => e.id === expanded)!"
+          v-if="resume.experiences.includes(experience.id)"
+          :experience="experience"
         />
-      </template>
-      <template v-else>
-        <template v-for="experience in experiences" :key="experience.id">
-          <FakePdfExperience
-            v-if="resume.experiences.includes(experience.id)"
-            :experience="experience"
-          />
-        </template>
       </template>
     </div>
   </div>
@@ -110,8 +96,6 @@ async function addExperience() {
   await router.push(`/resumes/${id}/experiences/${newExperience.id}`);
   //expanded.value = newExperience.id;
 }
-
-const expanded = ref("");
 </script>
 
 <style scoped></style>

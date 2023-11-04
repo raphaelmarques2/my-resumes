@@ -16,7 +16,7 @@
           label="delete"
           color="red"
           class="w-60"
-          @click="deleteResume()"
+          @click="dialogRef?.showModal()"
           :loading="isLoadingDelete"
         />
       </div>
@@ -25,6 +25,15 @@
       <FakePdfHeader :resume="resume" :profile="profile" />
     </div>
   </div>
+  <dialog ref="dialogRef" class="p-8 rounded shadow-lg">
+    <div>
+      <p>Do you want to delete this resume?</p>
+      <form method="dialog" class="mt-10 flex justify-end space-x-4">
+        <TextButton type="submit" label="No" />
+        <TextButton type="submit" label="Yes" @click="deleteResume()" />
+      </form>
+    </div>
+  </dialog>
 </template>
 
 <script setup lang="ts">
@@ -43,14 +52,12 @@ const isLoading = ref(false);
 const isLoadingDelete = ref(false);
 
 async function deleteResume() {
-  if (confirm("Please confirm you want to delete this resume.")) {
-    try {
-      isLoadingDelete.value = true;
-      await backend.api.resumes.deleteResume(id);
-      router.push("/my-resumes");
-    } finally {
-      isLoadingDelete.value = false;
-    }
+  try {
+    isLoadingDelete.value = true;
+    await backend.api.resumes.deleteResume(id);
+    router.push("/my-resumes");
+  } finally {
+    isLoadingDelete.value = false;
   }
 }
 
@@ -66,6 +73,8 @@ async function saveAndContinue() {
     isLoading.value = false;
   }
 }
+
+const dialogRef = ref<HTMLDialogElement | null>(null);
 </script>
 
 <style scoped></style>
