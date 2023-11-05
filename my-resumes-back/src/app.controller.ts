@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { MyConfigService } from './infra/services/MyConfigService';
+import { AppService } from './app.service';
 import { UserRepository } from './domain/application/repositories/UserRepository';
+import { MyConfigService } from './infra/services/MyConfigService';
 
 @Controller()
 export class AppController {
