@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Resume } from '@prisma/client';
 import { IsUUID } from 'class-validator';
-import { Resume } from 'src/domain/core/entities/Resume';
 
 export class ResumeDto {
   @IsUUID()
@@ -20,13 +20,15 @@ export class ResumeDto {
   @ApiProperty()
   experiences!: string[];
 
-  static fromEntity(entity: Resume): ResumeDto {
+  static fromEntity(
+    resume: Resume & { experienceToResumes: { id: string }[] },
+  ): ResumeDto {
     return {
-      id: entity.id.value,
-      userId: entity.userId.value,
-      title: entity.title.value,
-      description: entity.description,
-      experiences: entity.experiences.map((e) => e.value),
+      id: resume.id,
+      userId: resume.userId,
+      title: resume.title,
+      description: resume.description,
+      experiences: resume.experienceToResumes.map((item) => item.id),
     };
   }
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Experience } from 'src/domain/core/entities/Experience';
+import { Experience } from '@prisma/client';
 
 export class ExperienceDto {
   @ApiProperty({ format: 'uuid' })
@@ -26,16 +26,16 @@ export class ExperienceDto {
   @ApiProperty()
   technologies!: string[];
 
-  static fromEntity(entity: Experience): ExperienceDto {
+  static fromEntity(experience: Experience): ExperienceDto {
     return {
-      id: entity.id.value,
-      userId: entity.userId.value,
-      title: entity.title,
-      companyName: entity.companyName,
-      description: entity.description,
-      startDate: entity.startDate?.toISOString(),
-      endDate: entity.endDate?.toISOString(),
-      technologies: entity.technologies.map((e) => e.value),
+      id: experience.id,
+      userId: experience.userId,
+      title: experience.title,
+      companyName: experience.company,
+      description: experience.description,
+      startDate: experience.startDate?.toISOString(),
+      endDate: experience.endDate?.toISOString(),
+      technologies: experience.technologies,
     };
   }
 }

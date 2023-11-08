@@ -18,7 +18,7 @@ import {
 import { AuthOutputDto } from 'src/domain/application/dtos/AuthOutputDto';
 import { LoginDto } from 'src/domain/application/dtos/LoginDto';
 import { SignupDto } from 'src/domain/application/dtos/SignupDto';
-import { AuthService } from '../services/AuthService';
+import { AuthUseCases } from '../../domain/application/useCases/AuthUseCases';
 import { UserDto } from 'src/domain/application/dtos/UserDto';
 import { AuthGuard } from '../guards/AuthGuard';
 import { Request } from 'express';
@@ -26,7 +26,7 @@ import { Request } from 'express';
 @ApiTags('auth')
 @Controller('/auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthUseCases) {}
 
   @Post('/signup')
   @ApiOperation({ operationId: 'signup' })

@@ -13,16 +13,30 @@ datasource db {
 model User {
   id    String @id @default(uuid())
   name  String
-  email String
+  email String @unique
 
   profiles    Profile[]
   experiences Experience[]
   resumes     Resume[]
+  credential  UserCredential?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
 
   @@map("user")
+}
+
+model UserCredential {
+  id       String @id @default(uuid())
+  password String
+
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("user_credential")
 }
 
 model Profile {

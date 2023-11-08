@@ -1,37 +1,16 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
-import {
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { CreateProfileDto } from 'src/domain/application/dtos/CreateProfileDto';
 import { ProfileDto } from 'src/domain/application/dtos/ProfileDto';
 import { UpdateProfileDto } from 'src/domain/application/dtos/UpdateProfileDto';
-import { ProfileService } from 'src/domain/application/services/ProfileService';
+import { ProfileUseCases } from 'src/domain/application/useCases/ProfileUseCases';
 import { AuthGuard } from '../guards/AuthGuard';
 
 @ApiTags('profiles')
 @UseGuards(AuthGuard)
 @Controller()
 export class ProfileController {
-  constructor(private profileService: ProfileService) {}
-
-  @Post('/profiles')
-  @ApiOperation({ operationId: 'createProfile' })
-  @ApiCreatedResponse({ type: ProfileDto })
-  async createProfile(@Body() body: CreateProfileDto): Promise<ProfileDto> {
-    return this.profileService.create(body);
-  }
+  constructor(private profileService: ProfileUseCases) {}
 
   @Get('/profiles/:id')
   @ApiOperation({ operationId: 'getProfileById' })

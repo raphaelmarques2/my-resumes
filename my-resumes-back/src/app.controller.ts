@@ -1,15 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { AppService } from './app.service';
-import { UserRepository } from './domain/application/repositories/UserRepository';
 import { MyConfigService } from './infra/services/MyConfigService';
+import { PrismaService } from './domain/application/services/PrismaService';
 
 @Controller()
 export class AppController {
   constructor(
-    private readonly appService: AppService,
-    private readonly config: MyConfigService,
-    private readonly user: UserRepository,
+    private config: MyConfigService,
+    private prisma: PrismaService,
   ) {}
 
   @Get()
@@ -24,7 +22,7 @@ export class AppController {
   @ApiOkResponse({ type: String })
   async health() {
     this.config.validate();
-    await this.user.count();
+    await this.prisma.user.count();
     return 'ok';
   }
 }

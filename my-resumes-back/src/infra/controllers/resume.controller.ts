@@ -17,14 +17,14 @@ import {
 import { CreateResumeDto } from 'src/domain/application/dtos/CreateResumeDto';
 import { ResumeDto } from 'src/domain/application/dtos/ResumeDto';
 import { UpdateResumeDto } from 'src/domain/application/dtos/UpdateResumeDto';
-import { ResumeService } from 'src/domain/application/services/ResumeService';
+import { ResumeUseCases } from 'src/domain/application/useCases/ResumeUseCases';
 import { AuthGuard } from '../guards/AuthGuard';
 
 @ApiTags('resumes')
 @UseGuards(AuthGuard)
 @Controller()
 export class ResumeController {
-  constructor(private resumeService: ResumeService) {}
+  constructor(private resumeService: ResumeUseCases) {}
 
   @Post('/resumes')
   @ApiOperation({ operationId: 'createResume' })
@@ -55,26 +55,6 @@ export class ResumeController {
     @Body() body: UpdateResumeDto,
   ): Promise<ResumeDto> {
     return this.resumeService.update(id, body);
-  }
-
-  @Post('/resumes/:id/experiences')
-  @ApiOperation({ operationId: 'addExperienceToResume' })
-  @ApiCreatedResponse()
-  async addExperience(
-    @Param('id') id: string,
-    @Body() body: { experienceId: string },
-  ): Promise<void> {
-    return this.resumeService.addExperience(id, body.experienceId);
-  }
-
-  @Delete('/resumes/:id/experiences/:experienceId')
-  @ApiOperation({ operationId: 'removeExperienceFromResume' })
-  @ApiCreatedResponse()
-  async removeExperience(
-    @Param('id') id: string,
-    @Param('experienceId') experienceId: string,
-  ): Promise<void> {
-    return this.resumeService.removeExperience(id, experienceId);
   }
 
   @Delete('/resumes/:id')

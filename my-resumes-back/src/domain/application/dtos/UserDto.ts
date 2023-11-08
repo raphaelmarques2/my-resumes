@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from 'src/domain/core/entities/User';
+import { User } from '@prisma/client';
 
 export class UserDto {
   @ApiProperty()
@@ -11,11 +11,11 @@ export class UserDto {
   @ApiProperty()
   email!: string;
 
-  static fromEntity(entity: User): UserDto {
+  static fromEntity(user: User): UserDto {
     return {
-      id: entity.id.value,
-      name: entity.name.value,
-      email: entity.email.value,
+      id: user.id,
+      name: user.name,
+      email: user.email,
     };
   }
 }

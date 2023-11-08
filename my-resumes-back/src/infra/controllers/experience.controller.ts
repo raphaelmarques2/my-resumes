@@ -16,7 +16,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ExperienceDto } from 'src/domain/application/dtos/ExperienceDto';
-import { ExperienceService } from 'src/domain/application/services/ExperienceService';
+import { ExperienceUseCases } from 'src/domain/application/useCases/ExperienceUseCases';
 import { CreateExperienceDto } from '../../domain/application/dtos/CreateExperienceDto';
 import { UpdateExperienceDto } from 'src/domain/application/dtos/UpdateExperienceDto';
 import { AuthGuard } from '../guards/AuthGuard';
@@ -25,7 +25,7 @@ import { AuthGuard } from '../guards/AuthGuard';
 @UseGuards(AuthGuard)
 @Controller()
 export class ExperienceController {
-  constructor(private experienceService: ExperienceService) {}
+  constructor(private experienceService: ExperienceUseCases) {}
 
   @Post('/experiences')
   @ApiOperation({ operationId: 'createExperience' })
