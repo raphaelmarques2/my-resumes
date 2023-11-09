@@ -5,7 +5,7 @@ export class UpdateExperienceDto {
   title?: string;
 
   @ApiProperty({ required: false, minLength: 1 })
-  companyName?: string;
+  company?: string;
 
   @ApiProperty({ required: false })
   description?: string;

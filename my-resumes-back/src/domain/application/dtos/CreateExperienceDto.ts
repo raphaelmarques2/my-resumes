@@ -15,7 +15,7 @@ export class CreateExperienceDto {
   @IsString()
   @MinLength(3)
   @ApiProperty({ minLength: 3 })
-  companyName!: string;
+  company!: string;
 
   @ApiProperty({ required: false })
   technologies?: string[];

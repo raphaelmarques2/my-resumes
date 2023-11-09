@@ -12,7 +12,7 @@ export class ExperienceDto {
   title!: string;
 
   @ApiProperty({ minLength: 1 })
-  companyName!: string;
+  company!: string;
 
   @ApiProperty()
   description!: string;
@@ -31,7 +31,7 @@ export class ExperienceDto {
       id: experience.id,
       userId: experience.userId,
       title: experience.title,
-      companyName: experience.company,
+      company: experience.company,
       description: experience.description,
       startDate: experience.startDate?.toISOString(),
       endDate: experience.endDate?.toISOString(),

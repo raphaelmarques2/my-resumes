@@ -13,7 +13,7 @@ export class ExperienceUseCases {
       data: {
         userId: input.userId,
         title: input.title,
-        company: input.companyName,
+        company: input.company,
         technologies: input.technologies,
         description: '',
       },
@@ -52,7 +52,7 @@ export class ExperienceUseCases {
       where: { id },
       data: {
         title: data.title,
-        company: data.companyName,
+        company: data.company,
         description: data.description,
         startDate: data.startDate,
         endDate: data.endDate,
