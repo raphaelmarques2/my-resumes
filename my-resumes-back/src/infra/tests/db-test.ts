@@ -38,5 +38,18 @@ export async function createTempSchemaAndMigrate() {
     datasources: { db: { url: tempSchemaUrl } },
   });
 
-  return newPrismaClient;
+  return { prisma: newPrismaClient, tempSchema };
+}
+
+export async function deleteTempSchema(schemaName: string) {
+  const dbUrl = process.env.DATABASE_URL;
+  const prisma = new PrismaClient({
+    datasources: { db: { url: dbUrl } },
+  });
+
+  await prisma.$connect();
+
+  await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS ${schemaName} CASCADE`);
+
+  await prisma.$disconnect();
 }
