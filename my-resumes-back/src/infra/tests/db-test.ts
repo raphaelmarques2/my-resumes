@@ -34,7 +34,9 @@ export async function createTempSchemaAndMigrate() {
 
   // Run migrations on the new schema
   console.log(`Running migrations on ${tempSchemaUrl}`);
-  execSync(`set DATABASE_URL=${tempSchemaUrl}&& npx prisma migrate deploy`);
+  execSync(
+    `npx cross-env DATABASE_URL=${tempSchemaUrl} npx prisma migrate deploy`,
+  );
   console.log('Running migrations done');
 
   const newPrismaClient: PrismaService = new PrismaClient({

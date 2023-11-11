@@ -8,9 +8,10 @@ import { AuthTokenService } from 'src/domain/application/services/AuthTokenServi
 import { PrismaService } from 'src/domain/application/services/PrismaService';
 import { AuthOutputDto } from '../dtos/AuthOutputDto';
 import { LoginDto } from '../dtos/LoginDto';
-import { SignupDto } from '../dtos/SignupDto';
+import { SignupDto, signupDtoSchema } from '../dtos/SignupDto';
 import { UserDto } from '../dtos/UserDto';
 import { PasswordService } from '../services/PasswordService';
+import { validateDto } from '../dtos/validateDto';
 
 @Injectable()
 export class AuthUseCases {
@@ -21,6 +22,8 @@ export class AuthUseCases {
   ) {}
 
   async signup(input: SignupDto): Promise<AuthOutputDto> {
+    validateDto(signupDtoSchema, input);
+
     const userFound = await this.prisma.user.findUnique({
       where: { email: input.email },
     });

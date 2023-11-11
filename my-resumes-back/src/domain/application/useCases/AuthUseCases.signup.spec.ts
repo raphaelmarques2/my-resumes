@@ -1,14 +1,14 @@
-import { AuthUseCases } from './AuthUseCases';
+import { BadRequestException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import {
+  cleanDatabase,
+  createTempSchemaAndMigrate,
+} from 'src/infra/tests/db-test';
 import { SignupDto } from '../dtos/SignupDto';
 import { AuthTokenService } from '../services/AuthTokenService';
 import { PasswordService } from '../services/PasswordService';
 import { PrismaService } from '../services/PrismaService';
-import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from '../dtos/LoginDto';
-import {
-  createTempSchemaAndMigrate,
-  cleanDatabase,
-} from 'src/infra/tests/db-test';
+import { AuthUseCases } from './AuthUseCases';
 
 describe('AuthUseCases Integration Tests', () => {
   let authUseCases: AuthUseCases;
@@ -16,7 +16,7 @@ describe('AuthUseCases Integration Tests', () => {
 
   beforeAll(async () => {
     prisma = await createTempSchemaAndMigrate();
-    const jwtService = new JwtService({ secretOrPrivateKey: 'test' });
+    const jwtService = new JwtService({ secret: 'test' });
     const authTokenService = new AuthTokenService(jwtService);
     const passwordService = new PasswordService();
     authUseCases = new AuthUseCases(authTokenService, passwordService, prisma);
@@ -48,31 +48,29 @@ describe('AuthUseCases Integration Tests', () => {
         },
       });
     });
-  });
-
-  describe('login', () => {
-    it('should validate user login and return a token', async () => {
+    it('should throw an error if email is already in use', async () => {
       const signupDto: SignupDto = {
         name: 'User',
-        email: 'test@test.com',
+        email: 'test@example.com',
         password: '123456789',
       };
+
       await authUseCases.signup(signupDto);
 
-      const loginDto: LoginDto = {
-        email: signupDto.email,
-        password: signupDto.password,
+      await expect(authUseCases.signup(signupDto)).rejects.toThrow(
+        BadRequestException,
+      );
+    });
+    it('should throw an error for invalid email format', async () => {
+      const signupDtoWithInvalidEmail: SignupDto = {
+        name: 'User',
+        email: 'invalid-email',
+        password: '123456789',
       };
-      const result = await authUseCases.login(loginDto);
 
-      expect(result).toEqual({
-        token: expect.any(String),
-        user: {
-          id: expect.any(String),
-          name: 'User',
-          email: 'test@test.com',
-        },
-      });
+      await expect(
+        authUseCases.signup(signupDtoWithInvalidEmail),
+      ).rejects.toThrow(BadRequestException);
     });
   });
 });
