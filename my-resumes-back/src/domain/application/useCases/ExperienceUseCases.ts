@@ -35,9 +35,8 @@ export class ExperienceUseCases {
     const experience = await this.prisma.experience.findUnique({
       where: { id },
     });
-    if (!experience) {
-      throw new NotFoundException();
-    }
+    if (!experience) throw new NotFoundException('Experience not found');
+
     return ExperienceDto.fromEntity(experience);
   }
 
@@ -57,7 +56,7 @@ export class ExperienceUseCases {
       where: { id },
     });
     if (!experience) {
-      throw new NotFoundException();
+      throw new NotFoundException('Experience not found');
     }
 
     const updatedExperience = await this.prisma.experience.update({
@@ -76,6 +75,11 @@ export class ExperienceUseCases {
   }
 
   async deleteExperience(id: string): Promise<void> {
+    const experience = await this.prisma.experience.findUnique({
+      where: { id },
+    });
+    if (!experience) throw new NotFoundException('Experience not found');
+
     await this.prisma.experience.delete({
       where: { id },
       include: {

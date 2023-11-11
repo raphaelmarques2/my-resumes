@@ -10,6 +10,9 @@ import { cleanDatabase, createTempSchemaAndMigrate } from './db-test';
 import { CreateExperienceDto } from 'src/domain/application/dtos/CreateExperienceDto';
 import { ExperienceUseCases } from 'src/domain/application/useCases/ExperienceUseCases';
 import { ExperienceDto } from 'src/domain/application/dtos/ExperienceDto';
+import { ResumeDto } from 'src/domain/application/dtos/ResumeDto';
+import { CreateResumeDto } from 'src/domain/application/dtos/CreateResumeDto';
+import { ResumeUseCases } from 'src/domain/application/useCases/ResumeUseCases';
 
 export class UseCaseTester {
   prisma!: PrismaService;
@@ -73,6 +76,25 @@ export class UseCaseTester {
     };
     const experienceUseCases = new ExperienceUseCases(this.prisma);
     return await experienceUseCases.createExperience(input);
+  }
+
+  async createResume(options?: { experiences?: string[] }): Promise<ResumeDto> {
+    const input: CreateResumeDto = {
+      title: faker.internet.domainName(),
+      userId: this.auth.user.id,
+      description: faker.lorem.paragraph(),
+    };
+    const resumeUseCases = new ResumeUseCases(this.prisma);
+    const newResume = await resumeUseCases.createResume(input);
+
+    if (options?.experiences) {
+      const updatedResume = await resumeUseCases.updateResume(newResume.id, {
+        experiences: options.experiences,
+      });
+      return updatedResume;
+    }
+
+    return newResume;
   }
 }
 

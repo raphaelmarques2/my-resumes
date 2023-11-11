@@ -30,21 +30,21 @@ export class ResumeController {
   @ApiOperation({ operationId: 'createResume' })
   @ApiCreatedResponse({ type: ResumeDto })
   async createResume(@Body() body: CreateResumeDto): Promise<ResumeDto> {
-    return this.resumeService.create(body);
+    return this.resumeService.createResume(body);
   }
 
   @Get('/resumes/:id')
   @ApiOperation({ operationId: 'getResumeById' })
   @ApiOkResponse({ type: ResumeDto })
   async getById(@Param('id') id: string): Promise<ResumeDto> {
-    return this.resumeService.findById(id);
+    return this.resumeService.getResumeById(id);
   }
 
   @Get('/users/:userId/resumes')
   @ApiOperation({ operationId: 'listUserResumes' })
   @ApiOkResponse({ type: [ResumeDto] })
   async listUserResumes(@Param('userId') userId: string): Promise<ResumeDto[]> {
-    return this.resumeService.listByUserId(userId);
+    return this.resumeService.listUserResumes(userId);
   }
 
   @Patch('/resumes/:id')
@@ -54,7 +54,7 @@ export class ResumeController {
     @Param('id') id: string,
     @Body() body: UpdateResumeDto,
   ): Promise<ResumeDto> {
-    return this.resumeService.update(id, body);
+    return this.resumeService.updateResume(id, body);
   }
 
   @Delete('/resumes/:id')

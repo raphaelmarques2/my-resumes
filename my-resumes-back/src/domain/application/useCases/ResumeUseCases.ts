@@ -8,7 +8,7 @@ import { UpdateResumeDto } from '../dtos/UpdateResumeDto';
 export class ResumeUseCases {
   constructor(private prisma: PrismaService) {}
 
-  async create(input: CreateResumeDto): Promise<ResumeDto> {
+  async createResume(input: CreateResumeDto): Promise<ResumeDto> {
     const resume = await this.prisma.resume.create({
       data: {
         userId: input.userId,
@@ -25,7 +25,7 @@ export class ResumeUseCases {
     return ResumeDto.fromEntity(resume);
   }
 
-  async findById(id: string): Promise<ResumeDto> {
+  async getResumeById(id: string): Promise<ResumeDto> {
     const resume = await this.prisma.resume.findUnique({
       where: { id },
       include: {
@@ -40,7 +40,7 @@ export class ResumeUseCases {
     return ResumeDto.fromEntity(resume);
   }
 
-  async listByUserId(userId: string): Promise<ResumeDto[]> {
+  async listUserResumes(userId: string): Promise<ResumeDto[]> {
     const resumes = await this.prisma.resume.findMany({
       where: { userId },
       include: {
@@ -52,7 +52,7 @@ export class ResumeUseCases {
     return resumes.map((item) => ResumeDto.fromEntity(item));
   }
 
-  async update(id: string, data: UpdateResumeDto): Promise<ResumeDto> {
+  async updateResume(id: string, data: UpdateResumeDto): Promise<ResumeDto> {
     const resume = await this.prisma.resume.findUnique({ where: { id } });
     if (!resume) {
       throw new NotFoundException();
