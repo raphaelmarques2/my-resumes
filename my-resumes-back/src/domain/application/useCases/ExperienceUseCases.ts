@@ -60,19 +60,19 @@ export class ExperienceUseCases {
       throw new NotFoundException();
     }
 
-    await this.prisma.experience.update({
+    const updatedExperience = await this.prisma.experience.update({
       where: { id },
       data: {
         title: data.title,
         company: data.company,
         description: data.description,
-        startDate: data.startDate,
-        endDate: data.endDate,
+        startDate: data.startDate || null,
+        endDate: data.endDate || null,
         technologies: data.technologies,
       },
     });
 
-    return ExperienceDto.fromEntity(experience);
+    return ExperienceDto.fromEntity(updatedExperience);
   }
 
   async deleteExperience(id: string): Promise<void> {

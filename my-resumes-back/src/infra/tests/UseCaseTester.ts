@@ -7,6 +7,9 @@ import { PasswordService } from 'src/domain/application/services/PasswordService
 import { PrismaService } from 'src/domain/application/services/PrismaService';
 import { AuthUseCases } from 'src/domain/application/useCases/AuthUseCases';
 import { cleanDatabase, createTempSchemaAndMigrate } from './db-test';
+import { CreateExperienceDto } from 'src/domain/application/dtos/CreateExperienceDto';
+import { ExperienceUseCases } from 'src/domain/application/useCases/ExperienceUseCases';
+import { ExperienceDto } from 'src/domain/application/dtos/ExperienceDto';
 
 export class UseCaseTester {
   prisma!: PrismaService;
@@ -56,6 +59,20 @@ export class UseCaseTester {
       password: faker.internet.password(),
     };
     return await this.authUseCases.signup(signupDto);
+  }
+
+  async createExperience(
+    override?: Partial<CreateExperienceDto>,
+  ): Promise<ExperienceDto> {
+    const input: CreateExperienceDto = {
+      title: faker.internet.domainWord(),
+      company: faker.internet.displayName(),
+      userId: this.auth.user.id,
+      technologies: ['A', 'B', 'C'],
+      ...(override ?? {}),
+    };
+    const experienceUseCases = new ExperienceUseCases(this.prisma);
+    return await experienceUseCases.createExperience(input);
   }
 }
 
