@@ -33,14 +33,14 @@ export class ExperienceController {
   async createExperience(
     @Body() body: CreateExperienceDto,
   ): Promise<ExperienceDto> {
-    return this.experienceService.create(body);
+    return this.experienceService.createExperience(body);
   }
 
   @Get('/experiences/:id')
   @ApiOperation({ operationId: 'getExperience' })
   @ApiOkResponse({ type: ExperienceDto })
   async getExperience(@Param('id') id: string): Promise<ExperienceDto> {
-    return this.experienceService.findById(id);
+    return this.experienceService.getExperienceById(id);
   }
 
   @Get('/users/:userId/experiences')
@@ -49,7 +49,7 @@ export class ExperienceController {
   async listUserExperiences(
     @Param('userId') userId: string,
   ): Promise<ExperienceDto[]> {
-    return this.experienceService.listByUserId(userId);
+    return this.experienceService.listUserExperiences(userId);
   }
 
   @Patch('/experiences/:id')
@@ -61,12 +61,12 @@ export class ExperienceController {
     @Param('id') id: string,
     @Body() body: UpdateExperienceDto,
   ): Promise<ExperienceDto> {
-    return this.experienceService.update(id, body);
+    return this.experienceService.updateExperience(id, body);
   }
 
   @Delete('/experiences/:id')
   @ApiOperation({ operationId: 'deleteExperience' })
   async deleteExperience(@Param('id') id: string): Promise<void> {
-    return this.experienceService.delete(id);
+    return this.experienceService.deleteExperience(id);
   }
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ExperienceDto } from '../dtos/ExperienceDto';
 import { CreateExperienceDto } from '../dtos/CreateExperienceDto';
 import { UpdateExperienceDto } from '../dtos/UpdateExperienceDto';
@@ -8,7 +12,12 @@ import { PrismaService } from 'src/domain/application/services/PrismaService';
 export class ExperienceUseCases {
   constructor(private prisma: PrismaService) {}
 
-  async create(input: CreateExperienceDto): Promise<ExperienceDto> {
+  async createExperience(input: CreateExperienceDto): Promise<ExperienceDto> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: input.userId },
+    });
+    if (!user) throw new BadRequestException('Invalid userId');
+
     const experience = await this.prisma.experience.create({
       data: {
         userId: input.userId,
@@ -22,7 +31,7 @@ export class ExperienceUseCases {
     return ExperienceDto.fromEntity(experience);
   }
 
-  async findById(id: string): Promise<ExperienceDto> {
+  async getExperienceById(id: string): Promise<ExperienceDto> {
     const experience = await this.prisma.experience.findUnique({
       where: { id },
     });
@@ -32,7 +41,7 @@ export class ExperienceUseCases {
     return ExperienceDto.fromEntity(experience);
   }
 
-  async listByUserId(userId: string): Promise<ExperienceDto[]> {
+  async listUserExperiences(userId: string): Promise<ExperienceDto[]> {
     const experiences = await this.prisma.experience.findMany({
       where: { userId },
       orderBy: [{ startDate: 'desc' }, { createdAt: 'desc' }],
@@ -40,7 +49,10 @@ export class ExperienceUseCases {
     return experiences.map((e) => ExperienceDto.fromEntity(e));
   }
 
-  async update(id: string, data: UpdateExperienceDto): Promise<ExperienceDto> {
+  async updateExperience(
+    id: string,
+    data: UpdateExperienceDto,
+  ): Promise<ExperienceDto> {
     const experience = await this.prisma.experience.findUnique({
       where: { id },
     });
@@ -63,7 +75,7 @@ export class ExperienceUseCases {
     return ExperienceDto.fromEntity(experience);
   }
 
-  async delete(id: string): Promise<void> {
+  async deleteExperience(id: string): Promise<void> {
     await this.prisma.experience.delete({
       where: { id },
       include: {

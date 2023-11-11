@@ -6,7 +6,7 @@ import { AuthTokenService } from '../services/AuthTokenService';
 import { PasswordService } from '../services/PasswordService';
 import { AuthUseCases } from './AuthUseCases';
 
-describe('AuthUseCases Integration Tests', () => {
+describe('AuthUseCases', () => {
   const tester = createUseCaseTester();
   let authUseCases: AuthUseCases;
 
