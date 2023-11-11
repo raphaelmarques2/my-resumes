@@ -1,34 +1,24 @@
 import { BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import {
-  cleanDatabase,
-  createTempSchemaAndMigrate,
-} from 'src/infra/tests/db-test';
+import { createUseCaseTester } from 'src/infra/tests/UseCaseTester';
 import { SignupDto } from '../dtos/SignupDto';
 import { AuthTokenService } from '../services/AuthTokenService';
 import { PasswordService } from '../services/PasswordService';
-import { PrismaService } from '../services/PrismaService';
 import { AuthUseCases } from './AuthUseCases';
 
 describe('AuthUseCases Integration Tests', () => {
+  const tester = createUseCaseTester();
   let authUseCases: AuthUseCases;
-  let prisma: PrismaService;
 
   beforeAll(async () => {
-    prisma = await createTempSchemaAndMigrate();
     const jwtService = new JwtService({ secret: 'test' });
     const authTokenService = new AuthTokenService(jwtService);
     const passwordService = new PasswordService();
-    authUseCases = new AuthUseCases(authTokenService, passwordService, prisma);
-  });
-
-  beforeEach(async () => {
-    await cleanDatabase(prisma);
-  });
-
-  afterAll(async () => {
-    await cleanDatabase(prisma);
-    await prisma.$disconnect();
+    authUseCases = new AuthUseCases(
+      authTokenService,
+      passwordService,
+      tester.prisma,
+    );
   });
 
   describe('signup', () => {
