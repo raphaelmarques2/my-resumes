@@ -20,6 +20,7 @@ import { ResumeUseCases } from 'src/domain/application/useCases/resume/ResumeUse
 
 export class UseCaseTester {
   prisma!: PrismaService;
+  tempDdSchema!: string;
 
   auth!: AuthOutputDto;
 
@@ -100,11 +101,10 @@ export class UseCaseTester {
 
 export function createUseCaseTester() {
   const tester = new UseCaseTester();
-  let dbSchemaName: string;
   beforeAll(async () => {
-    const temp = await createTempSchemaAndMigrate();
-    tester.prisma = temp.prisma;
-    dbSchemaName = temp.tempSchema;
+    const { prisma, tempSchema } = await createTempSchemaAndMigrate();
+    tester.prisma = prisma;
+    tester.tempDdSchema = tempSchema;
   });
   beforeEach(async () => {
     await cleanDatabase(tester.prisma);
@@ -114,7 +114,7 @@ export function createUseCaseTester() {
   afterAll(async () => {
     await cleanDatabase(tester.prisma);
     await tester.prisma.$disconnect();
-    await deleteTempSchema(dbSchemaName);
+    await deleteTempSchema(tester.tempDdSchema);
   });
   return tester;
 }
