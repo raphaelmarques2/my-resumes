@@ -74,5 +74,29 @@ describe('AuthUseCases', () => {
         authUseCases.signup(signupDtoWithInvalidEmail),
       ).rejects.toThrow(BadRequestException);
     });
+    it('should save salted passwords', async () => {
+      console.log('begining');
+      const userA = await authUseCases.signup({
+        name: 'A',
+        email: 'a@test.com',
+        password: '123456789',
+      });
+      const userB = await authUseCases.signup({
+        name: 'B',
+        email: 'b@test.com',
+        password: '123456789',
+      });
+
+      const credentialsA = await tester.prisma.userCredential.findFirst({
+        where: { userId: userA.user.id },
+      });
+      const credentialsB = await tester.prisma.userCredential.findFirst({
+        where: { userId: userB.user.id },
+      });
+
+      expect(credentialsA).toBeDefined();
+      expect(credentialsB).toBeDefined();
+      expect(credentialsA?.password).not.toBe(credentialsB?.password);
+    });
   });
 });

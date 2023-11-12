@@ -28,7 +28,7 @@ export async function createTempSchemaAndMigrate() {
 
   await prisma.$disconnect();
 
-  //console.log(`Running migrations on ${tempSchemaUrl}`);
+  console.log(`Running migrations on ${tempSchemaUrl}`);
   execSync(
     `npx cross-env DATABASE_URL=${tempSchemaUrl} npx prisma migrate deploy`,
   );
