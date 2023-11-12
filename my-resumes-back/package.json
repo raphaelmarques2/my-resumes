@@ -91,6 +91,6 @@
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/$1"
     },
-    "testTimeout": 3600000
+    "testTimeout": 3600000,
   }
 }

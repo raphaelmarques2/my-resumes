@@ -75,7 +75,6 @@ describe('AuthUseCases', () => {
       ).rejects.toThrow(BadRequestException);
     });
     it('should save salted passwords', async () => {
-      console.log('begining');
       const userA = await authUseCases.signup({
         name: 'A',
         email: 'a@test.com',

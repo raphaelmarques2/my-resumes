@@ -37,6 +37,7 @@ export async function createTempSchemaAndMigrate() {
   const newPrismaClient: PrismaService = new PrismaClient({
     datasources: { db: { url: tempSchemaUrl } },
   });
+  await newPrismaClient.$connect();
 
   return { prisma: newPrismaClient, tempSchema };
 }
