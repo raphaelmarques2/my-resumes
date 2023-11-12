@@ -3,14 +3,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ExperienceDto, convertToExperienceDto } from '../dtos/ExperienceDto';
-import { CreateExperienceDto } from '../dtos/CreateExperienceDto';
+import { ExperienceDto, convertToExperienceDto } from './dtos/ExperienceDto';
+import { CreateExperienceDto } from './dtos/CreateExperienceDto';
 import {
   UpdateExperienceDto,
   updateExperienceDtoSchema,
-} from '../dtos/UpdateExperienceDto';
+} from './dtos/UpdateExperienceDto';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
-import { validateDto, validateId } from '../dtos/validate';
+import { validateDto, validateId } from '../../services/validation';
 
 @Injectable()
 export class ExperienceUseCases {

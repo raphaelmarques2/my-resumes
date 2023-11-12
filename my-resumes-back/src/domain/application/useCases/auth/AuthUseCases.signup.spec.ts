@@ -1,8 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
 import { createUseCaseTester } from 'src/infra/tests/UseCaseTester';
-import { SignupDto } from '../dtos/SignupDto';
+import { SignupDto } from './dtos/SignupDto';
 import { AuthUseCases } from './AuthUseCases';
-import { ProfileUseCases } from './ProfileUseCases';
+import { ProfileUseCases } from '../profile/ProfileUseCases';
 
 describe('AuthUseCases', () => {
   const tester = createUseCaseTester();

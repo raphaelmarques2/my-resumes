@@ -15,11 +15,11 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthOutputDto } from 'src/domain/application/dtos/AuthOutputDto';
-import { LoginDto } from 'src/domain/application/dtos/LoginDto';
-import { SignupDto } from 'src/domain/application/dtos/SignupDto';
-import { AuthUseCases } from '../../domain/application/useCases/AuthUseCases';
-import { UserDto } from 'src/domain/application/dtos/UserDto';
+import { AuthOutputDto } from 'src/domain/application/useCases/auth/dtos/AuthOutputDto';
+import { LoginDto } from 'src/domain/application/useCases/auth/dtos/LoginDto';
+import { SignupDto } from 'src/domain/application/useCases/auth/dtos/SignupDto';
+import { AuthUseCases } from '../../domain/application/useCases/auth/AuthUseCases';
+import { UserDto } from 'src/domain/application/useCases/user/dtos/UserDto';
 import { AuthGuard } from '../guards/AuthGuard';
 import { Request } from 'express';
 

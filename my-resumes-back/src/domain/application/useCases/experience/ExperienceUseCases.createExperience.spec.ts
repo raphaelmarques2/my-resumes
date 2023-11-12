@@ -1,8 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { createUseCaseTester } from 'src/infra/tests/UseCaseTester';
-import { CreateExperienceDto } from '../dtos/CreateExperienceDto';
+import { CreateExperienceDto } from './dtos/CreateExperienceDto';
 import { ExperienceUseCases } from './ExperienceUseCases';
-import { faker } from '@faker-js/faker';
 
 describe('ExperienceUseCases', () => {
   const tester = createUseCaseTester();
@@ -12,8 +11,8 @@ describe('ExperienceUseCases', () => {
     experienceUseCases = new ExperienceUseCases(tester.prisma);
   });
 
-  describe('getExperienceById', () => {
-    it('should retrieve an experience', async () => {
+  describe('createExperience', () => {
+    it('should create an experience without technologies', async () => {
       const input: CreateExperienceDto = {
         title: 'title',
         company: 'abc',
@@ -64,7 +63,7 @@ describe('ExperienceUseCases', () => {
       const input: CreateExperienceDto = {
         title: 'title',
         company: 'company',
-        userId: faker.string.uuid(),
+        userId: '123',
       };
       await expect(experienceUseCases.createExperience(input)).rejects.toThrow(
         BadRequestException,

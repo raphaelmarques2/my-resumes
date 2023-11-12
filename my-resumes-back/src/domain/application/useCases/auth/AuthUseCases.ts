@@ -6,16 +6,16 @@ import {
 } from '@nestjs/common';
 import { AuthTokenService } from 'src/domain/application/services/AuthTokenService';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
-import { AuthOutputDto } from '../dtos/AuthOutputDto';
-import { LoginDto, loginDtoSchema } from '../dtos/LoginDto';
-import { SignupDto, signupDtoSchema } from '../dtos/SignupDto';
-import { convertToUserDto } from '../dtos/UserDto';
-import { validateDto } from '../dtos/validate';
-import { PasswordService } from '../services/PasswordService';
+import { AuthOutputDto } from './dtos/AuthOutputDto';
+import { LoginDto, loginDtoSchema } from './dtos/LoginDto';
+import { SignupDto, signupDtoSchema } from './dtos/SignupDto';
+import { convertToUserDto } from '../user/dtos/UserDto';
+import { validateDto } from '../../services/validation';
+import { PasswordService } from '../../services/PasswordService';
 import {
   UpdatePasswordDto,
   updatePasswordDtoSchema,
-} from '../dtos/UpdatePasswordDto';
+} from './dtos/UpdatePasswordDto';
 
 @Injectable()
 export class AuthUseCases {

@@ -14,10 +14,10 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateResumeDto } from 'src/domain/application/dtos/CreateResumeDto';
-import { ResumeDto } from 'src/domain/application/dtos/ResumeDto';
-import { UpdateResumeDto } from 'src/domain/application/dtos/UpdateResumeDto';
-import { ResumeUseCases } from 'src/domain/application/useCases/ResumeUseCases';
+import { CreateResumeDto } from 'src/domain/application/useCases/resume/dtos/CreateResumeDto';
+import { ResumeDto } from 'src/domain/application/useCases/resume/dtos/ResumeDto';
+import { UpdateResumeDto } from 'src/domain/application/useCases/resume/dtos/UpdateResumeDto';
+import { ResumeUseCases } from 'src/domain/application/useCases/resume/ResumeUseCases';
 import { AuthGuard } from '../guards/AuthGuard';
 
 @ApiTags('resumes')

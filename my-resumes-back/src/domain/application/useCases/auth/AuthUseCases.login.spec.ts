@@ -1,7 +1,7 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { createUseCaseTester } from 'src/infra/tests/UseCaseTester';
-import { LoginDto } from '../dtos/LoginDto';
-import { SignupDto } from '../dtos/SignupDto';
+import { LoginDto } from './dtos/LoginDto';
+import { SignupDto } from './dtos/SignupDto';
 import { AuthUseCases } from './AuthUseCases';
 
 describe('AuthUseCases', () => {

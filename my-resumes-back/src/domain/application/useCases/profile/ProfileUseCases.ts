@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ProfileDto, convertToProfileDto } from '../dtos/ProfileDto';
+import { ProfileDto, convertToProfileDto } from './dtos/ProfileDto';
 import {
   UpdateProfileDto,
   updateProfileDtoSchema,
-} from '../dtos/UpdateProfileDto';
+} from './dtos/UpdateProfileDto';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
-import { validateDto, validateId } from '../dtos/validate';
+import { validateDto, validateId } from '../../services/validation';
 
 @Injectable()
 export class ProfileUseCases {
