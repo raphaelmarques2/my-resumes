@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { execSync } from 'child_process';
-import { PrismaService } from 'src/domain/application/services/PrismaService';
 import * as crypto from 'crypto';
 
 export async function cleanDatabase(prisma: PrismaClient) {
@@ -12,7 +11,7 @@ export async function cleanDatabase(prisma: PrismaClient) {
   await prisma.user.deleteMany();
 }
 
-export async function createTempSchemaAndMigrate() {
+export async function createTempSchema() {
   const dbUrl = process.env.DATABASE_URL;
   const prisma = new PrismaClient({
     datasources: { db: { url: dbUrl } },
@@ -32,14 +31,8 @@ export async function createTempSchemaAndMigrate() {
   execSync(
     `npx cross-env DATABASE_URL=${tempSchemaUrl} npx prisma migrate deploy`,
   );
-  //console.log('Running migrations done');
 
-  const newPrismaClient: PrismaService = new PrismaClient({
-    datasources: { db: { url: tempSchemaUrl } },
-  });
-  await newPrismaClient.$connect();
-
-  return { prisma: newPrismaClient, tempSchema };
+  return { url: tempSchemaUrl, schemaName: tempSchema };
 }
 
 export async function deleteTempSchema(schemaName: string) {

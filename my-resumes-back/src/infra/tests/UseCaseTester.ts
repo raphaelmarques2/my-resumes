@@ -1,22 +1,19 @@
 import { faker } from '@faker-js/faker';
 import { JwtService } from '@nestjs/jwt';
-import { AuthOutputDto } from 'src/domain/application/useCases/auth/dtos/AuthOutputDto';
-import { SignupDto } from 'src/domain/application/useCases/auth/dtos/SignupDto';
+import { PrismaClient } from '@prisma/client';
 import { AuthTokenService } from 'src/domain/application/services/AuthTokenService';
 import { PasswordService } from 'src/domain/application/services/PasswordService';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
 import { AuthUseCases } from 'src/domain/application/useCases/auth/AuthUseCases';
-import {
-  cleanDatabase,
-  createTempSchemaAndMigrate,
-  deleteTempSchema,
-} from './db-test';
-import { CreateExperienceDto } from 'src/domain/application/useCases/experience/dtos/CreateExperienceDto';
+import { AuthOutputDto } from 'src/domain/application/useCases/auth/dtos/AuthOutputDto';
+import { SignupDto } from 'src/domain/application/useCases/auth/dtos/SignupDto';
 import { ExperienceUseCases } from 'src/domain/application/useCases/experience/ExperienceUseCases';
+import { CreateExperienceDto } from 'src/domain/application/useCases/experience/dtos/CreateExperienceDto';
 import { ExperienceDto } from 'src/domain/application/useCases/experience/dtos/ExperienceDto';
-import { ResumeDto } from 'src/domain/application/useCases/resume/dtos/ResumeDto';
-import { CreateResumeDto } from 'src/domain/application/useCases/resume/dtos/CreateResumeDto';
 import { ResumeUseCases } from 'src/domain/application/useCases/resume/ResumeUseCases';
+import { CreateResumeDto } from 'src/domain/application/useCases/resume/dtos/CreateResumeDto';
+import { ResumeDto } from 'src/domain/application/useCases/resume/dtos/ResumeDto';
+import { cleanDatabase } from './db-test';
 
 export class UseCaseTester {
   prisma!: PrismaService;
@@ -102,9 +99,16 @@ export class UseCaseTester {
 export function createUseCaseTester() {
   const tester = new UseCaseTester();
   beforeAll(async () => {
-    const { prisma, tempSchema } = await createTempSchemaAndMigrate();
-    tester.prisma = prisma;
-    tester.tempDdSchema = tempSchema;
+    if (!process.env.JEST_DATABASE_URL)
+      throw new Error('No process.env.JEST_DATABASE_URL');
+    if (!process.env.JEST_DATABASE_SCHEMA)
+      throw new Error('No process.env.JEST_DATABASE_SCHEMA');
+
+    const prisma = (tester.prisma = new PrismaClient({
+      datasources: { db: { url: process.env.JEST_DATABASE_URL } },
+    }));
+    tester.tempDdSchema = process.env.JEST_DATABASE_SCHEMA;
+    await prisma.$connect();
   });
   beforeEach(async () => {
     await cleanDatabase(tester.prisma);
@@ -114,7 +118,7 @@ export function createUseCaseTester() {
   afterAll(async () => {
     await cleanDatabase(tester.prisma);
     await tester.prisma.$disconnect();
-    await deleteTempSchema(tester.tempDdSchema);
   });
+
   return tester;
 }

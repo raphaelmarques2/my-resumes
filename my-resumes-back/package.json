@@ -91,6 +91,8 @@
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/$1"
     },
+    "globalSetup": "<rootDir>/infra/tests/setup.ts",
+    "globalTeardown": "<rootDir>/infra/tests/teardown.ts",
     "testTimeout": 3600000
   }
 }
