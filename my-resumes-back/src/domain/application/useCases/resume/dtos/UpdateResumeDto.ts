@@ -1,3 +1,4 @@
+import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
 export const updateResumeDtoSchema = z
@@ -8,4 +9,4 @@ export const updateResumeDtoSchema = z
   })
   .strict();
 
-export type UpdateResumeDto = z.infer<typeof updateResumeDtoSchema>;
+export class UpdateResumeDto extends createZodDto(updateResumeDtoSchema) {}

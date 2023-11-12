@@ -1,12 +1,18 @@
 import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
+import { ProfileUseCases } from 'src/domain/application/useCases/profile/ProfileUseCases';
 import { ProfileDto } from 'src/domain/application/useCases/profile/dtos/ProfileDto';
 import { UpdateProfileDto } from 'src/domain/application/useCases/profile/dtos/UpdateProfileDto';
-import { ProfileUseCases } from 'src/domain/application/useCases/profile/ProfileUseCases';
 import { AuthGuard } from '../guards/AuthGuard';
 
 @ApiTags('profiles')
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller()
 export class ProfileController {

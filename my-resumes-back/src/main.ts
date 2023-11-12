@@ -5,8 +5,9 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggingInterceptor } from './infra/middlewares/LoggingInterceptor';
+import { patchNestJsSwagger } from 'nestjs-zod';
 
-const version = '0.0.2';
+patchNestJsSwagger();
 
 async function bootstrap() {
   //await runMigrations();
@@ -19,7 +20,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new LoggingInterceptor());
 
-  const swaggerConfig = new DocumentBuilder().setTitle('My CV API').build();
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('My CV API')
+    .addBearerAuth()
+    .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
 
@@ -32,7 +36,7 @@ async function bootstrap() {
   // }
 
   await app.listen(port).then(() => {
-    console.log(`Running v${version} on http://localhost:${port}`);
+    console.log(`Running on http://localhost:${port}`);
   });
 
   return { app };

@@ -1,13 +1,19 @@
 import { Profile } from '@prisma/client';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
 
-export type ProfileDto = {
-  id: string;
-  userId: string;
-  name: string;
-  email: string;
-  address?: string;
-  linkedin?: string;
-};
+export const profileDtoSchema = z
+  .object({
+    id: z.string(),
+    userId: z.string(),
+    name: z.string(),
+    email: z.string(),
+    address: z.string().optional(),
+    linkedin: z.string().optional(),
+  })
+  .strict();
+
+export class ProfileDto extends createZodDto(profileDtoSchema) {}
 
 export function convertToProfileDto(profile: Profile): ProfileDto {
   return {

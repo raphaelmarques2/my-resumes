@@ -1,3 +1,4 @@
+import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
 export const createExperienceDtoSchema = z
@@ -12,4 +13,6 @@ export const createExperienceDtoSchema = z
   })
   .strict();
 
-export type CreateExperienceDto = z.infer<typeof createExperienceDtoSchema>;
+export class CreateExperienceDto extends createZodDto(
+  createExperienceDtoSchema,
+) {}

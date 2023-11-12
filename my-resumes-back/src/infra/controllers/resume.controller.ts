@@ -1,26 +1,28 @@
 import {
-  Controller,
-  Post,
   Body,
+  Controller,
+  Delete,
   Get,
   Param,
   Patch,
-  Delete,
+  Post,
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { ResumeUseCases } from 'src/domain/application/useCases/resume/ResumeUseCases';
 import { CreateResumeDto } from 'src/domain/application/useCases/resume/dtos/CreateResumeDto';
 import { ResumeDto } from 'src/domain/application/useCases/resume/dtos/ResumeDto';
 import { UpdateResumeDto } from 'src/domain/application/useCases/resume/dtos/UpdateResumeDto';
-import { ResumeUseCases } from 'src/domain/application/useCases/resume/ResumeUseCases';
 import { AuthGuard } from '../guards/AuthGuard';
 
 @ApiTags('resumes')
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller()
 export class ResumeController {

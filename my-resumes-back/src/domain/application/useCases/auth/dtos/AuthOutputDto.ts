@@ -1,6 +1,12 @@
-import { UserDto } from '../../user/dtos/UserDto';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
+import { userDtoSchema } from '../../user/dtos/UserDto';
 
-export type AuthOutputDto = {
-  token: string;
-  user: UserDto;
-};
+export const authOutputDtoSchema = z
+  .object({
+    token: z.string(),
+    user: userDtoSchema,
+  })
+  .strict();
+
+export class AuthOutputDto extends createZodDto(authOutputDtoSchema) {}

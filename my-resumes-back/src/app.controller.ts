@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { MyConfigService } from './infra/services/MyConfigService';
 import { PrismaService } from './domain/application/services/PrismaService';
+import { MyConfigService } from './infra/services/MyConfigService';
 
 @Controller()
 export class AppController {

@@ -20,6 +20,8 @@ import {
 } from './infra/services/MyConfigService';
 import { AuthTokenService } from './domain/application/services/AuthTokenService';
 import { PasswordService } from './domain/application/services/PasswordService';
+import { APP_PIPE } from '@nestjs/core';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { PasswordService } from './domain/application/services/PasswordService';
     AuthController,
   ],
   providers: [
+    { provide: APP_PIPE, useClass: ZodValidationPipe },
     MyConfigService,
     LoggerMiddleware,
     LoggingInterceptor,

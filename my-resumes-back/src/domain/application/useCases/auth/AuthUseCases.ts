@@ -79,8 +79,23 @@ export class AuthUseCases {
       },
     });
 
-    if (!user || !user.credential) {
+    if (!user) {
       throw new UnauthorizedException();
+    }
+
+    if (!user.credential) {
+      //create credential if it does not exist
+      const passwordHash = await this.passwordService.hashPassword(
+        input.password,
+      );
+
+      const credential = await this.prisma.userCredential.create({
+        data: {
+          userId: user.id,
+          password: passwordHash,
+        },
+      });
+      user.credential = credential;
     }
 
     const isPasswordValid = await this.passwordService.comparePasswords(

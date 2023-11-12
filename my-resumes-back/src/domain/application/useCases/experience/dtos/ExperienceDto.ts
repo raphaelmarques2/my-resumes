@@ -1,15 +1,21 @@
 import { Experience } from '@prisma/client';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
 
-export type ExperienceDto = {
-  id: string;
-  userId: string;
-  title: string;
-  company: string;
-  description: string;
-  startDate?: string;
-  endDate?: string;
-  technologies: string[];
-};
+export const experienceDtoSchema = z
+  .object({
+    id: z.string(),
+    userId: z.string(),
+    title: z.string(),
+    company: z.string(),
+    description: z.string(),
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
+    technologies: z.array(z.string()),
+  })
+  .strict();
+
+export class ExperienceDto extends createZodDto(experienceDtoSchema) {}
 
 export function convertToExperienceDto(experience: Experience): ExperienceDto {
   return {

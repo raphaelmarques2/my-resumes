@@ -9,19 +9,21 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiDefaultResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { ExperienceDto } from 'src/domain/application/useCases/experience/dtos/ExperienceDto';
 import { ExperienceUseCases } from 'src/domain/application/useCases/experience/ExperienceUseCases';
-import { CreateExperienceDto } from '../../domain/application/useCases/experience/dtos/CreateExperienceDto';
+import { ExperienceDto } from 'src/domain/application/useCases/experience/dtos/ExperienceDto';
 import { UpdateExperienceDto } from 'src/domain/application/useCases/experience/dtos/UpdateExperienceDto';
+import { CreateExperienceDto } from '../../domain/application/useCases/experience/dtos/CreateExperienceDto';
 import { AuthGuard } from '../guards/AuthGuard';
 
 @ApiTags('experiences')
+@ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller()
 export class ExperienceController {

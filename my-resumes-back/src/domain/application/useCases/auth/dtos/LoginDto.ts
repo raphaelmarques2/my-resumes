@@ -1,10 +1,11 @@
+import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
 export const loginDtoSchema = z
   .object({
     email: z.string().email(),
-    password: z.string().min(1),
+    password: z.string().min(3),
   })
   .strict();
 
-export type LoginDto = z.infer<typeof loginDtoSchema>;
+export class LoginDto extends createZodDto(loginDtoSchema) {}
