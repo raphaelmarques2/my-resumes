@@ -102,7 +102,11 @@ export class AuthUseCases {
   }
 
   async authenticate(token: string): Promise<AuthOutputDto> {
-    const tokenData = await this.authTokenService.extractToken(token);
+    const tokenData = await this.authTokenService
+      .extractToken(token)
+      .catch(() => {
+        throw new UnauthorizedException();
+      });
 
     const user = await this.prisma.user.findUnique({
       where: { id: tokenData.userId },
