@@ -1,33 +1,21 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Profile } from '@prisma/client';
 
-export class ProfileDto {
-  @ApiProperty()
-  public id!: string;
+export type ProfileDto = {
+  id: string;
+  userId: string;
+  name: string;
+  email: string;
+  address?: string;
+  linkedin?: string;
+};
 
-  @ApiProperty()
-  public userId!: string;
-
-  @ApiProperty()
-  public name!: string;
-
-  @ApiProperty()
-  public email!: string;
-
-  @ApiProperty({ required: false })
-  public address?: string;
-
-  @ApiProperty({ required: false })
-  public linkedin?: string;
-
-  static fromEntity(profile: Profile): ProfileDto {
-    return {
-      id: profile.id,
-      userId: profile.userId,
-      name: profile.name,
-      email: profile.email,
-      address: profile.address ?? undefined,
-      linkedin: profile.linkedin ?? undefined,
-    };
-  }
+export function convertToProfileDto(profile: Profile): ProfileDto {
+  return {
+    id: profile.id,
+    userId: profile.userId,
+    name: profile.name,
+    email: profile.email,
+    address: profile.address ?? undefined,
+    linkedin: profile.linkedin ?? undefined,
+  };
 }

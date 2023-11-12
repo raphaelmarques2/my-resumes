@@ -1,12 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { z } from 'zod';
 
-export class UpdateResumeDto {
-  @ApiProperty({ required: false, minLength: 1 })
-  title?: string;
+export const updateResumeDtoSchema = z
+  .object({
+    title: z.string().min(1).optional(),
+    description: z.string().optional(),
+    experiences: z.array(z.string().uuid()).optional(),
+  })
+  .strict();
 
-  @ApiProperty({ required: false })
-  description?: string;
-
-  @ApiProperty({ required: false })
-  experiences?: string[];
-}
+export type UpdateResumeDto = z.infer<typeof updateResumeDtoSchema>;

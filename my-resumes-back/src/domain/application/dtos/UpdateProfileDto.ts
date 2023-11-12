@@ -1,15 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { z } from 'zod';
 
-export class UpdateProfileDto {
-  @ApiProperty({ minLength: 1, required: false })
-  name?: string;
+export const updateProfileDtoSchema = z
+  .object({
+    name: z.string().optional(),
+    email: z.string().optional(),
+    address: z.string().optional(),
+    linkedin: z.string().optional(),
+  })
+  .strict();
 
-  @ApiProperty({ format: 'email', required: false })
-  email?: string;
-
-  @ApiProperty({ required: false })
-  address?: string;
-
-  @ApiProperty({ format: 'url', required: false })
-  linkedin?: string;
-}
+export type UpdateProfileDto = z.infer<typeof updateProfileDtoSchema>;

@@ -1,22 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID, MinLength } from 'class-validator';
+import { z } from 'zod';
 
-export class CreateExperienceDto {
-  @IsString()
-  @IsUUID()
-  @ApiProperty({ format: 'UUID' })
-  userId!: string;
+export const createExperienceDtoSchema = z
+  .object({
+    userId: z.string().uuid(),
+    title: z.string().min(1),
+    company: z.string().min(1),
+    description: z.string().optional(),
+    startDate: z.string().datetime().optional(),
+    endDate: z.string().datetime().optional(),
+    technologies: z.array(z.string().min(1)).optional(),
+  })
+  .strict();
 
-  @IsString()
-  @MinLength(3)
-  @ApiProperty({ minLength: 3 })
-  title!: string;
-
-  @IsString()
-  @MinLength(3)
-  @ApiProperty({ minLength: 3 })
-  company!: string;
-
-  @ApiProperty({ required: false })
-  technologies?: string[];
-}
+export type CreateExperienceDto = z.infer<typeof createExperienceDtoSchema>;

@@ -9,20 +9,3 @@ export const signupDtoSchema = z
   .strict();
 
 export type SignupDto = z.infer<typeof signupDtoSchema>;
-
-// export class SignupDto {
-//   @IsString()
-//   @MinLength(1)
-//   @ApiProperty({ minLength: 1 })
-//   name!: string;
-
-//   @IsString()
-//   @IsEmail()
-//   @ApiProperty({ format: 'email' })
-//   email!: string;
-
-//   @IsString()
-//   @MinLength(3)
-//   @ApiProperty({ minLength: 3 })
-//   password!: string;
-// }

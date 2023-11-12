@@ -1,41 +1,25 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Experience } from '@prisma/client';
 
-export class ExperienceDto {
-  @ApiProperty({ format: 'uuid' })
-  id!: string;
-
-  @ApiProperty({ format: 'uuid' })
-  userId!: string;
-
-  @ApiProperty({ minLength: 1 })
-  title!: string;
-
-  @ApiProperty({ minLength: 1 })
-  company!: string;
-
-  @ApiProperty()
-  description!: string;
-
-  @ApiProperty({ required: false })
+export type ExperienceDto = {
+  id: string;
+  userId: string;
+  title: string;
+  company: string;
+  description: string;
   startDate?: string;
-
-  @ApiProperty({ required: false })
   endDate?: string;
+  technologies: string[];
+};
 
-  @ApiProperty()
-  technologies!: string[];
-
-  static fromEntity(experience: Experience): ExperienceDto {
-    return {
-      id: experience.id,
-      userId: experience.userId,
-      title: experience.title,
-      company: experience.company,
-      description: experience.description,
-      startDate: experience.startDate?.toISOString(),
-      endDate: experience.endDate?.toISOString(),
-      technologies: experience.technologies,
-    };
-  }
+export function convertToExperienceDto(experience: Experience): ExperienceDto {
+  return {
+    id: experience.id,
+    userId: experience.userId,
+    title: experience.title,
+    company: experience.company,
+    description: experience.description,
+    startDate: experience.startDate?.toISOString(),
+    endDate: experience.endDate?.toISOString(),
+    technologies: experience.technologies,
+  };
 }
