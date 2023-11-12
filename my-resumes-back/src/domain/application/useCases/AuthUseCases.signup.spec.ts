@@ -1,9 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { createUseCaseTester } from 'src/infra/tests/UseCaseTester';
 import { SignupDto } from '../dtos/SignupDto';
-import { AuthTokenService } from '../services/AuthTokenService';
-import { PasswordService } from '../services/PasswordService';
 import { AuthUseCases } from './AuthUseCases';
 
 describe('AuthUseCases', () => {
@@ -11,12 +8,9 @@ describe('AuthUseCases', () => {
   let authUseCases: AuthUseCases;
 
   beforeAll(async () => {
-    const jwtService = new JwtService({ secret: 'test' });
-    const authTokenService = new AuthTokenService(jwtService);
-    const passwordService = new PasswordService();
     authUseCases = new AuthUseCases(
-      authTokenService,
-      passwordService,
+      tester.authTokenService,
+      tester.passwordService,
       tester.prisma,
     );
   });
