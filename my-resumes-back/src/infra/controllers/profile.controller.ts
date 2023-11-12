@@ -16,7 +16,7 @@ export class ProfileController {
   @ApiOperation({ operationId: 'getProfileById' })
   @ApiOkResponse({ type: ProfileDto })
   async getById(@Param('id') id: string): Promise<ProfileDto> {
-    return this.profileService.findById(id);
+    return this.profileService.getProfileById(id);
   }
 
   @Get('/users/:userId/profile')
@@ -25,7 +25,7 @@ export class ProfileController {
   async getProfileByUserId(
     @Param('userId') userId: string,
   ): Promise<ProfileDto> {
-    return this.profileService.findByUserId(userId);
+    return this.profileService.getUserProfile(userId);
   }
 
   @Patch('/profiles/:id')
@@ -35,6 +35,6 @@ export class ProfileController {
     @Param('id') id: string,
     @Body() body: UpdateProfileDto,
   ): Promise<ProfileDto> {
-    return this.profileService.update(id, body);
+    return this.profileService.updateProfile(id, body);
   }
 }

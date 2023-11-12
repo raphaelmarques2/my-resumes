@@ -7,11 +7,15 @@ import {
 import { AuthTokenService } from 'src/domain/application/services/AuthTokenService';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
 import { AuthOutputDto } from '../dtos/AuthOutputDto';
-import { LoginDto } from '../dtos/LoginDto';
+import { LoginDto, loginDtoSchema } from '../dtos/LoginDto';
 import { SignupDto, signupDtoSchema } from '../dtos/SignupDto';
-import { UserDto } from '../dtos/UserDto';
+import { convertToUserDto } from '../dtos/UserDto';
+import { validateDto } from '../dtos/validate';
 import { PasswordService } from '../services/PasswordService';
-import { validateDto } from '../dtos/validateDto';
+import {
+  UpdatePasswordDto,
+  updatePasswordDtoSchema,
+} from '../dtos/UpdatePasswordDto';
 
 @Injectable()
 export class AuthUseCases {
@@ -22,7 +26,7 @@ export class AuthUseCases {
   ) {}
 
   async signup(input: SignupDto): Promise<AuthOutputDto> {
-    validateDto(signupDtoSchema, input);
+    validateDto(input, signupDtoSchema);
 
     const userFound = await this.prisma.user.findUnique({
       where: { email: input.email },
@@ -59,11 +63,13 @@ export class AuthUseCases {
     });
     return {
       token,
-      user: UserDto.fromEntity(user),
+      user: convertToUserDto(user),
     };
   }
 
   async login(input: LoginDto): Promise<AuthOutputDto> {
+    validateDto(input, loginDtoSchema);
+
     const user = await this.prisma.user.findUnique({
       where: {
         email: input.email,
@@ -91,7 +97,7 @@ export class AuthUseCases {
     });
     return {
       token,
-      user: UserDto.fromEntity(user),
+      user: convertToUserDto(user),
     };
   }
 
@@ -112,13 +118,15 @@ export class AuthUseCases {
 
     return {
       token: newToken,
-      user: UserDto.fromEntity(user),
+      user: convertToUserDto(user),
     };
   }
 
-  async updatePassword(userId: string, newPassword: string): Promise<void> {
+  async updatePassword(input: UpdatePasswordDto): Promise<void> {
+    validateDto(input, updatePasswordDtoSchema);
+
     const user = await this.prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: input.userId },
       include: {
         credential: true,
       },
@@ -127,12 +135,14 @@ export class AuthUseCases {
       throw new NotFoundException();
     }
 
-    const passwordHash = await this.passwordService.hashPassword(newPassword);
+    const passwordHash = await this.passwordService.hashPassword(
+      input.password,
+    );
 
     await this.prisma.userCredential.update({
-      where: { userId: userId },
+      where: { userId: input.userId },
       data: {
-        userId: userId,
+        userId: input.userId,
         password: passwordHash,
       },
     });

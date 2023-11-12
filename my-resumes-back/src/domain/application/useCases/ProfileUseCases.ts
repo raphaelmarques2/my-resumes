@@ -1,13 +1,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ProfileDto } from '../dtos/ProfileDto';
-import { UpdateProfileDto } from '../dtos/UpdateProfileDto';
+import { ProfileDto, convertToProfileDto } from '../dtos/ProfileDto';
+import {
+  UpdateProfileDto,
+  updateProfileDtoSchema,
+} from '../dtos/UpdateProfileDto';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
+import { validateDto, validateId } from '../dtos/validate';
 
 @Injectable()
 export class ProfileUseCases {
   constructor(private prisma: PrismaService) {}
 
-  async update(id: string, input: UpdateProfileDto): Promise<ProfileDto> {
+  async updateProfile(
+    id: string,
+    input: UpdateProfileDto,
+  ): Promise<ProfileDto> {
+    validateId(id);
+    validateDto(input, updateProfileDtoSchema);
+
     const profile = await this.prisma.profile.findUnique({
       where: { id },
     });
@@ -25,10 +35,12 @@ export class ProfileUseCases {
       },
     });
 
-    return ProfileDto.fromEntity(updatedProfile);
+    return convertToProfileDto(updatedProfile);
   }
 
-  async findById(id: string): Promise<ProfileDto> {
+  async getProfileById(id: string): Promise<ProfileDto> {
+    validateId(id);
+
     const profile = await this.prisma.profile.findUnique({
       where: { id },
     });
@@ -36,16 +48,18 @@ export class ProfileUseCases {
       throw new NotFoundException();
     }
 
-    return ProfileDto.fromEntity(profile);
+    return convertToProfileDto(profile);
   }
 
-  async findByUserId(userId: string): Promise<ProfileDto> {
+  async getUserProfile(userId: string): Promise<ProfileDto> {
+    validateId(userId);
+
     const profile = await this.prisma.profile.findFirst({
       where: { userId },
     });
     if (!profile) {
       throw new NotFoundException();
     }
-    return ProfileDto.fromEntity(profile);
+    return convertToProfileDto(profile);
   }
 }

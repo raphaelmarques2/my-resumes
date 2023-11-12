@@ -1,6 +1,7 @@
 import { createUseCaseTester } from 'src/infra/tests/UseCaseTester';
 import { ExperienceUseCases } from './ExperienceUseCases';
 import { NotFoundException } from '@nestjs/common';
+import { faker } from '@faker-js/faker';
 
 describe('ExperienceUseCases', () => {
   const tester = createUseCaseTester();
@@ -76,7 +77,7 @@ describe('ExperienceUseCases', () => {
 
     it('should throw an error if experience does not exist', async () => {
       await expect(
-        experienceUseCases.updateExperience('123', {}),
+        experienceUseCases.updateExperience(faker.string.uuid(), {}),
       ).rejects.toThrow(NotFoundException);
     });
   });

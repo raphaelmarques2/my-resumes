@@ -1,6 +1,7 @@
 import { createUseCaseTester } from 'src/infra/tests/UseCaseTester';
 import { ExperienceUseCases } from './ExperienceUseCases';
 import { NotFoundException } from '@nestjs/common';
+import { faker } from '@faker-js/faker';
 
 describe('ExperienceUseCases', () => {
   const tester = createUseCaseTester();
@@ -40,9 +41,9 @@ describe('ExperienceUseCases', () => {
       ).resolves.toEqual([]);
     });
     it('should throw error if experience does not exist', async () => {
-      await expect(experienceUseCases.deleteExperience('123')).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        experienceUseCases.deleteExperience(faker.string.uuid()),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });

@@ -76,29 +76,25 @@ export class UseCaseTester {
       company: faker.internet.displayName(),
       userId: this.auth.user.id,
       technologies: ['A', 'B', 'C'],
+      description: faker.lorem.paragraph(),
+      startDate: faker.date.past({ years: 3 }).toISOString(),
+      endDate: faker.date.past({ years: 2 }).toISOString(),
       ...(override ?? {}),
     };
     const experienceUseCases = new ExperienceUseCases(this.prisma);
     return await experienceUseCases.createExperience(input);
   }
 
-  async createResume(options?: { experiences?: string[] }): Promise<ResumeDto> {
+  async createResume(override?: Partial<CreateResumeDto>): Promise<ResumeDto> {
     const input: CreateResumeDto = {
       title: faker.internet.domainName(),
       userId: this.auth.user.id,
       description: faker.lorem.paragraph(),
+      experiences: [],
+      ...(override ?? {}),
     };
     const resumeUseCases = new ResumeUseCases(this.prisma);
-    const newResume = await resumeUseCases.createResume(input);
-
-    if (options?.experiences) {
-      const updatedResume = await resumeUseCases.updateResume(newResume.id, {
-        experiences: options.experiences,
-      });
-      return updatedResume;
-    }
-
-    return newResume;
+    return await resumeUseCases.createResume(input);
   }
 }
 
