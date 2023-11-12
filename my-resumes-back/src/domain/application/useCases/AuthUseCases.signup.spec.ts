@@ -2,6 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { createUseCaseTester } from 'src/infra/tests/UseCaseTester';
 import { SignupDto } from '../dtos/SignupDto';
 import { AuthUseCases } from './AuthUseCases';
+import { ProfileUseCases } from './ProfileUseCases';
 
 describe('AuthUseCases', () => {
   const tester = createUseCaseTester();
@@ -31,6 +32,23 @@ describe('AuthUseCases', () => {
           email: 'test@test.com',
         },
       });
+    });
+    it('should create a profile when user signs up', async () => {
+      const signupDto: SignupDto = {
+        name: 'User',
+        email: 'test@test.com',
+        password: '123456789',
+      };
+      const user = await authUseCases.signup(signupDto);
+
+      const profileUseCases = new ProfileUseCases(tester.prisma);
+      const profile = await profileUseCases.getUserProfile(user.user.id);
+      expect(profile).toEqual(
+        expect.objectContaining({
+          name: signupDto.name,
+          email: signupDto.email,
+        }),
+      );
     });
     it('should throw an error if email is already in use', async () => {
       const signupDto: SignupDto = {
