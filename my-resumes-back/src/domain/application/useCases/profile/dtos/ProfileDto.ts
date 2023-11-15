@@ -4,10 +4,10 @@ import { z } from 'zod';
 
 export const profileDtoSchema = z
   .object({
-    id: z.string(),
-    userId: z.string(),
-    name: z.string(),
-    email: z.string(),
+    id: z.string().uuid(),
+    userId: z.string().uuid(),
+    name: z.string().min(1),
+    email: z.string().email(),
     address: z.string().optional(),
     linkedin: z.string().optional(),
   })

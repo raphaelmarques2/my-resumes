@@ -4,14 +4,14 @@ import { z } from 'zod';
 
 export const experienceDtoSchema = z
   .object({
-    id: z.string(),
-    userId: z.string(),
-    title: z.string(),
-    company: z.string(),
+    id: z.string().uuid(),
+    userId: z.string().uuid(),
+    title: z.string().min(1),
+    company: z.string().min(1),
     description: z.string(),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
-    technologies: z.array(z.string()),
+    technologies: z.array(z.string().min(1)),
   })
   .strict();
 

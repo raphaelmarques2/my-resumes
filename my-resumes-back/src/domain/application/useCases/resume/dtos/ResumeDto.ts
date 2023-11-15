@@ -4,18 +4,20 @@ import { z } from 'zod';
 
 export const resumeDtoSchema = z
   .object({
-    id: z.string(),
-    userId: z.string(),
-    title: z.string(),
+    id: z.string().uuid(),
+    userId: z.string().uuid(),
+    title: z.string().min(1),
     description: z.string(),
     experiences: z.array(z.string()),
   })
   .strict();
 
+export type ResumeAndExperiencesId = Resume & {
+  experienceToResumes: { experienceId: string }[];
+};
+
 export class ResumeDto extends createZodDto(resumeDtoSchema) {
-  static createFrom(
-    resume: Resume & { experienceToResumes: { experienceId: string }[] },
-  ): ResumeDto {
+  static createFrom(resume: ResumeAndExperiencesId): ResumeDto {
     return ResumeDto.create({
       id: resume.id,
       userId: resume.userId,
