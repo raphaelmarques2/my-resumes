@@ -6,12 +6,12 @@ import {
 } from '@nestjs/common';
 import { AuthTokenService } from 'src/domain/application/services/AuthTokenService';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
+import { PasswordService } from '../../services/PasswordService';
+import { validateDto } from '../../services/validation';
+import { convertToUserDto } from '../user/dtos/UserDto';
 import { AuthOutputDto } from './dtos/AuthOutputDto';
 import { LoginDto, loginDtoSchema } from './dtos/LoginDto';
 import { SignupDto, signupDtoSchema } from './dtos/SignupDto';
-import { convertToUserDto } from '../user/dtos/UserDto';
-import { validateDto } from '../../services/validation';
-import { PasswordService } from '../../services/PasswordService';
 import {
   UpdatePasswordDto,
   updatePasswordDtoSchema,
@@ -28,33 +28,37 @@ export class AuthUseCases {
   async signup(input: SignupDto): Promise<AuthOutputDto> {
     validateDto(input, signupDtoSchema);
 
-    const userFound = await this.prisma.user.findUnique({
-      where: { email: input.email },
-    });
-    if (userFound) {
-      throw new BadRequestException('Email already in use');
-    }
+    const user = await this.prisma.$transaction(async (prisma) => {
+      const userFound = await prisma.user.findUnique({
+        where: { email: input.email },
+      });
+      if (userFound) {
+        throw new BadRequestException('Email already in use');
+      }
 
-    const passwordHash = await this.passwordService.hashPassword(
-      input.password,
-    );
+      const passwordHash = await this.passwordService.hashPassword(
+        input.password,
+      );
 
-    const user = await this.prisma.user.create({
-      data: {
-        name: input.name,
-        email: input.email,
-        credential: {
-          create: {
-            password: passwordHash,
+      const user = await prisma.user.create({
+        data: {
+          name: input.name,
+          email: input.email,
+          credential: {
+            create: {
+              password: passwordHash,
+            },
+          },
+          profiles: {
+            create: {
+              name: input.name,
+              email: input.email,
+            },
           },
         },
-        profiles: {
-          create: {
-            name: input.name,
-            email: input.email,
-          },
-        },
-      },
+      });
+
+      return user;
     });
 
     const token = await this.authTokenService.generateToken({
@@ -71,36 +75,39 @@ export class AuthUseCases {
     validateDto(input, loginDtoSchema);
 
     const user = await this.prisma.user.findUnique({
-      where: {
-        email: input.email,
-      },
-      include: {
-        credential: true,
-      },
+      where: { email: input.email },
     });
 
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    if (!user.credential) {
-      //create credential if it does not exist
-      const passwordHash = await this.passwordService.hashPassword(
-        input.password,
-      );
-
-      const credential = await this.prisma.userCredential.create({
-        data: {
-          userId: user.id,
-          password: passwordHash,
-        },
+    const credential = await this.prisma.$transaction(async (prisma) => {
+      const credential = await prisma.userCredential.findFirst({
+        where: { userId: user.id },
       });
-      user.credential = credential;
-    }
+
+      if (!credential) {
+        //create credential if it does not exist
+        const passwordHash = await this.passwordService.hashPassword(
+          input.password,
+        );
+
+        const newCredential = await prisma.userCredential.create({
+          data: {
+            userId: user.id,
+            password: passwordHash,
+          },
+        });
+        return newCredential;
+      }
+
+      return credential;
+    });
 
     const isPasswordValid = await this.passwordService.comparePasswords(
       input.password,
-      user.credential.password,
+      credential.password,
     );
     if (!isPasswordValid) {
       throw new UnauthorizedException();
@@ -158,10 +165,13 @@ export class AuthUseCases {
       input.password,
     );
 
-    await this.prisma.userCredential.update({
-      where: { userId: input.userId },
-      data: {
-        userId: input.userId,
+    await this.prisma.userCredential.upsert({
+      where: { userId: user.id },
+      create: {
+        userId: user.id,
+        password: passwordHash,
+      },
+      update: {
         password: passwordHash,
       },
     });

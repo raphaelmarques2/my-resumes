@@ -63,23 +63,27 @@ export class ExperienceUseCases {
     validateId(id);
     validateDto(data, updateExperienceDtoSchema);
 
-    const experience = await this.prisma.experience.findUnique({
-      where: { id },
-    });
-    if (!experience) {
-      throw new NotFoundException('Experience not found');
-    }
+    const updatedExperience = await this.prisma.$transaction(async (prisma) => {
+      const experience = await prisma.experience.findUnique({
+        where: { id },
+      });
+      if (!experience) {
+        throw new NotFoundException('Experience not found');
+      }
 
-    const updatedExperience = await this.prisma.experience.update({
-      where: { id },
-      data: {
-        title: data.title,
-        company: data.company,
-        description: data.description,
-        startDate: data.startDate || null,
-        endDate: data.endDate || null,
-        technologies: data.technologies,
-      },
+      const updatedExperience = await prisma.experience.update({
+        where: { id },
+        data: {
+          title: data.title,
+          company: data.company,
+          description: data.description,
+          startDate: data.startDate || null,
+          endDate: data.endDate || null,
+          technologies: data.technologies,
+        },
+      });
+
+      return updatedExperience;
     });
 
     return convertToExperienceDto(updatedExperience);
@@ -88,16 +92,16 @@ export class ExperienceUseCases {
   async deleteExperience(id: string): Promise<void> {
     validateId(id);
 
-    const experience = await this.prisma.experience.findUnique({
-      where: { id },
-      include: {
-        experienceToResumes: true,
-      },
-    });
-    if (!experience) throw new NotFoundException('Experience not found');
+    await this.prisma.$transaction(async (prisma) => {
+      const experience = await prisma.experience.findUnique({
+        where: { id },
+        select: { id: true },
+      });
+      if (!experience) throw new NotFoundException('Experience not found');
 
-    await this.prisma.experience.delete({
-      where: { id },
+      await prisma.experience.delete({
+        where: { id },
+      });
     });
   }
 }

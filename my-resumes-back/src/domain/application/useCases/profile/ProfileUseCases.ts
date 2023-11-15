@@ -18,21 +18,25 @@ export class ProfileUseCases {
     validateId(id);
     validateDto(input, updateProfileDtoSchema);
 
-    const profile = await this.prisma.profile.findUnique({
-      where: { id },
-    });
-    if (!profile) {
-      throw new NotFoundException();
-    }
+    const updatedProfile = await this.prisma.$transaction(async (prisma) => {
+      const profile = await prisma.profile.findUnique({
+        where: { id },
+      });
+      if (!profile) {
+        throw new NotFoundException();
+      }
 
-    const updatedProfile = await this.prisma.profile.update({
-      where: { id },
-      data: {
-        name: input.name,
-        email: input.email,
-        address: input.address,
-        linkedin: input.linkedin,
-      },
+      const updatedProfile = await prisma.profile.update({
+        where: { id },
+        data: {
+          name: input.name,
+          email: input.email,
+          address: input.address,
+          linkedin: input.linkedin,
+        },
+      });
+
+      return updatedProfile;
     });
 
     return convertToProfileDto(updatedProfile);

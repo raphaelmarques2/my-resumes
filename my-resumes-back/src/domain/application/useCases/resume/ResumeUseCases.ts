@@ -70,38 +70,42 @@ export class ResumeUseCases {
     validateId(id);
     validateDto(data, updateResumeDtoSchema);
 
-    const resume = await this.prisma.resume.findUnique({ where: { id } });
-    if (!resume) {
-      throw new NotFoundException();
-    }
+    const updatedResume = await this.prisma.$transaction(async (prisma) => {
+      const resume = await prisma.resume.findUnique({ where: { id } });
+      if (!resume) {
+        throw new NotFoundException();
+      }
 
-    if (data.experiences !== undefined) {
-      const experiences = await this.prisma.experience.findMany({
-        where: {
-          id: { in: data.experiences },
-        },
-      });
-      await this.prisma.resume.update({
+      if (data.experiences !== undefined) {
+        const experiences = await prisma.experience.findMany({
+          where: {
+            id: { in: data.experiences },
+          },
+        });
+        await prisma.resume.update({
+          where: { id },
+          data: {
+            experienceToResumes: {
+              set: experiences.map((item) => ({ id: item.id })),
+            },
+          },
+        });
+      }
+
+      const updatedResume = await prisma.resume.update({
         where: { id },
         data: {
+          title: data.title,
+          description: data.description,
+        },
+        include: {
           experienceToResumes: {
-            set: experiences.map((item) => ({ id: item.id })),
+            select: { experienceId: true },
           },
         },
       });
-    }
 
-    const updatedResume = await this.prisma.resume.update({
-      where: { id },
-      data: {
-        title: data.title,
-        description: data.description,
-      },
-      include: {
-        experienceToResumes: {
-          select: { experienceId: true },
-        },
-      },
+      return updatedResume;
     });
 
     return convertToResumeDto(updatedResume);
@@ -110,8 +114,16 @@ export class ResumeUseCases {
   async deleteResume(id: string): Promise<void> {
     validateId(id);
 
-    await this.prisma.resume.delete({
-      where: { id },
+    await this.prisma.$transaction(async (prisma) => {
+      const resume = await prisma.resume.findUnique({
+        where: { id },
+        select: { id: true },
+      });
+      if (!resume) throw new NotFoundException('Experience not found');
+
+      await prisma.resume.delete({
+        where: { id },
+      });
     });
   }
 }
