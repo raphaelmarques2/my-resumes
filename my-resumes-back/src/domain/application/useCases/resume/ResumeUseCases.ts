@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
 import { CreateResumeDto, createResumeDtoSchema } from './dtos/CreateResumeDto';
-import { ResumeDto, convertToResumeDto } from './dtos/ResumeDto';
+import { ResumeDto } from './dtos/ResumeDto';
 import { UpdateResumeDto, updateResumeDtoSchema } from './dtos/UpdateResumeDto';
 import { validateDto, validateId } from '../../services/validation';
 
@@ -32,7 +32,7 @@ export class ResumeUseCases {
       },
     });
 
-    return convertToResumeDto(resume);
+    return ResumeDto.createFrom(resume);
   }
 
   async getResumeById(id: string): Promise<ResumeDto> {
@@ -49,7 +49,7 @@ export class ResumeUseCases {
     if (!resume) {
       throw new NotFoundException();
     }
-    return convertToResumeDto(resume);
+    return ResumeDto.createFrom(resume);
   }
 
   async listUserResumes(userId: string): Promise<ResumeDto[]> {
@@ -63,7 +63,7 @@ export class ResumeUseCases {
         },
       },
     });
-    return resumes.map((item) => convertToResumeDto(item));
+    return resumes.map((item) => ResumeDto.createFrom(item));
   }
 
   async updateResume(id: string, data: UpdateResumeDto): Promise<ResumeDto> {
@@ -108,7 +108,7 @@ export class ResumeUseCases {
       return updatedResume;
     });
 
-    return convertToResumeDto(updatedResume);
+    return ResumeDto.createFrom(updatedResume);
   }
 
   async deleteResume(id: string): Promise<void> {

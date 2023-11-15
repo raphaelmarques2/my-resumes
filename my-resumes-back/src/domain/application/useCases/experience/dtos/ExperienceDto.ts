@@ -15,17 +15,17 @@ export const experienceDtoSchema = z
   })
   .strict();
 
-export class ExperienceDto extends createZodDto(experienceDtoSchema) {}
-
-export function convertToExperienceDto(experience: Experience): ExperienceDto {
-  return {
-    id: experience.id,
-    userId: experience.userId,
-    title: experience.title,
-    company: experience.company,
-    description: experience.description,
-    startDate: experience.startDate?.toISOString(),
-    endDate: experience.endDate?.toISOString(),
-    technologies: experience.technologies,
-  };
+export class ExperienceDto extends createZodDto(experienceDtoSchema) {
+  static createFrom(experience: Experience): ExperienceDto {
+    return ExperienceDto.create({
+      id: experience.id,
+      userId: experience.userId,
+      title: experience.title,
+      company: experience.company,
+      description: experience.description,
+      startDate: experience.startDate?.toISOString(),
+      endDate: experience.endDate?.toISOString(),
+      technologies: experience.technologies,
+    } satisfies ExperienceDto);
+  }
 }

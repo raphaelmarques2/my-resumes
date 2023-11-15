@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ProfileDto, convertToProfileDto } from './dtos/ProfileDto';
+import { ProfileDto } from './dtos/ProfileDto';
 import {
   UpdateProfileDto,
   updateProfileDtoSchema,
@@ -39,7 +39,7 @@ export class ProfileUseCases {
       return updatedProfile;
     });
 
-    return convertToProfileDto(updatedProfile);
+    return ProfileDto.createFrom(updatedProfile);
   }
 
   async getProfileById(id: string): Promise<ProfileDto> {
@@ -52,7 +52,7 @@ export class ProfileUseCases {
       throw new NotFoundException();
     }
 
-    return convertToProfileDto(profile);
+    return ProfileDto.createFrom(profile);
   }
 
   async getUserProfile(userId: string): Promise<ProfileDto> {
@@ -64,6 +64,6 @@ export class ProfileUseCases {
     if (!profile) {
       throw new NotFoundException();
     }
-    return convertToProfileDto(profile);
+    return ProfileDto.createFrom(profile);
   }
 }

@@ -12,16 +12,16 @@ export const resumeDtoSchema = z
   })
   .strict();
 
-export class ResumeDto extends createZodDto(resumeDtoSchema) {}
-
-export function convertToResumeDto(
-  resume: Resume & { experienceToResumes: { experienceId: string }[] },
-): ResumeDto {
-  return {
-    id: resume.id,
-    userId: resume.userId,
-    title: resume.title,
-    description: resume.description,
-    experiences: resume.experienceToResumes.map((item) => item.experienceId),
-  };
+export class ResumeDto extends createZodDto(resumeDtoSchema) {
+  static createFrom(
+    resume: Resume & { experienceToResumes: { experienceId: string }[] },
+  ): ResumeDto {
+    return ResumeDto.create({
+      id: resume.id,
+      userId: resume.userId,
+      title: resume.title,
+      description: resume.description,
+      experiences: resume.experienceToResumes.map((item) => item.experienceId),
+    } satisfies ResumeDto);
+  }
 }

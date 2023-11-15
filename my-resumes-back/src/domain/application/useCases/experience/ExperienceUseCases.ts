@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ExperienceDto, convertToExperienceDto } from './dtos/ExperienceDto';
+import { ExperienceDto } from './dtos/ExperienceDto';
 import { CreateExperienceDto } from './dtos/CreateExperienceDto';
 import {
   UpdateExperienceDto,
@@ -34,7 +34,7 @@ export class ExperienceUseCases {
       },
     });
 
-    return convertToExperienceDto(experience);
+    return ExperienceDto.createFrom(experience);
   }
 
   async getExperienceById(id: string): Promise<ExperienceDto> {
@@ -45,7 +45,7 @@ export class ExperienceUseCases {
     });
     if (!experience) throw new NotFoundException('Experience not found');
 
-    return convertToExperienceDto(experience);
+    return ExperienceDto.createFrom(experience);
   }
 
   async listUserExperiences(userId: string): Promise<ExperienceDto[]> {
@@ -53,7 +53,7 @@ export class ExperienceUseCases {
       where: { userId },
       orderBy: [{ startDate: 'desc' }, { createdAt: 'desc' }],
     });
-    return experiences.map((e) => convertToExperienceDto(e));
+    return experiences.map((e) => ExperienceDto.createFrom(e));
   }
 
   async updateExperience(
@@ -86,7 +86,7 @@ export class ExperienceUseCases {
       return updatedExperience;
     });
 
-    return convertToExperienceDto(updatedExperience);
+    return ExperienceDto.createFrom(updatedExperience);
   }
 
   async deleteExperience(id: string): Promise<void> {

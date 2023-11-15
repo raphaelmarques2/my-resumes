@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
-import { UserDto, convertToUserDto } from './dtos/UserDto';
+import { UserDto } from './dtos/UserDto';
 import { validateId } from '../../services/validation';
 
 @Injectable()
@@ -14,6 +14,6 @@ export class UserUseCases {
     if (!user) {
       throw new NotFoundException();
     }
-    return convertToUserDto(user);
+    return UserDto.createFrom(user);
   }
 }

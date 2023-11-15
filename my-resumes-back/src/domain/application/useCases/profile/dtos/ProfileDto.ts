@@ -13,15 +13,15 @@ export const profileDtoSchema = z
   })
   .strict();
 
-export class ProfileDto extends createZodDto(profileDtoSchema) {}
-
-export function convertToProfileDto(profile: Profile): ProfileDto {
-  return {
-    id: profile.id,
-    userId: profile.userId,
-    name: profile.name,
-    email: profile.email,
-    address: profile.address ?? undefined,
-    linkedin: profile.linkedin ?? undefined,
-  };
+export class ProfileDto extends createZodDto(profileDtoSchema) {
+  static createFrom(profile: Profile): ProfileDto {
+    return ProfileDto.create({
+      id: profile.id,
+      userId: profile.userId,
+      name: profile.name,
+      email: profile.email,
+      address: profile.address ?? undefined,
+      linkedin: profile.linkedin ?? undefined,
+    } satisfies ProfileDto);
+  }
 }

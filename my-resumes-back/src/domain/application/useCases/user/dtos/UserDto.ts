@@ -10,12 +10,12 @@ export const userDtoSchema = z
   })
   .strict();
 
-export class UserDto extends createZodDto(userDtoSchema) {}
-
-export function convertToUserDto(user: User): UserDto {
-  return {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-  };
+export class UserDto extends createZodDto(userDtoSchema) {
+  static createFrom(user: User): UserDto {
+    return UserDto.create({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    } satisfies UserDto);
+  }
 }

@@ -8,7 +8,7 @@ import { AuthTokenService } from 'src/domain/application/services/AuthTokenServi
 import { PrismaService } from 'src/domain/application/services/PrismaService';
 import { PasswordService } from '../../services/PasswordService';
 import { validateDto } from '../../services/validation';
-import { convertToUserDto } from '../user/dtos/UserDto';
+import { UserDto } from '../user/dtos/UserDto';
 import { AuthOutputDto } from './dtos/AuthOutputDto';
 import { LoginDto, loginDtoSchema } from './dtos/LoginDto';
 import { SignupDto, signupDtoSchema } from './dtos/SignupDto';
@@ -67,7 +67,7 @@ export class AuthUseCases {
     });
     return {
       token,
-      user: convertToUserDto(user),
+      user: UserDto.createFrom(user),
     };
   }
 
@@ -119,7 +119,7 @@ export class AuthUseCases {
     });
     return {
       token,
-      user: convertToUserDto(user),
+      user: UserDto.createFrom(user),
     };
   }
 
@@ -144,7 +144,7 @@ export class AuthUseCases {
 
     return {
       token: newToken,
-      user: convertToUserDto(user),
+      user: UserDto.createFrom(user),
     };
   }
 
