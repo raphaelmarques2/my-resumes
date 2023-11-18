@@ -1,10 +1,7 @@
 <template>
   <div class="flex flex-col items-center space-y-4">
     <h1>My Resumes</h1>
-    <p class="max-w-xs text-center text-sm">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor aut, nihil,
-      recusandae aliquam aliquid
-    </p>
+    <p class="max-w-xs text-center text-sm">Create and edit your resumes</p>
     <TextButton label="Create new" icon="plus" @click="createResume()" />
     <div class="">
       <ClientOnly>

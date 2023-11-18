@@ -23,19 +23,11 @@
           </div>
         </NuxtLink>
       </div>
-      <p class="max-w-md text-center font-semibold">
-        Fullstack web developer. I've worked as a developer, researcher,
-        professor, manager, game developer and tech lead. I love learning,
-        sharing knowledge, solving hard problems, and creating products that
-        deliver value and a great user experience.
+      <p class="max-w-md text-center">
+        Hi! I'm Raphael. I'm a fullstack web developer.<br />
+        I've created this project for my portfolio.
       </p>
-      <p class="font-semibold">
-        Let's talk?
-        <NuxtLink to="mailto:jose.raphael.marques@gmail.com" class="link">
-          jose.raphael.marques@gmail.com
-        </NuxtLink>
-      </p>
-      <p class="max-w-md text-center font-semibold">
+      <p class="max-w-md text-center">
         This project was made using Postgres, Node,<br />
         NestJS, Vue, Nuxt and Tailwind. <br />More details on project's
         <NuxtLink
@@ -45,6 +37,12 @@
           github page
         </NuxtLink>
         .
+      </p>
+      <p class="font-semibold">
+        Let's talk?
+        <NuxtLink to="mailto:jose.raphael.marques@gmail.com" class="link">
+          jose.raphael.marques@gmail.com
+        </NuxtLink>
       </p>
     </div>
   </main>

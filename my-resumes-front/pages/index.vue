@@ -1,10 +1,13 @@
 <template>
-  <main class="flex flex-col items-center space-y-4">
+  <main class="flex flex-col items-center space-y-6">
     <h1 class="text-blue-600">My Resumes</h1>
     <p class="max-w-md text-center font-semibold">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quo
-      officia dolore repudiandae suscipit. Nulla quam illum dolore, nostrum vel
-      perferendis ipsum eum? Doloribus culpa velit quo ipsa, dolore a!
+      Create impactful resumes for various job roles!
+    </p>
+    <p class="max-w-md text-center font-semibold">
+      Add your profile, experiences, and skills and share this details across
+      multiple resumes, ensuring each one is perfectly tailored for your
+      specific job applications.
     </p>
     <div v-if="!auth.isLoggedIn.value" class="text-center">
       <p>Start by creating your account!</p>
