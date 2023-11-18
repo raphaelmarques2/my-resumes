@@ -7,4 +7,5 @@ export type CreateResumeDto = {
     userId: string;
     title: string;
     description?: string;
+    experiences?: Array<string>;
 };

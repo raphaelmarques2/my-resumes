@@ -88,7 +88,7 @@ async function saveAndContinue() {
 async function addExperience() {
   const newExperience = await backend.api.experiences.createExperience({
     title: "(title)",
-    companyName: "(company name)",
+    company: "(company name)",
     technologies: [],
     userId: auth.state.user!.id,
   });

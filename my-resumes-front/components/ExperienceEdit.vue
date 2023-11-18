@@ -3,13 +3,13 @@
     <div class="flex items-center space-x-4">
       <div class="flex-1">
         <div class="font-semibold">{{ experience.title }}</div>
-        <div class="text-sm">{{ experience.companyName }}</div>
+        <div class="text-sm">{{ experience.company }}</div>
       </div>
     </div>
     <div class="border-b border-gra-500 my-4"></div>
     <div class="space-y-4">
       <TextField label="Title" v-model="experience.title" />
-      <TextField label="Company" v-model="experience.companyName" />
+      <TextField label="Company" v-model="experience.company" />
       <TextField label="Description" v-model="experience.description" area />
       <DateField label="Start date" v-model="experience.startDate" />
       <DateField label="End date" v-model="experience.endDate" />
@@ -83,10 +83,10 @@ async function deleteExperience() {
 async function updateExperience() {
   await backend.api.experiences.patchExperience(props.experience.id, {
     title: props.experience.title,
-    companyName: props.experience.companyName,
+    company: props.experience.company,
     description: props.experience.description,
-    startDate: props.experience.startDate,
-    endDate: props.experience.endDate,
+    startDate: props.experience.startDate || "",
+    endDate: props.experience.endDate || "",
     technologies: props.experience.technologies,
   });
   await experiencesLoader.refresh();

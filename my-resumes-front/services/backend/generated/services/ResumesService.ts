@@ -101,41 +101,4 @@ userId: string,
         });
     }
 
-    /**
-     * @param id 
-     * @returns any 
-     * @throws ApiError
-     */
-    public addExperienceToResume(
-id: string,
-): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/resumes/{id}/experiences',
-            path: {
-                'id': id,
-            },
-        });
-    }
-
-    /**
-     * @param id 
-     * @param experienceId 
-     * @returns any 
-     * @throws ApiError
-     */
-    public removeExperienceFromResume(
-id: string,
-experienceId: string,
-): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/resumes/{id}/experiences/{experienceId}',
-            path: {
-                'id': id,
-                'experienceId': experienceId,
-            },
-        });
-    }
-
 }

@@ -20,4 +20,15 @@ export class DefaultService {
         });
     }
 
+    /**
+     * @returns string 
+     * @throws ApiError
+     */
+    public ok1(): CancelablePromise<string> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/health',
+        });
+    }
+
 }

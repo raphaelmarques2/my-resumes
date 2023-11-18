@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateProfileDto } from '../models/CreateProfileDto';
 import type { ProfileDto } from '../models/ProfileDto';
 import type { UpdateProfileDto } from '../models/UpdateProfileDto';
 
@@ -12,22 +11,6 @@ import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class ProfilesService {
 
     constructor(public readonly httpRequest: BaseHttpRequest) {}
-
-    /**
-     * @param requestBody 
-     * @returns ProfileDto 
-     * @throws ApiError
-     */
-    public createProfile(
-requestBody: CreateProfileDto,
-): CancelablePromise<ProfileDto> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/profiles',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
 
     /**
      * @param id 

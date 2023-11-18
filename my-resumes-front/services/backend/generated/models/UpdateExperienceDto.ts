@@ -5,9 +5,9 @@
 
 export type UpdateExperienceDto = {
     title?: string;
-    companyName?: string;
+    company?: string;
     description?: string;
-    startDate?: string;
-    endDate?: string;
+    startDate: string;
+    endDate: string;
     technologies?: Array<string>;
 };

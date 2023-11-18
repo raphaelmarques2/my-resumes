@@ -1,7 +1,7 @@
 <template>
   <div class="text-xs space-y-1 mt-2">
     <p class="font-bold">{{ experience.title }}</p>
-    <p>{{ experience.companyName }} - {{ time }}</p>
+    <p>{{ experience.company }} - {{ time }}</p>
     <p class="text-justify">{{ experience.description }}</p>
     <p v-if="experience.technologies.length > 0" class="text-justify">
       Main technologies: {{ experience.technologies.join(", ") }}

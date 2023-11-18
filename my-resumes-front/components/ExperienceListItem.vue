@@ -11,7 +11,7 @@
       />
       <div class="flex-1">
         <div class="font-semibold">{{ experience.title }}</div>
-        <div class="text-sm">{{ experience.companyName }}</div>
+        <div class="text-sm">{{ experience.company }}</div>
       </div>
       <Icon name="edit" />
     </div>

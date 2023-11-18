@@ -99,7 +99,7 @@ function printPdf() {
       gen.addTitle3(experience.title);
 
       const time = getExperienceTime(experience);
-      gen.addText(`${experience.companyName} - ${time}`);
+      gen.addText(`${experience.company} - ${time}`);
       gen.addSpace(2);
       gen.addText(experience.description);
       if (experience.technologies.length > 0) {

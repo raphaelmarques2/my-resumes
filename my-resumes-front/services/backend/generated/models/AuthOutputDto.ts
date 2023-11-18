@@ -3,9 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UserDto } from './UserDto';
-
 export type AuthOutputDto = {
     token: string;
-    user: UserDto;
+    user: {
+id: string;
+name: string;
+email: string;
+};
 };

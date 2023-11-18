@@ -6,6 +6,9 @@
 export type CreateExperienceDto = {
     userId: string;
     title: string;
-    companyName: string;
+    company: string;
+    description?: string;
+    startDate?: string;
+    endDate?: string;
     technologies?: Array<string>;
 };
