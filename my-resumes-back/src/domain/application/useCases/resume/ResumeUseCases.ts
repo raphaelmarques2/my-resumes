@@ -19,8 +19,9 @@ export class ResumeUseCases {
         description: input.description || '',
         experienceToResumes: input.experiences && {
           createMany: {
-            data: input.experiences.map((e) => ({
+            data: input.experiences.map((e, i) => ({
               experienceId: e,
+              order: i,
             })),
           },
         },
@@ -28,6 +29,7 @@ export class ResumeUseCases {
       include: {
         experienceToResumes: {
           select: { experienceId: true },
+          orderBy: { order: 'asc' },
         },
       },
     });
@@ -43,6 +45,7 @@ export class ResumeUseCases {
       include: {
         experienceToResumes: {
           select: { experienceId: true },
+          orderBy: { order: 'asc' },
         },
       },
     });
@@ -60,6 +63,7 @@ export class ResumeUseCases {
       include: {
         experienceToResumes: {
           select: { experienceId: true },
+          orderBy: { order: 'asc' },
         },
       },
     });
@@ -81,9 +85,10 @@ export class ResumeUseCases {
           where: { resumeId: resume.id },
         });
         await prisma.experienceToResume.createMany({
-          data: data.experiences.map((e) => ({
+          data: data.experiences.map((e, i) => ({
             experienceId: e,
             resumeId: id,
+            order: i,
           })),
         });
       }
@@ -97,6 +102,7 @@ export class ResumeUseCases {
         include: {
           experienceToResumes: {
             select: { experienceId: true },
+            orderBy: { order: 'asc' },
           },
         },
       });
