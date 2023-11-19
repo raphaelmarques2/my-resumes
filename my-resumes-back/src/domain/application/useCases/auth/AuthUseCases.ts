@@ -8,7 +8,7 @@ import { AuthTokenService } from 'src/domain/application/services/AuthTokenServi
 import { PrismaService } from 'src/domain/application/services/PrismaService';
 import { PasswordService } from '../../services/PasswordService';
 import { validateDto } from '../../services/validation';
-import { UserDto } from '../user/dtos/UserDto';
+import { UserDto } from './dtos/UserDto';
 import { AuthOutputDto } from './dtos/AuthOutputDto';
 import { LoginDto, loginDtoSchema } from './dtos/LoginDto';
 import { SignupDto, signupDtoSchema } from './dtos/SignupDto';

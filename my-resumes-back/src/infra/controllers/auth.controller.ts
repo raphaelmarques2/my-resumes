@@ -22,7 +22,7 @@ import { LoginDto } from 'src/domain/application/useCases/auth/dtos/LoginDto';
 import { SignupDto } from 'src/domain/application/useCases/auth/dtos/SignupDto';
 import { AuthUseCases } from '../../domain/application/useCases/auth/AuthUseCases';
 import { AuthGuard } from '../guards/AuthGuard';
-import { UserDto } from 'src/domain/application/useCases/user/dtos/UserDto';
+import { UserDto } from 'src/domain/application/useCases/auth/dtos/UserDto';
 
 @ApiTags('auth')
 @Controller('/auth')

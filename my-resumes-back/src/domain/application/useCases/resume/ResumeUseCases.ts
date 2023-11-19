@@ -77,18 +77,14 @@ export class ResumeUseCases {
       }
 
       if (data.experiences !== undefined) {
-        const experiences = await prisma.experience.findMany({
-          where: {
-            id: { in: data.experiences },
-          },
+        await prisma.experienceToResume.deleteMany({
+          where: { resumeId: resume.id },
         });
-        await prisma.resume.update({
-          where: { id },
-          data: {
-            experienceToResumes: {
-              set: experiences.map((item) => ({ id: item.id })),
-            },
-          },
+        await prisma.experienceToResume.createMany({
+          data: data.experiences.map((e) => ({
+            experienceId: e,
+            resumeId: id,
+          })),
         });
       }
 
