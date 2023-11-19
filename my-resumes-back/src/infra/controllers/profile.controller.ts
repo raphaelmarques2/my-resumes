@@ -18,13 +18,6 @@ import { AuthGuard } from '../guards/AuthGuard';
 export class ProfileController {
   constructor(private profileService: ProfileUseCases) {}
 
-  @Get('/profiles/:id')
-  @ApiOperation({ operationId: 'getProfileById' })
-  @ApiOkResponse({ type: ProfileDto })
-  async getById(@Param('id') id: string): Promise<ProfileDto> {
-    return this.profileService.getProfileById(id);
-  }
-
   @Get('/users/:userId/profile')
   @ApiOperation({ operationId: 'getProfileByUserId' })
   @ApiOkResponse({ type: ProfileDto })

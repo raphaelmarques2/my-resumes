@@ -42,19 +42,6 @@ export class ProfileUseCases {
     return ProfileDto.createFrom(updatedProfile);
   }
 
-  async getProfileById(id: string): Promise<ProfileDto> {
-    validateId(id);
-
-    const profile = await this.prisma.profile.findUnique({
-      where: { id },
-    });
-    if (!profile) {
-      throw new NotFoundException();
-    }
-
-    return ProfileDto.createFrom(profile);
-  }
-
   async getUserProfile(userId: string): Promise<ProfileDto> {
     validateId(userId);
 
