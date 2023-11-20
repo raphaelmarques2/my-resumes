@@ -13,18 +13,18 @@ export class ProfilesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @param id 
+     * @param userId 
      * @returns ProfileDto 
      * @throws ApiError
      */
-    public getProfileById(
-id: string,
+    public getProfileByUserId(
+userId: string,
 ): CancelablePromise<ProfileDto> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/profiles/{id}',
+            url: '/users/{userId}/profile',
             path: {
-                'id': id,
+                'userId': userId,
             },
         });
     }
@@ -47,23 +47,6 @@ requestBody: UpdateProfileDto,
             },
             body: requestBody,
             mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * @param userId 
-     * @returns ProfileDto 
-     * @throws ApiError
-     */
-    public getProfileByUserId(
-userId: string,
-): CancelablePromise<ProfileDto> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/users/{userId}/profile',
-            path: {
-                'userId': userId,
-            },
         });
     }
 

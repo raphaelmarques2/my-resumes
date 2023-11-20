@@ -45,7 +45,7 @@ async function saveAndContinue() {
       address: profile.value.address,
       linkedin: profile.value.linkedin,
     });
-    await router.push(`/resumes/${id}/experiences`);
+    await router.push(`/resumes/${id}/education`);
   } finally {
     isLoading.value = false;
   }

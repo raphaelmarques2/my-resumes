@@ -8,6 +8,7 @@ import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 
 import { AuthService } from './services/AuthService';
 import { DefaultService } from './services/DefaultService';
+import { EducationsService } from './services/EducationsService';
 import { ExperiencesService } from './services/ExperiencesService';
 import { ProfilesService } from './services/ProfilesService';
 import { ResumesService } from './services/ResumesService';
@@ -18,6 +19,7 @@ export class BackendClient {
 
     public readonly auth: AuthService;
     public readonly default: DefaultService;
+    public readonly educations: EducationsService;
     public readonly experiences: ExperiencesService;
     public readonly profiles: ProfilesService;
     public readonly resumes: ResumesService;
@@ -39,6 +41,7 @@ export class BackendClient {
 
         this.auth = new AuthService(this.request);
         this.default = new DefaultService(this.request);
+        this.educations = new EducationsService(this.request);
         this.experiences = new ExperiencesService(this.request);
         this.profiles = new ProfilesService(this.request);
         this.resumes = new ResumesService(this.request);

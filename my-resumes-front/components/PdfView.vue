@@ -20,12 +20,13 @@
 <script setup lang="ts">
 import { PdfGenerator } from "~/services/PdfGenerator";
 import {
+  EducationDto,
   ExperienceDto,
   ProfileDto,
   ResumeDto,
 } from "~/services/backend/generated";
 import moment from "moment";
-import { getExperienceTime } from "~/services/utils";
+import { getEducationTime, getExperienceTime } from "~/services/utils";
 
 const props = defineProps<{
   width?: number;
@@ -33,6 +34,7 @@ const props = defineProps<{
   profile?: ProfileDto;
   resume?: ResumeDto;
   experiences?: ExperienceDto[];
+  educations?: EducationDto[];
 }>();
 
 const data = ref("");
@@ -69,17 +71,19 @@ function printPdf() {
     gen.addText(props.resume.description);
   }
 
-  gen.addHorizontalLine();
-
-  gen.addSpace(2);
-  gen.addTitle2("Education");
-  gen.addSpace(2);
-  gen.addBulletPoint(
-    "MSc in Informatics - Universidade Federal da Paraíba - 03.2009 - 04.2010"
-  );
-  gen.addBulletPoint(
-    "BSc of Computer Science - Universidade Federal da Paraíba - 08.2004 - 03.2009"
-  );
+  if (props.educations && props.educations.length > 0) {
+    gen.addHorizontalLine();
+    gen.addSpace(2);
+    gen.addTitle2("Education");
+    gen.addSpace(2);
+    for (const education of props.educations) {
+      gen.addBulletPoint(
+        `${education.title} - ${education.institution} - ${getEducationTime(
+          education
+        )}`
+      );
+    }
+  }
 
   if (props.experiences) {
     gen.addHorizontalLine();
@@ -109,38 +113,38 @@ function printPdf() {
     }
   }
 
-  gen.addHorizontalLine();
+  // gen.addHorizontalLine();
 
-  gen.addSpace(2);
-  gen.addTitle2("Courses");
-  gen.addSpace(4);
+  // gen.addSpace(2);
+  // gen.addTitle2("Courses");
+  // gen.addSpace(4);
 
-  gen.addTitle3("Docker and Kubernetes: The Complete Guide");
-  gen.addText("Udemy – 22 hours – 2022");
-  gen.addSpace(2);
+  // gen.addTitle3("Docker and Kubernetes: The Complete Guide");
+  // gen.addText("Udemy – 22 hours – 2022");
+  // gen.addSpace(2);
 
-  gen.addTitle3("Microservices with NodeJs and React");
-  gen.addText("Udemy – 54 hours – 2022");
-  gen.addSpace(2);
+  // gen.addTitle3("Microservices with NodeJs and React");
+  // gen.addText("Udemy – 54 hours – 2022");
+  // gen.addSpace(2);
 
-  gen.addTitle3("The Complete Apache Kafka Practical Guide");
-  gen.addText("Udemy – 8.5 hours – 2022");
-  gen.addSpace(2);
+  // gen.addTitle3("The Complete Apache Kafka Practical Guide");
+  // gen.addText("Udemy – 8.5 hours – 2022");
+  // gen.addSpace(2);
 
-  gen.addHorizontalLine();
+  // gen.addHorizontalLine();
 
-  gen.addSpace(2);
-  gen.addTitle2("Skills");
-  gen.addSpace(2);
-  gen.addBulletPoint(
-    "Advanced: Typescript, Node, Express, TypeScript, REST, C#, Vue, React, Tailwind, NestJS, NextJS, Nuxt, Jest, ThreeJS, Unity"
-  );
-  gen.addBulletPoint(
-    "Intermediate: Java, C++, Firebase, MongoDB, MySQL, SQLite, ASP.NET Core, Docker, DDD, Clean Architecture"
-  );
-  gen.addBulletPoint(
-    "Learning: CI/CD, GraphQL, AWS, Postgres, Angular, RabbitMQ, Kafka, Microservices"
-  );
+  // gen.addSpace(2);
+  // gen.addTitle2("Skills");
+  // gen.addSpace(2);
+  // gen.addBulletPoint(
+  //   "Advanced: Typescript, Node, Express, TypeScript, REST, C#, Vue, React, Tailwind, NestJS, NextJS, Nuxt, Jest, ThreeJS, Unity"
+  // );
+  // gen.addBulletPoint(
+  //   "Intermediate: Java, C++, Firebase, MongoDB, MySQL, SQLite, ASP.NET Core, Docker, DDD, Clean Architecture"
+  // );
+  // gen.addBulletPoint(
+  //   "Learning: CI/CD, GraphQL, AWS, Postgres, Angular, RabbitMQ, Kafka, Microservices"
+  // );
 
   data.value = gen.getPdfString();
 }

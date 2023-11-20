@@ -18,6 +18,15 @@
       />
     </NuxtLink>
     <StepSeparator />
+    <NuxtLink :to="`/resumes/${id}/education`">
+      <StepItem
+        label="Education"
+        :icon="step <= StepNumber.Education ? 'list' : 'check'"
+        :selected="step === StepNumber.Education"
+        :border="step === StepNumber.Education"
+      />
+    </NuxtLink>
+    <StepSeparator />
     <NuxtLink :to="`/resumes/${id}/experiences`">
       <StepItem
         label="Experiences"
@@ -45,15 +54,17 @@ const id = route.params.id;
 enum StepNumber {
   Resume = 1,
   Profile = 2,
-  Experiences = 3,
-  Review = 4,
+  Education = 3,
+  Experiences = 4,
+  Review = 5,
 }
 
 function findStep(pathname: string): StepNumber {
   if (pathname.endsWith("/resume")) return 1;
   if (pathname.endsWith("/profile")) return 2;
-  if (pathname.includes("/experiences")) return 3;
-  if (pathname.endsWith("/review")) return 4;
+  if (pathname.endsWith("/education")) return 3;
+  if (pathname.includes("/experiences")) return 4;
+  if (pathname.endsWith("/review")) return 5;
   return 1;
 }
 
