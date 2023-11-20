@@ -10,8 +10,6 @@ import { patchNestJsSwagger } from 'nestjs-zod';
 patchNestJsSwagger();
 
 async function bootstrap() {
-  //await runMigrations();
-
   const app = await NestFactory.create(AppModule, {});
   app.enableCors({
     origin: '*',
@@ -30,11 +28,6 @@ async function bootstrap() {
   const configService = app.get<ConfigService<ConfigData>>(ConfigService);
   const port = configService.get('port');
 
-  // if (configService.get('populateDb')) {
-  //   const populateService = app.get<PopulateService>(PopulateService);
-  //   await populateService.populate();
-  // }
-
   await app.listen(port).then(() => {
     console.log(`Running on http://localhost:${port}`);
   });
@@ -49,8 +42,8 @@ async function bootstrap() {
 //   execSync(`set DATABASE_URL=${url} && npx prisma migrate deploy`);
 // }
 
-bootstrap();
-// module.exports = new Promise(async (resolve) => {
-//   const { app } = await bootstrap();
-//   resolve(app);
-// });
+//bootstrap();
+module.exports = new Promise(async (resolve) => {
+  const { app } = await bootstrap();
+  resolve(app);
+});

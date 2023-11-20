@@ -49,6 +49,8 @@ export class ExperienceUseCases {
   }
 
   async listUserExperiences(userId: string): Promise<ExperienceDto[]> {
+    validateId(userId);
+
     const experiences = await this.prisma.experience.findMany({
       where: { userId },
       orderBy: [{ startDate: 'desc' }, { createdAt: 'desc' }],

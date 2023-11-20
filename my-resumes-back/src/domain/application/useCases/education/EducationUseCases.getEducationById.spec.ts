@@ -1,20 +1,20 @@
 import { faker } from '@faker-js/faker';
 import { NotFoundException } from '@nestjs/common';
 import { createUseCaseTester } from 'src/infra/tests/UseCaseTester';
-import { ExperienceUseCases } from './ExperienceUseCases';
+import { EducationUseCases } from './EducationUseCases';
 
-describe('ExperienceUseCases', () => {
+describe('EducationUseCases', () => {
   const tester = createUseCaseTester();
-  let experienceUseCases: ExperienceUseCases;
+  let educationUseCases: EducationUseCases;
 
   beforeAll(async () => {
-    experienceUseCases = new ExperienceUseCases(tester.prisma);
+    educationUseCases = new EducationUseCases(tester.prisma);
   });
 
-  describe('getExperienceById', () => {
-    it('should retrieve an experience', async () => {
-      const { id } = await tester.createExperience();
-      const result = await experienceUseCases.getExperienceById(id);
+  describe('getEducationById', () => {
+    it('should retrieve an education', async () => {
+      const { id } = await tester.createEducation();
+      const result = await educationUseCases.getEducationById(id);
       expect(result).toEqual(
         expect.objectContaining({
           id,
@@ -25,7 +25,7 @@ describe('ExperienceUseCases', () => {
 
     it('should throw an error if user does not exist', async () => {
       await expect(
-        experienceUseCases.getExperienceById(faker.string.uuid()),
+        educationUseCases.getEducationById(faker.string.uuid()),
       ).rejects.toThrow(NotFoundException);
     });
   });

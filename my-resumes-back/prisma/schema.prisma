@@ -19,6 +19,7 @@ model User {
   experiences Experience[]
   resumes     Resume[]
   credential  UserCredential?
+  educations  Education[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
@@ -107,4 +108,21 @@ model ExperienceToResume {
   updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
 
   @@map("experience_to_resume")
+}
+
+model Education {
+  id String @id @default(uuid())
+
+  title       String
+  institution String
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("education")
 }

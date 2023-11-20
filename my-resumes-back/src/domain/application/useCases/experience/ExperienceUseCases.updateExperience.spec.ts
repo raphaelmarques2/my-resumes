@@ -12,7 +12,7 @@ describe('ExperienceUseCases', () => {
   });
 
   describe('updateExperience', () => {
-    it('should update an experience with alll fields', async () => {
+    it('should update an experience with all fields', async () => {
       const experience = await tester.createExperience();
       const startDate = new Date('2023-01-02').toISOString();
       const endDate = new Date('2023-01-03').toISOString();

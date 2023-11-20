@@ -14,6 +14,9 @@ import { ResumeUseCases } from 'src/domain/application/useCases/resume/ResumeUse
 import { CreateResumeDto } from 'src/domain/application/useCases/resume/dtos/CreateResumeDto';
 import { ResumeDto } from 'src/domain/application/useCases/resume/dtos/ResumeDto';
 import { cleanDatabase } from './db-test';
+import { CreateEducationDto } from 'src/domain/application/useCases/education/dtos/CreateEducationDto';
+import { EducationDto } from 'src/domain/application/useCases/education/dtos/EducationDto';
+import { EducationUseCases } from 'src/domain/application/useCases/education/EducationUseCases';
 
 export class UseCaseTester {
   prisma!: PrismaService;
@@ -93,6 +96,21 @@ export class UseCaseTester {
     };
     const resumeUseCases = new ResumeUseCases(this.prisma);
     return await resumeUseCases.createResume(input);
+  }
+
+  async createEducation(
+    override?: Partial<CreateEducationDto>,
+  ): Promise<EducationDto> {
+    const input: CreateEducationDto = {
+      title: faker.lorem.word(),
+      institution: faker.lorem.word(),
+      userId: this.auth.user.id,
+      startDate: faker.date.past({ years: 7 }).toISOString(),
+      endDate: faker.date.past({ years: 2 }).toISOString(),
+      ...(override ?? {}),
+    };
+    const educationUseCases = new EducationUseCases(this.prisma);
+    return await educationUseCases.createEducation(input);
   }
 }
 
