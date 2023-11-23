@@ -5,11 +5,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { AuthUseCases } from '../../domain/application/useCases/auth/AuthUseCases';
+import { ValidateTokenUseCase } from 'src/modules/auth/application/use-cases/validate-token/validate-token.usecase';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthUseCases) {}
+  constructor(private validateTokenUseCase: ValidateTokenUseCase) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     try {
-      const authOutput = await this.authService.authenticate(token);
+      const authOutput = await this.validateTokenUseCase.execute(token);
       request['auth'] = authOutput;
     } catch (error) {
       throw new UnauthorizedException();

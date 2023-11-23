@@ -17,17 +17,23 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
-import { AuthOutputDto } from 'src/domain/application/useCases/auth/dtos/AuthOutputDto';
-import { LoginDto } from 'src/domain/application/useCases/auth/dtos/LoginDto';
-import { SignupDto } from 'src/domain/application/useCases/auth/dtos/SignupDto';
-import { AuthUseCases } from '../../domain/application/useCases/auth/AuthUseCases';
+import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
+import { LoginDto } from 'src/modules/auth/application/use-cases/login/login.dto';
+import { LoginUseCase } from 'src/modules/auth/application/use-cases/login/login.usecase';
+import { SignupDto } from 'src/modules/auth/application/use-cases/signup/signup.dto';
+import { SignupUseCase } from 'src/modules/auth/application/use-cases/signup/signup.usecase';
+import { ValidateTokenUseCase } from 'src/modules/auth/application/use-cases/validate-token/validate-token.usecase';
 import { AuthGuard } from '../guards/AuthGuard';
-import { UserDto } from 'src/domain/application/useCases/auth/dtos/UserDto';
+import { UserDto } from 'src/modules/auth/domain/entities/User.dto';
 
 @ApiTags('auth')
 @Controller('/auth')
 export class AuthController {
-  constructor(private authService: AuthUseCases) {}
+  constructor(
+    private signupUseCase: SignupUseCase,
+    private loginUseCase: LoginUseCase,
+    private validateTokenUseCase: ValidateTokenUseCase,
+  ) {}
 
   @Post('/signup')
   @ApiOperation({
@@ -41,7 +47,7 @@ export class AuthController {
   @ApiCreatedResponse({ type: AuthOutputDto })
   @ApiCreatedResponse({})
   async signup(@Body() body: SignupDto): Promise<AuthOutputDto> {
-    return this.authService.signup(body);
+    return this.signupUseCase.execute(body);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -49,7 +55,7 @@ export class AuthController {
   @ApiOperation({ operationId: 'login' })
   @ApiCreatedResponse({ type: AuthOutputDto })
   async login(@Body() body: LoginDto): Promise<AuthOutputDto> {
-    return this.authService.login(body);
+    return this.loginUseCase.execute(body);
   }
 
   @UseGuards(AuthGuard)
@@ -59,7 +65,7 @@ export class AuthController {
   @ApiCreatedResponse({ type: AuthOutputDto })
   async authenticate(@Req() req: Request): Promise<AuthOutputDto> {
     const [, token] = req.headers.authorization?.split(' ') ?? [];
-    return this.authService.authenticate(token);
+    return this.validateTokenUseCase.execute(token);
   }
 
   @UseGuards(AuthGuard)

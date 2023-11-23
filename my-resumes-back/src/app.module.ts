@@ -11,7 +11,6 @@ import { ExperienceController } from './infra/controllers/experience.controller'
 import { ProfileController } from './infra/controllers/profile.controller';
 import { LoggerMiddleware } from './infra/middlewares/LoggerMiddleware';
 import { LoggingInterceptor } from './infra/middlewares/LoggingInterceptor';
-import { AuthUseCases } from './domain/application/useCases/auth/AuthUseCases';
 import { PrismaService } from './domain/application/services/PrismaService';
 import {
   MyConfigService,
@@ -23,6 +22,18 @@ import { APP_PIPE } from '@nestjs/core';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { EducationController } from './infra/controllers/education.controller';
 import { EducationUseCases } from './domain/application/useCases/education/EducationUseCases';
+import { LoginUseCase } from './modules/auth/application/use-cases/login/login.usecase';
+import { SignupUseCase } from './modules/auth/application/use-cases/signup/signup.usecase';
+import { UpdatePasswordUseCase } from './modules/auth/application/use-cases/update-password/update-password.usecase';
+import { ValidateTokenUseCase } from './modules/auth/application/use-cases/validate-token/validate-token.usecase';
+import { PrismaTransactionService } from './modules/common/infra/repositories/PrismaAppRepository';
+import { PrismaUserRepository } from './modules/auth/infra/repositories/PrismaUserRepository';
+import { PrismaCredentialRepository } from './modules/auth/infra/repositories/PrismaCredentialRepository';
+import { PrismaProfileRepository } from './modules/profile/infra/repositories/PrismaProfileRepository';
+import { TransactionService } from './modules/common/application/repositories/TransactionService';
+import { CredentialRepository } from './modules/auth/application/repositories/CredentialRepository';
+import { UserRepository } from './modules/auth/application/repositories/UserRepository';
+import { ProfileRepository } from './modules/profile/domain/application/repositories/ProfileRepository';
 
 @Module({
   imports: [
@@ -52,8 +63,20 @@ import { EducationUseCases } from './domain/application/useCases/education/Educa
     ProfileUseCases,
     PasswordService,
     AuthTokenService,
-    AuthUseCases,
     EducationUseCases,
+    //new repositories
+    { provide: TransactionService, useClass: PrismaTransactionService },
+    { provide: UserRepository, useClass: PrismaUserRepository },
+    {
+      provide: CredentialRepository,
+      useClass: PrismaCredentialRepository,
+    },
+    { provide: ProfileRepository, useClass: PrismaProfileRepository },
+    //new usecases
+    LoginUseCase,
+    SignupUseCase,
+    UpdatePasswordUseCase,
+    ValidateTokenUseCase,
   ],
 })
 export class AppModule {}

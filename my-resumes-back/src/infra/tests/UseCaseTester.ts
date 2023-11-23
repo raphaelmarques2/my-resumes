@@ -4,9 +4,6 @@ import { PrismaClient } from '@prisma/client';
 import { AuthTokenService } from 'src/domain/application/services/AuthTokenService';
 import { PasswordService } from 'src/domain/application/services/PasswordService';
 import { PrismaService } from 'src/domain/application/services/PrismaService';
-import { AuthUseCases } from 'src/domain/application/useCases/auth/AuthUseCases';
-import { AuthOutputDto } from 'src/domain/application/useCases/auth/dtos/AuthOutputDto';
-import { SignupDto } from 'src/domain/application/useCases/auth/dtos/SignupDto';
 import { ExperienceUseCases } from 'src/domain/application/useCases/experience/ExperienceUseCases';
 import { CreateExperienceDto } from 'src/domain/application/useCases/experience/dtos/CreateExperienceDto';
 import { ExperienceDto } from 'src/domain/application/useCases/experience/dtos/ExperienceDto';
@@ -17,6 +14,7 @@ import { cleanDatabase } from './db-test';
 import { CreateEducationDto } from 'src/domain/application/useCases/education/dtos/CreateEducationDto';
 import { EducationDto } from 'src/domain/application/useCases/education/dtos/EducationDto';
 import { EducationUseCases } from 'src/domain/application/useCases/education/EducationUseCases';
+import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 
 export class UseCaseTester {
   prisma!: PrismaService;
@@ -48,25 +46,8 @@ export class UseCaseTester {
     return this._passwordService;
   }
 
-  private _authUseCases?: AuthUseCases;
-  get authUseCases(): AuthUseCases {
-    if (!this._authUseCases) {
-      this._authUseCases = new AuthUseCases(
-        this.authTokenService,
-        this.passwordService,
-        this.prisma,
-      );
-    }
-    return this._authUseCases;
-  }
-
   async createUser(): Promise<AuthOutputDto> {
-    const signupDto: SignupDto = {
-      name: faker.internet.displayName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-    };
-    return await this.authUseCases.signup(signupDto);
+    return undefined as any as AuthOutputDto;
   }
 
   async createExperience(
@@ -124,7 +105,7 @@ export function createUseCaseTester() {
 
     const prisma = (tester.prisma = new PrismaClient({
       datasources: { db: { url: process.env.JEST_DATABASE_URL } },
-    }));
+    }) as PrismaService);
     tester.tempDdSchema = process.env.JEST_DATABASE_SCHEMA;
     await prisma.$connect();
   });

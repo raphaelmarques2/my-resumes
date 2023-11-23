@@ -1,6 +1,6 @@
 import { createZodDto } from 'nestjs-zod';
+import { userDtoSchema } from 'src/modules/auth/domain/entities/User.dto';
 import { z } from 'zod';
-import { userDtoSchema } from './UserDto';
 
 export const authOutputDtoSchema = z
   .object({
