@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { PrismaService } from './domain/application/services/PrismaService';
+import { PrismaService } from './modules/common/infra/PrismaService';
 import { MyConfigService } from './infra/services/MyConfigService';
 
 @Controller()

@@ -7,8 +7,8 @@ import {
 } from '@nestjs/swagger';
 
 import { ProfileUseCases } from 'src/domain/application/useCases/profile/ProfileUseCases';
-import { ProfileDto } from 'src/domain/application/useCases/profile/dtos/ProfileDto';
-import { UpdateProfileDto } from 'src/domain/application/useCases/profile/dtos/UpdateProfileDto';
+import { ProfileDto } from 'src/modules/profile/domain/entities/ProfileDto';
+import { UpdateProfileDto } from 'src/modules/profile/domain/application/use-cases/update-profile/UpdateProfileDto';
 import { AuthGuard } from '../guards/AuthGuard';
 
 @ApiTags('profiles')

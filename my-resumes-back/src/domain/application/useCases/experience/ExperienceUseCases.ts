@@ -9,8 +9,11 @@ import {
   UpdateExperienceDto,
   updateExperienceDtoSchema,
 } from './dtos/UpdateExperienceDto';
-import { PrismaService } from 'src/domain/application/services/PrismaService';
-import { validateDto, validateId } from '../../services/validation';
+import { PrismaService } from 'src/modules/common/infra/PrismaService';
+import {
+  validateDto,
+  validateId,
+} from '../../../../modules/common/application/validation';
 
 @Injectable()
 export class ExperienceUseCases {

@@ -1,6 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthTokenService } from 'src/domain/application/services/AuthTokenService';
+import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
 import { MemoryUseCaseTester } from 'src/modules/common/tests/MemoryUseCaseTester';
 import { ValidateTokenUseCase } from './validate-token.usecase';
 

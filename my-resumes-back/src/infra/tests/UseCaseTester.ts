@@ -1,9 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
-import { AuthTokenService } from 'src/domain/application/services/AuthTokenService';
-import { PasswordService } from 'src/domain/application/services/PasswordService';
-import { PrismaService } from 'src/domain/application/services/PrismaService';
+import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
+import { PrismaService } from 'src/modules/common/infra/PrismaService';
 import { ExperienceUseCases } from 'src/domain/application/useCases/experience/ExperienceUseCases';
 import { CreateExperienceDto } from 'src/domain/application/useCases/experience/dtos/CreateExperienceDto';
 import { ExperienceDto } from 'src/domain/application/useCases/experience/dtos/ExperienceDto';
@@ -15,6 +14,7 @@ import { CreateEducationDto } from 'src/domain/application/useCases/education/dt
 import { EducationDto } from 'src/domain/application/useCases/education/dtos/EducationDto';
 import { EducationUseCases } from 'src/domain/application/useCases/education/EducationUseCases';
 import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
+import { PasswordService } from 'src/modules/auth/application/services/PasswordService';
 
 export class UseCaseTester {
   prisma!: PrismaService;

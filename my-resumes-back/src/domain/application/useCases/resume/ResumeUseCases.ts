@@ -1,9 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/domain/application/services/PrismaService';
+import { PrismaService } from 'src/modules/common/infra/PrismaService';
 import { CreateResumeDto, createResumeDtoSchema } from './dtos/CreateResumeDto';
 import { ResumeDto } from './dtos/ResumeDto';
 import { UpdateResumeDto, updateResumeDtoSchema } from './dtos/UpdateResumeDto';
-import { validateDto, validateId } from '../../services/validation';
+import {
+  validateDto,
+  validateId,
+} from '../../../../modules/common/application/validation';
 
 @Injectable()
 export class ResumeUseCases {

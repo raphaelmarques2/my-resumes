@@ -3,13 +3,16 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '../../services/PrismaService';
+import { PrismaService } from '../../../../modules/common/infra/PrismaService';
 import {
   CreateEducationDto,
   createEducationDtoSchema,
 } from './dtos/CreateEducationDto';
 import { EducationDto } from './dtos/EducationDto';
-import { validateDto, validateId } from '../../services/validation';
+import {
+  validateDto,
+  validateId,
+} from '../../../../modules/common/application/validation';
 import {
   UpdateEducationDto,
   updateEducationDtoSchema,

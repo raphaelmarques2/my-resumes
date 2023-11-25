@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PasswordService } from 'src/domain/application/services/PasswordService';
-import { validateDto } from 'src/domain/application/services/validation';
+import { validateDto } from 'src/modules/common/application/validation';
 import {
   UpdatePasswordDto,
   updatePasswordDtoSchema,
@@ -9,6 +8,7 @@ import { Credential } from 'src/modules/auth/domain/entities/Credential.entity';
 import { Id } from 'src/modules/common/domain/value-objects/Id';
 import { UserRepository } from '../../repositories/UserRepository';
 import { CredentialRepository } from '../../repositories/CredentialRepository';
+import { PasswordService } from '../../services/PasswordService';
 
 @Injectable()
 export class UpdatePasswordUseCase {

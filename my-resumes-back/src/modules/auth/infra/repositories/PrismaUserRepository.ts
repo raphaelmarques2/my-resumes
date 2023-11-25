@@ -2,7 +2,7 @@ import { Email } from 'src/modules/common/domain/value-objects/Email';
 import { Id } from 'src/modules/common/domain/value-objects/Id';
 import { UserRepository } from '../../application/repositories/UserRepository';
 import { User } from '../../domain/entities/User.entity';
-import { PrismaService } from 'src/domain/application/services/PrismaService';
+import { PrismaService } from 'src/modules/common/infra/PrismaService';
 import { Name } from 'src/modules/common/domain/value-objects/Name';
 import { Injectable } from '@nestjs/common';
 import { User as UserData } from '@prisma/client';

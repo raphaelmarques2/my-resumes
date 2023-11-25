@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { JwtService } from '@nestjs/jwt';
-import { AuthTokenService } from 'src/domain/application/services/AuthTokenService';
-import { PasswordService } from 'src/domain/application/services/PasswordService';
+import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
 import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 import { SignupDto } from 'src/modules/auth/application/use-cases/signup/signup.dto';
 import { SignupUseCase } from 'src/modules/auth/application/use-cases/signup/signup.usecase';
@@ -11,6 +10,7 @@ import { MemoryCredentialRepository } from 'src/modules/auth/infra/repositories/
 import { MemoryProfileRepository } from 'src/modules/profile/infra/repositories/MemoryProfileRepository';
 import { LoginUseCase } from 'src/modules/auth/application/use-cases/login/login.usecase';
 import { LoginDto } from 'src/modules/auth/application/use-cases/login/login.dto';
+import { PasswordService } from 'src/modules/auth/application/services/PasswordService';
 
 export class MemoryUseCaseTester {
   services: Map<unknown, unknown>;

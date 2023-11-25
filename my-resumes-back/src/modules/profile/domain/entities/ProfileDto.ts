@@ -1,6 +1,6 @@
-import { Profile } from '@prisma/client';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { Profile } from './Profile.entity';
 
 export const profileDtoSchema = z
   .object({
@@ -16,8 +16,8 @@ export const profileDtoSchema = z
 export class ProfileDto extends createZodDto(profileDtoSchema) {
   static createFrom(profile: Profile): ProfileDto {
     return ProfileDto.create({
-      id: profile.id,
-      userId: profile.userId,
+      id: profile.id.value,
+      userId: profile.userId.value,
       name: profile.name,
       email: profile.email,
       address: profile.address ?? undefined,

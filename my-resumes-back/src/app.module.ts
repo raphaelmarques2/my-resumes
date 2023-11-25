@@ -11,13 +11,13 @@ import { ExperienceController } from './infra/controllers/experience.controller'
 import { ProfileController } from './infra/controllers/profile.controller';
 import { LoggerMiddleware } from './infra/middlewares/LoggerMiddleware';
 import { LoggingInterceptor } from './infra/middlewares/LoggingInterceptor';
-import { PrismaService } from './domain/application/services/PrismaService';
+import { PrismaService } from './modules/common/infra/PrismaService';
 import {
   MyConfigService,
   configurations,
 } from './infra/services/MyConfigService';
-import { AuthTokenService } from './domain/application/services/AuthTokenService';
-import { PasswordService } from './domain/application/services/PasswordService';
+import { AuthTokenService } from './modules/auth/application/services/AuthTokenService';
+import { PasswordService } from './modules/auth/application/services/PasswordService';
 import { APP_PIPE } from '@nestjs/core';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { EducationController } from './infra/controllers/education.controller';

@@ -1,12 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { validateDto } from 'src/domain/application/services/validation';
+import { validateDto } from 'src/modules/common/application/validation';
 import {
   SignupDto,
   signupDtoSchema,
 } from 'src/modules/auth/application/use-cases/signup/signup.dto';
 import { AuthOutputDto } from '../login/auth-output.dto';
-import { AuthTokenService } from 'src/domain/application/services/AuthTokenService';
-import { PasswordService } from 'src/domain/application/services/PasswordService';
+import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
 import { Credential } from 'src/modules/auth/domain/entities/Credential.entity';
 import { UserDto } from 'src/modules/auth/domain/entities/User.dto';
 import { User } from 'src/modules/auth/domain/entities/User.entity';
@@ -18,6 +17,7 @@ import { ProfileRepository } from 'src/modules/profile/domain/application/reposi
 import { Profile } from 'src/modules/profile/domain/entities/Profile.entity';
 import { CredentialRepository } from '../../repositories/CredentialRepository';
 import { UserRepository } from '../../repositories/UserRepository';
+import { PasswordService } from '../../services/PasswordService';
 
 @Injectable()
 export class SignupUseCase {
