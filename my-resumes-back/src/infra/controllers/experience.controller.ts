@@ -16,10 +16,10 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { ExperienceUseCases } from 'src/domain/application/useCases/experience/ExperienceUseCases';
-import { ExperienceDto } from 'src/domain/application/useCases/experience/dtos/ExperienceDto';
-import { UpdateExperienceDto } from 'src/domain/application/useCases/experience/dtos/UpdateExperienceDto';
-import { CreateExperienceDto } from '../../domain/application/useCases/experience/dtos/CreateExperienceDto';
+import { ExperienceUseCases } from 'src/modules/experience/old/ExperienceUseCases';
+import { ExperienceDto } from 'src/modules/experience/entities/ExperienceDto';
+import { UpdateExperienceDto } from 'src/modules/experience/use-cases/update-experience/UpdateExperienceDto';
+import { CreateExperienceDto } from '../../modules/experience/use-cases/create-experience/CreateExperienceDto';
 import { AuthGuard } from '../guards/AuthGuard';
 
 @ApiTags('experiences')

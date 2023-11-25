@@ -2,29 +2,29 @@ import { Email } from 'src/modules/common/domain/value-objects/Email';
 import { Id } from 'src/modules/common/domain/value-objects/Id';
 import { UserRepository } from '../../application/repositories/UserRepository';
 import { User } from '../../domain/entities/User.entity';
+import { EntityList } from 'src/modules/common/infra/repositories/EntityList';
 
 export class MemoryUserRepository extends UserRepository {
-  readonly items: User[];
+  readonly items: EntityList<User>;
 
   constructor() {
     super();
-    this.items = [];
+    this.items = new EntityList<User>();
   }
 
   async findByEmail(email: Email): Promise<User | null> {
-    const user = this.items.find((e) => e.email.isEqual(email));
-    return user || null;
+    return this.items.findBy((e) => e.email.isEqual(email));
   }
 
   async findById(id: Id): Promise<User | null> {
-    const user = this.items.find((e) => e.id.isEqual(id));
-    return user || null;
+    return this.items.findById(id);
   }
 
   async add(user: User): Promise<void> {
-    const index = this.items.findIndex((e) => e.id.isEqual(user.id));
-    if (index >= 0) throw new Error('Item already exist');
+    this.items.add(user);
+  }
 
-    this.items.push(user);
+  async userExists(id: Id): Promise<boolean> {
+    return this.items.findById(id) !== null;
   }
 }

@@ -1,16 +1,21 @@
 import { faker } from '@faker-js/faker';
 import { JwtService } from '@nestjs/jwt';
 import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
+import { PasswordService } from 'src/modules/auth/application/services/PasswordService';
 import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
+import { LoginDto } from 'src/modules/auth/application/use-cases/login/login.dto';
+import { LoginUseCase } from 'src/modules/auth/application/use-cases/login/login.usecase';
 import { SignupDto } from 'src/modules/auth/application/use-cases/signup/signup.dto';
 import { SignupUseCase } from 'src/modules/auth/application/use-cases/signup/signup.usecase';
-import { MemoryTransactionService } from '../infra/repositories/MemoryAppRepository';
-import { MemoryUserRepository } from 'src/modules/auth/infra/repositories/MemoryUserRepository';
 import { MemoryCredentialRepository } from 'src/modules/auth/infra/repositories/MemoryCredentialRepository';
+import { MemoryUserRepository } from 'src/modules/auth/infra/repositories/MemoryUserRepository';
+import { MemoryExperienceRepository } from 'src/modules/experience/infra/repositories/MemoryExperienceRepository';
 import { MemoryProfileRepository } from 'src/modules/profile/infra/repositories/MemoryProfileRepository';
-import { LoginUseCase } from 'src/modules/auth/application/use-cases/login/login.usecase';
-import { LoginDto } from 'src/modules/auth/application/use-cases/login/login.dto';
-import { PasswordService } from 'src/modules/auth/application/services/PasswordService';
+import { MemoryTransactionService } from '../infra/repositories/MemoryAppRepository';
+import { Experience } from 'src/modules/experience/entities/Experience.entity';
+import { Id } from '../domain/value-objects/Id';
+import { Name } from '../domain/value-objects/Name';
+import { ExperienceDto } from 'src/modules/experience/entities/ExperienceDto';
 
 export class MemoryUseCaseTester {
   services: Map<unknown, unknown>;
@@ -60,6 +65,9 @@ export class MemoryUseCaseTester {
   get profileRepository() {
     return this.getOrCreate(MemoryProfileRepository);
   }
+  get experienceRepository() {
+    return this.getOrCreate(MemoryExperienceRepository);
+  }
 
   async signup(override?: Partial<SignupDto>): Promise<AuthOutputDto> {
     const signupDto: SignupDto = {
@@ -92,22 +100,21 @@ export class MemoryUseCaseTester {
     return await login.execute(input);
   }
 
-  // async createExperience(
-  //   override?: Partial<CreateExperienceDto>,
-  // ): Promise<ExperienceDto> {
-  //   const input: CreateExperienceDto = {
-  //     title: faker.internet.domainWord(),
-  //     company: faker.internet.displayName(),
-  //     userId: this.auth.user.id,
-  //     technologies: ['A', 'B', 'C'],
-  //     description: faker.lorem.paragraph(),
-  //     startDate: faker.date.past({ years: 3 }).toISOString(),
-  //     endDate: faker.date.past({ years: 2 }).toISOString(),
-  //     ...(override ?? {}),
-  //   };
-  //   const experienceUseCases = new ExperienceUseCases(this.prisma);
-  //   return await experienceUseCases.createExperience(input);
-  // }
+  async createExperience(input: { userId: string }): Promise<ExperienceDto> {
+    const experience = Experience.load({
+      id: new Id(),
+      title: new Name(faker.internet.domainWord()),
+      company: new Name(faker.internet.displayName()),
+      technologies: ['A', 'B', 'C'].map((e) => new Name(e)),
+      description: faker.lorem.paragraph(),
+      startDate: faker.date.past({ years: 3 }),
+      endDate: faker.date.past({ years: 2 }),
+      userId: new Id(input.userId),
+    });
+    await this.experienceRepository.add(experience);
+
+    return ExperienceDto.createFrom(experience);
+  }
 
   // async createResume(override?: Partial<CreateResumeDto>): Promise<ResumeDto> {
   //   const input: CreateResumeDto = {

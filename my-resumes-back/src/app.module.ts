@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { AppController } from './app.controller';
 import { ResumeUseCases } from './domain/application/useCases/resume/ResumeUseCases';
-import { ExperienceUseCases } from './domain/application/useCases/experience/ExperienceUseCases';
+import { ExperienceUseCases } from './modules/experience/old/ExperienceUseCases';
 import { ProfileUseCases } from './domain/application/useCases/profile/ProfileUseCases';
 import { AuthController } from './infra/controllers/auth.controller';
 import { ResumeController } from './infra/controllers/resume.controller';

@@ -12,4 +12,6 @@ export abstract class UserRepository {
   abstract findById(id: Id, options?: TransactionOptions): Promise<User | null>;
 
   abstract add(user: User, options?: TransactionOptions): Promise<void>;
+
+  abstract userExists(id: Id, options?: TransactionOptions): Promise<boolean>;
 }

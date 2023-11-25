@@ -1,6 +1,7 @@
+import { Entity } from 'src/modules/common/domain/value-objects/Entity';
 import { Id } from 'src/modules/common/domain/value-objects/Id';
 
-export class Profile {
+export class Profile implements Entity {
   private constructor(
     readonly id: Id,
     readonly userId: Id,
