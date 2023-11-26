@@ -1,36 +1,29 @@
 import { Id } from 'src/modules/common/domain/value-objects/Id';
 import { ProfileRepository } from '../../domain/application/repositories/ProfileRepository';
 import { Profile } from '../../domain/entities/Profile.entity';
+import { EntityList } from 'src/modules/common/infra/repositories/EntityList';
 
 export class MemoryProfileRepository extends ProfileRepository {
-  readonly items: Profile[];
+  readonly items: EntityList<Profile>;
 
   constructor() {
     super();
-    this.items = [];
+    this.items = new EntityList<Profile>();
   }
 
   async add(profile: Profile): Promise<void> {
-    const index = this.items.findIndex((e) => e.id.isEqual(profile.id));
-    if (index >= 0) throw new Error('Item already exist');
-
-    this.items.push(profile);
+    this.items.add(profile);
   }
 
   async findByUserId(userId: Id): Promise<Profile | null> {
-    const profile = this.items.find((e) => e.userId.isEqual(userId));
-    return profile || null;
+    return this.items.findBy((e) => e.userId.isEqual(userId));
   }
 
   async findById(id: Id): Promise<Profile | null> {
-    const profile = this.items.find((e) => e.id.isEqual(id));
-    return profile || null;
+    return this.items.findById(id);
   }
 
   async update(profile: Profile): Promise<void> {
-    const index = this.items.findIndex((e) => e.id.isEqual(profile.id));
-    if (index === -1) throw new Error('Item does not exist');
-
-    this.items[index] = profile;
+    this.items.update(profile);
   }
 }
