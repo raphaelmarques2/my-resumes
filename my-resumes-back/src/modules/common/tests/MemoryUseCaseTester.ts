@@ -16,6 +16,9 @@ import { Experience } from 'src/modules/experience/entities/Experience.entity';
 import { Id } from '../domain/value-objects/Id';
 import { Name } from '../domain/value-objects/Name';
 import { ExperienceDto } from 'src/modules/experience/entities/ExperienceDto';
+import { MemoryEducationRepository } from 'src/modules/education/infra/repositories/MemoryEducationRepository';
+import { Education } from 'src/modules/education/entities/Education.entity';
+import { EducationDto } from 'src/modules/education/entities/EducationDto';
 
 export class MemoryUseCaseTester {
   services: Map<unknown, unknown>;
@@ -67,6 +70,9 @@ export class MemoryUseCaseTester {
   }
   get experienceRepository() {
     return this.getOrCreate(MemoryExperienceRepository);
+  }
+  get educationRepository() {
+    return this.getOrCreate(MemoryEducationRepository);
   }
 
   async signup(override?: Partial<SignupDto>): Promise<AuthOutputDto> {
@@ -128,18 +134,16 @@ export class MemoryUseCaseTester {
   //   return await resumeUseCases.createResume(input);
   // }
 
-  // async createEducation(
-  //   override?: Partial<CreateEducationDto>,
-  // ): Promise<EducationDto> {
-  //   const input: CreateEducationDto = {
-  //     title: faker.lorem.word(),
-  //     institution: faker.lorem.word(),
-  //     userId: this.auth.user.id,
-  //     startDate: faker.date.past({ years: 7 }).toISOString(),
-  //     endDate: faker.date.past({ years: 2 }).toISOString(),
-  //     ...(override ?? {}),
-  //   };
-  //   const educationUseCases = new EducationUseCases(this.prisma);
-  //   return await educationUseCases.createEducation(input);
-  // }
+  async createEducation(input: { userId: string }) {
+    const education = Education.load({
+      id: new Id(),
+      userId: new Id(input.userId),
+      title: new Name(faker.lorem.word()),
+      institution: new Name(faker.lorem.word()),
+      startDate: faker.date.past({ years: 7 }),
+      endDate: faker.date.past({ years: 2 }),
+    });
+    await this.educationRepository.add(education);
+    return EducationDto.createFrom(education);
+  }
 }

@@ -29,4 +29,7 @@ export class EntityList<E extends Entity> {
     if (index >= 0) throw new Error('Entity already exist');
     this.items.push(entity);
   }
+  filterBy(fn: (e: E) => boolean): E[] {
+    return this.items.filter(fn);
+  }
 }

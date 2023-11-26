@@ -1,6 +1,6 @@
-import { Education } from '@prisma/client';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { Education } from './Education.entity';
 
 export const educationDtoSchema = z
   .object({
@@ -16,10 +16,10 @@ export const educationDtoSchema = z
 export class EducationDto extends createZodDto(educationDtoSchema) {
   static createFrom(education: Education): EducationDto {
     return EducationDto.create({
-      id: education.id,
-      userId: education.userId,
-      title: education.title,
-      institution: education.institution,
+      id: education.id.value,
+      userId: education.userId.value,
+      title: education.title.value,
+      institution: education.institution.value,
       startDate: education.startDate?.toISOString(),
       endDate: education.endDate?.toISOString(),
     } satisfies EducationDto);
