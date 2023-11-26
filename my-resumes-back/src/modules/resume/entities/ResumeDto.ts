@@ -1,6 +1,6 @@
-import { Resume } from '@prisma/client';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { Resume } from './Resume.entity';
 
 export const resumeDtoSchema = z
   .object({
@@ -12,18 +12,14 @@ export const resumeDtoSchema = z
   })
   .strict();
 
-export type ResumeAndExperiencesId = Resume & {
-  experienceToResumes: { experienceId: string }[];
-};
-
 export class ResumeDto extends createZodDto(resumeDtoSchema) {
-  static createFrom(resume: ResumeAndExperiencesId): ResumeDto {
+  static createFrom(resume: Resume): ResumeDto {
     return ResumeDto.create({
-      id: resume.id,
-      userId: resume.userId,
-      title: resume.title,
+      id: resume.id.value,
+      userId: resume.userId.value,
+      title: resume.title.value,
       description: resume.description,
-      experiences: resume.experienceToResumes.map((item) => item.experienceId),
+      experiences: resume.experiences.map((item) => item.value),
     } satisfies ResumeDto);
   }
 }

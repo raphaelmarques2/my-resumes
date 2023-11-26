@@ -9,8 +9,8 @@ export class User {
     public email: Email,
   ) {}
 
-  static create({ id, name, email }: { id: Id; name: Name; email: Email }) {
-    return new User(id, name, email);
+  static create({ name, email }: { name: Name; email: Email }) {
+    return new User(new Id(), name, email);
   }
   static load({ id, name, email }: { id: Id; name: Name; email: Email }) {
     return new User(id, name, email);

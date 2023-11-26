@@ -31,17 +31,15 @@ export class Experience {
   }
 
   static create({
-    id,
     userId,
     title,
     company,
   }: {
-    id: Id;
     userId: Id;
     title: Name;
     company: Name;
   }) {
-    return new Experience(id, userId, title, company, '', null, null, []);
+    return new Experience(new Id(), userId, title, company, '', null, null, []);
   }
 
   static load({

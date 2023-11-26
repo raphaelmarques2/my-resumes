@@ -25,21 +25,26 @@ export class Education implements Entity {
   }
 
   static create({
-    id,
     userId,
     title,
     institution,
     startDate,
     endDate,
   }: {
-    id: Id;
     userId: Id;
     title: Name;
     institution: Name;
     startDate: Date | null;
     endDate: Date | null;
   }) {
-    return new Education(id, userId, title, institution, startDate, endDate);
+    return new Education(
+      new Id(),
+      userId,
+      title,
+      institution,
+      startDate,
+      endDate,
+    );
   }
 
   static load({

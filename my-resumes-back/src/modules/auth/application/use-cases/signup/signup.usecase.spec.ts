@@ -45,8 +45,8 @@ describe('signup', () => {
     };
     const user = await signup.execute(signupDto);
 
-    expect(tester.profileRepository.items).toHaveLength(1);
-    expect(tester.profileRepository.items[0]).toEqual(
+    expect(tester.profileRepository.items.items).toHaveLength(1);
+    expect(tester.profileRepository.items.items[0]).toEqual(
       expect.objectContaining({
         userId: { value: user.user.id },
         name: signupDto.name,
@@ -90,9 +90,9 @@ describe('signup', () => {
       password: '123456789',
     });
 
-    expect(tester.credentialRepository.items).toHaveLength(2);
-    const passwordA = tester.credentialRepository.items[0].password;
-    const passwordB = tester.credentialRepository.items[1].password;
+    expect(tester.credentialRepository.items.items).toHaveLength(2);
+    const passwordA = tester.credentialRepository.items.items[0].password;
+    const passwordB = tester.credentialRepository.items.items[1].password;
     expect(passwordA).not.toBe(passwordB);
   });
 });

@@ -7,16 +7,8 @@ export class Credential {
     public password: string,
   ) {}
 
-  static create({
-    id,
-    userId,
-    password,
-  }: {
-    id: Id;
-    userId: Id;
-    password: string;
-  }) {
-    return new Credential(id, userId, password);
+  static create({ userId, password }: { userId: Id; password: string }) {
+    return new Credential(new Id(), userId, password);
   }
 
   static load({

@@ -24,17 +24,15 @@ export class Profile implements Entity {
   }
 
   static create({
-    id,
     userId,
     name,
     email,
   }: {
-    id: Id;
     userId: Id;
     name: string;
     email: string;
   }) {
-    return new Profile(id, userId, name, email, null, null);
+    return new Profile(new Id(), userId, name, email, null, null);
   }
 
   static load({

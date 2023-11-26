@@ -19,6 +19,9 @@ import { ExperienceDto } from 'src/modules/experience/entities/ExperienceDto';
 import { MemoryEducationRepository } from 'src/modules/education/infra/repositories/MemoryEducationRepository';
 import { Education } from 'src/modules/education/entities/Education.entity';
 import { EducationDto } from 'src/modules/education/entities/EducationDto';
+import { MemoryResumeRepository } from 'src/modules/resume/infra/repositories/MemoryResumeRepository';
+import { Resume } from 'src/modules/resume/entities/Resume.entity';
+import { ResumeDto } from 'src/modules/resume/entities/ResumeDto';
 
 export class MemoryUseCaseTester {
   services: Map<unknown, unknown>;
@@ -74,6 +77,9 @@ export class MemoryUseCaseTester {
   get educationRepository() {
     return this.getOrCreate(MemoryEducationRepository);
   }
+  get resumeRepository() {
+    return this.getOrCreate(MemoryResumeRepository);
+  }
 
   async signup(override?: Partial<SignupDto>): Promise<AuthOutputDto> {
     const signupDto: SignupDto = {
@@ -122,17 +128,19 @@ export class MemoryUseCaseTester {
     return ExperienceDto.createFrom(experience);
   }
 
-  // async createResume(override?: Partial<CreateResumeDto>): Promise<ResumeDto> {
-  //   const input: CreateResumeDto = {
-  //     title: faker.internet.domainName(),
-  //     userId: this.auth.user.id,
-  //     description: faker.lorem.paragraph(),
-  //     experiences: [],
-  //     ...(override ?? {}),
-  //   };
-  //   const resumeUseCases = new ResumeUseCases(this.prisma);
-  //   return await resumeUseCases.createResume(input);
-  // }
+  async createResume(input: { userId: string; experiences?: string[] }) {
+    const resume = Resume.load({
+      id: new Id(),
+      userId: new Id(input.userId),
+      title: new Name(faker.lorem.word()),
+      description: faker.lorem.paragraph(),
+      experiences: input.experiences
+        ? input.experiences.map((e) => new Id(e))
+        : [],
+    });
+    await this.resumeRepository.add(resume);
+    return ResumeDto.createFrom(resume);
+  }
 
   async createEducation(input: { userId: string }) {
     const education = Education.load({
