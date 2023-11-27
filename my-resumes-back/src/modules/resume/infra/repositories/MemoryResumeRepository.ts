@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
+import { Id } from 'src/modules/common/application/value-objects/Id';
 import { EntityList } from 'src/modules/common/infra/repositories/EntityList';
-import { Resume } from '../../entities/Resume.entity';
-import { ResumeRepository } from '../../repositories/ResumeRepository';
+import { Resume } from '../../application/entities/Resume.entity';
+import { ResumeRepository } from '../../application/repositories/ResumeRepository';
 
 @Injectable()
 export class MemoryResumeRepository extends ResumeRepository {

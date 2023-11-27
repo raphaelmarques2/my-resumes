@@ -1,17 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Credential } from 'src/modules/auth/application/entities/Credential.entity';
+import { UserDto } from 'src/modules/auth/application/entities/User.dto';
+import { User } from 'src/modules/auth/application/entities/User.entity';
+import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
+import { TransactionService } from 'src/modules/common/application/repositories/TransactionService';
 import { validateDto } from 'src/modules/common/application/validation';
+import { Email } from 'src/modules/common/application/value-objects/Email';
+import { CredentialRepository } from '../../repositories/CredentialRepository';
+import { UserRepository } from '../../repositories/UserRepository';
+import { PasswordService } from '../../services/PasswordService';
 import { AuthOutputDto } from './auth-output.dto';
 import { LoginDto, loginDtoSchema } from './login.dto';
-import { Credential } from 'src/modules/auth/domain/entities/Credential.entity';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
-import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
-import { UserDto } from 'src/modules/auth/domain/entities/User.dto';
-import { User } from 'src/modules/auth/domain/entities/User.entity';
-import { Email } from 'src/modules/common/domain/value-objects/Email';
-import { TransactionService } from 'src/modules/common/application/repositories/TransactionService';
-import { UserRepository } from '../../repositories/UserRepository';
-import { CredentialRepository } from '../../repositories/CredentialRepository';
-import { PasswordService } from '../../services/PasswordService';
 
 @Injectable()
 export class LoginUseCase {
@@ -68,7 +67,6 @@ export class LoginUseCase {
         );
 
         const newCredential = Credential.create({
-          id: new Id(),
           userId: user.id,
           password: passwordHash,
         });

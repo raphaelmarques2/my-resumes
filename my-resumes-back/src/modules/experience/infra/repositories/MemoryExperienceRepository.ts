@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
+import { Id } from 'src/modules/common/application/value-objects/Id';
 import { EntityList } from 'src/modules/common/infra/repositories/EntityList';
-import { Experience } from '../../entities/Experience.entity';
-import { ExperienceRepository } from '../../repositories/ExperienceRepository';
+import { Experience } from '../../application/entities/Experience.entity';
+import { ExperienceRepository } from '../../application/repositories/ExperienceRepository';
 
 @Injectable()
 export class MemoryExperienceRepository extends ExperienceRepository {

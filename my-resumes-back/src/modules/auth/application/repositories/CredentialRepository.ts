@@ -1,6 +1,6 @@
 import { TransactionOptions } from 'src/modules/common/application/repositories/TransactionService';
-import { Id } from '../../../common/domain/value-objects/Id';
-import { Credential } from 'src/modules/auth/domain/entities/Credential.entity';
+import { Id } from '../../../common/application/value-objects/Id';
+import { Credential } from 'src/modules/auth/application/entities/Credential.entity';
 
 export abstract class CredentialRepository {
   abstract findByUserId(

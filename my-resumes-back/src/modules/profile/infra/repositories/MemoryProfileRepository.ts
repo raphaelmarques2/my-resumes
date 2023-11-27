@@ -1,6 +1,6 @@
-import { Id } from 'src/modules/common/domain/value-objects/Id';
-import { ProfileRepository } from '../../domain/application/repositories/ProfileRepository';
-import { Profile } from '../../domain/entities/Profile.entity';
+import { Id } from 'src/modules/common/application/value-objects/Id';
+import { ProfileRepository } from '../../application/repositories/ProfileRepository';
+import { Profile } from '../../application/entities/Profile.entity';
 import { EntityList } from 'src/modules/common/infra/repositories/EntityList';
 
 export class MemoryProfileRepository extends ProfileRepository {

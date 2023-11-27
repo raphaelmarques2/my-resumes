@@ -1,7 +1,7 @@
-import { Email } from 'src/modules/common/domain/value-objects/Email';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
+import { Email } from 'src/modules/common/application/value-objects/Email';
+import { Id } from 'src/modules/common/application/value-objects/Id';
 import { UserRepository } from '../../application/repositories/UserRepository';
-import { User } from '../../domain/entities/User.entity';
+import { User } from '../../application/entities/User.entity';
 import { EntityList } from 'src/modules/common/infra/repositories/EntityList';
 
 export class MemoryUserRepository extends UserRepository {

@@ -1,5 +1,5 @@
-import { Entity } from '../../domain/value-objects/Entity';
-import { Id } from '../../domain/value-objects/Id';
+import { Entity } from '../../application/value-objects/Entity';
+import { Id } from '../../application/value-objects/Id';
 
 export class EntityList<E extends Entity> {
   public items: E[];

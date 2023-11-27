@@ -6,15 +6,14 @@ import {
 } from 'src/modules/auth/application/use-cases/signup/signup.dto';
 import { AuthOutputDto } from '../login/auth-output.dto';
 import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
-import { Credential } from 'src/modules/auth/domain/entities/Credential.entity';
-import { UserDto } from 'src/modules/auth/domain/entities/User.dto';
-import { User } from 'src/modules/auth/domain/entities/User.entity';
+import { Credential } from 'src/modules/auth/application/entities/Credential.entity';
+import { UserDto } from 'src/modules/auth/application/entities/User.dto';
+import { User } from 'src/modules/auth/application/entities/User.entity';
 import { TransactionService } from 'src/modules/common/application/repositories/TransactionService';
-import { Email } from 'src/modules/common/domain/value-objects/Email';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
-import { Name } from 'src/modules/common/domain/value-objects/Name';
-import { ProfileRepository } from 'src/modules/profile/domain/application/repositories/ProfileRepository';
-import { Profile } from 'src/modules/profile/domain/entities/Profile.entity';
+import { Email } from 'src/modules/common/application/value-objects/Email';
+import { Name } from 'src/modules/common/application/value-objects/Name';
+import { ProfileRepository } from 'src/modules/profile/application/repositories/ProfileRepository';
+import { Profile } from 'src/modules/profile/application/entities/Profile.entity';
 import { CredentialRepository } from '../../repositories/CredentialRepository';
 import { UserRepository } from '../../repositories/UserRepository';
 import { PasswordService } from '../../services/PasswordService';
@@ -48,18 +47,15 @@ export class SignupUseCase {
         );
 
         const user = User.create({
-          id: new Id(),
           name: new Name(input.name),
           email: new Email(input.email),
         });
         const credential = Credential.create({
-          id: new Id(),
           userId: user.id,
           password: passwordHash,
         });
 
         const profile = Profile.create({
-          id: new Id(),
           userId: user.id,
           name: user.name.value,
           email: user.email.value,

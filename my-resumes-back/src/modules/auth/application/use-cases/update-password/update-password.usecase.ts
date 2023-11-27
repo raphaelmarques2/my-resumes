@@ -4,8 +4,8 @@ import {
   UpdatePasswordDto,
   updatePasswordDtoSchema,
 } from 'src/modules/auth/application/use-cases/update-password/update-password.dto';
-import { Credential } from 'src/modules/auth/domain/entities/Credential.entity';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
+import { Credential } from 'src/modules/auth/application/entities/Credential.entity';
+import { Id } from 'src/modules/common/application/value-objects/Id';
 import { UserRepository } from '../../repositories/UserRepository';
 import { CredentialRepository } from '../../repositories/CredentialRepository';
 import { PasswordService } from '../../services/PasswordService';
@@ -35,7 +35,6 @@ export class UpdatePasswordUseCase {
       await this.credentialRepository.update(credential);
     } else {
       const newCredential = Credential.create({
-        id: new Id(),
         userId: user.id,
         password: passwordHash,
       });

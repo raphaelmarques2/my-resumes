@@ -1,20 +1,10 @@
-import { faker } from '@faker-js/faker';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
 import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
-import { PrismaService } from 'src/modules/common/infra/PrismaService';
-import { ExperienceUseCases } from 'src/modules/experience/old/ExperienceUseCases';
-import { CreateExperienceDto } from 'src/modules/experience/use-cases/create-experience/CreateExperienceDto';
-import { ExperienceDto } from 'src/modules/experience/entities/ExperienceDto';
-import { ResumeUseCases } from 'src/modules/resume/use-cases/create-resume/create-resume.usecase';
-import { CreateResumeDto } from 'src/modules/resume/use-cases/create-resume/CreateResumeDto';
-import { ResumeDto } from 'src/modules/resume/entities/ResumeDto';
-import { cleanDatabase } from './db-test';
-import { CreateEducationDto } from 'src/domain/application/useCases/education/dtos/CreateEducationDto';
-import { EducationDto } from 'src/domain/application/useCases/education/dtos/EducationDto';
-import { EducationUseCases } from 'src/domain/application/useCases/education/EducationUseCases';
-import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 import { PasswordService } from 'src/modules/auth/application/services/PasswordService';
+import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
+import { PrismaService } from 'src/modules/common/infra/PrismaService';
+import { cleanDatabase } from './db-test';
 
 export class UseCaseTester {
   prisma!: PrismaService;
@@ -45,54 +35,6 @@ export class UseCaseTester {
     }
     return this._passwordService;
   }
-
-  async createUser(): Promise<AuthOutputDto> {
-    return undefined as any as AuthOutputDto;
-  }
-
-  async createExperience(
-    override?: Partial<CreateExperienceDto>,
-  ): Promise<ExperienceDto> {
-    const input: CreateExperienceDto = {
-      title: faker.internet.domainWord(),
-      company: faker.internet.displayName(),
-      userId: this.auth.user.id,
-      technologies: ['A', 'B', 'C'],
-      description: faker.lorem.paragraph(),
-      startDate: faker.date.past({ years: 3 }).toISOString(),
-      endDate: faker.date.past({ years: 2 }).toISOString(),
-      ...(override ?? {}),
-    };
-    const experienceUseCases = new ExperienceUseCases(this.prisma);
-    return await experienceUseCases.createExperience(input);
-  }
-
-  async createResume(override?: Partial<CreateResumeDto>): Promise<ResumeDto> {
-    const input: CreateResumeDto = {
-      title: faker.internet.domainName(),
-      userId: this.auth.user.id,
-      description: faker.lorem.paragraph(),
-      experiences: [],
-      ...(override ?? {}),
-    };
-    const resumeUseCases = new ResumeUseCases(this.prisma);
-    return await resumeUseCases.createResume(input);
-  }
-
-  async createEducation(
-    override?: Partial<CreateEducationDto>,
-  ): Promise<EducationDto> {
-    const input: CreateEducationDto = {
-      title: faker.lorem.word(),
-      institution: faker.lorem.word(),
-      userId: this.auth.user.id,
-      startDate: faker.date.past({ years: 7 }).toISOString(),
-      endDate: faker.date.past({ years: 2 }).toISOString(),
-      ...(override ?? {}),
-    };
-    const educationUseCases = new EducationUseCases(this.prisma);
-    return await educationUseCases.createEducation(input);
-  }
 }
 
 export function createUseCaseTester() {
@@ -111,7 +53,7 @@ export function createUseCaseTester() {
   });
   beforeEach(async () => {
     await cleanDatabase(tester.prisma);
-    tester.auth = await tester.createUser();
+    //tester.auth = await tester.createUser();
   });
 
   afterAll(async () => {

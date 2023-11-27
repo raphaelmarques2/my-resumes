@@ -12,16 +12,16 @@ import { MemoryUserRepository } from 'src/modules/auth/infra/repositories/Memory
 import { MemoryExperienceRepository } from 'src/modules/experience/infra/repositories/MemoryExperienceRepository';
 import { MemoryProfileRepository } from 'src/modules/profile/infra/repositories/MemoryProfileRepository';
 import { MemoryTransactionService } from '../infra/repositories/MemoryAppRepository';
-import { Experience } from 'src/modules/experience/entities/Experience.entity';
-import { Id } from '../domain/value-objects/Id';
-import { Name } from '../domain/value-objects/Name';
-import { ExperienceDto } from 'src/modules/experience/entities/ExperienceDto';
+import { Experience } from 'src/modules/experience/application/entities/Experience.entity';
+import { ExperienceDto } from 'src/modules/experience/application/entities/ExperienceDto';
 import { MemoryEducationRepository } from 'src/modules/education/infra/repositories/MemoryEducationRepository';
-import { Education } from 'src/modules/education/entities/Education.entity';
-import { EducationDto } from 'src/modules/education/entities/EducationDto';
+import { Education } from 'src/modules/education/application/entities/Education.entity';
+import { EducationDto } from 'src/modules/education/application/entities/EducationDto';
 import { MemoryResumeRepository } from 'src/modules/resume/infra/repositories/MemoryResumeRepository';
-import { Resume } from 'src/modules/resume/entities/Resume.entity';
-import { ResumeDto } from 'src/modules/resume/entities/ResumeDto';
+import { Resume } from 'src/modules/resume/application/entities/Resume.entity';
+import { ResumeDto } from 'src/modules/resume/application/entities/ResumeDto';
+import { Id } from '../application/value-objects/Id';
+import { Name } from '../application/value-objects/Name';
 
 export class MemoryUseCaseTester {
   services: Map<unknown, unknown>;

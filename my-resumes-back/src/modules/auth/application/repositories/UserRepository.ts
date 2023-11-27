@@ -1,6 +1,6 @@
-import { Email } from 'src/modules/common/domain/value-objects/Email';
-import { User } from '../../domain/entities/User.entity';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
+import { Email } from 'src/modules/common/application/value-objects/Email';
+import { User } from '../entities/User.entity';
+import { Id } from 'src/modules/common/application/value-objects/Id';
 import { TransactionOptions } from 'src/modules/common/application/repositories/TransactionService';
 
 export abstract class UserRepository {

@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthOutputDto } from '../login/auth-output.dto';
 import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
-import { UserDto } from 'src/modules/auth/domain/entities/User.dto';
+import { Id } from 'src/modules/common/application/value-objects/Id';
+import { UserDto } from 'src/modules/auth/application/entities/User.dto';
 import { UserRepository } from '../../repositories/UserRepository';
 
 @Injectable()

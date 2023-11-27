@@ -1,12 +1,12 @@
-import { Email } from 'src/modules/common/domain/value-objects/Email';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
-import { UserRepository } from '../../application/repositories/UserRepository';
-import { User } from '../../domain/entities/User.entity';
-import { PrismaService } from 'src/modules/common/infra/PrismaService';
-import { Name } from 'src/modules/common/domain/value-objects/Name';
 import { Injectable } from '@nestjs/common';
 import { User as UserData } from '@prisma/client';
 import { TransactionOptions } from 'src/modules/common/application/repositories/TransactionService';
+import { Email } from 'src/modules/common/application/value-objects/Email';
+import { Id } from 'src/modules/common/application/value-objects/Id';
+import { Name } from 'src/modules/common/application/value-objects/Name';
+import { PrismaService } from 'src/modules/common/infra/PrismaService';
+import { User } from '../../application/entities/User.entity';
+import { UserRepository } from '../../application/repositories/UserRepository';
 
 @Injectable()
 export class PrismaUserRepository extends UserRepository {
@@ -33,6 +33,17 @@ export class PrismaUserRepository extends UserRepository {
     if (!user) return null;
 
     return this.convertToEntity(user);
+  }
+
+  async userExists(
+    id: Id,
+    options?: TransactionOptions | undefined,
+  ): Promise<boolean> {
+    const user = await this.prisma.or(options?.transaction).user.findUnique({
+      where: { id: id.value },
+      select: {},
+    });
+    return user !== null;
   }
 
   async add(user: User, options?: TransactionOptions): Promise<void> {

@@ -1,82 +1,42 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
-import { AppController } from './app.controller';
-import { ResumeUseCases } from './modules/resume/use-cases/create-resume/create-resume.usecase';
-import { ExperienceUseCases } from './modules/experience/old/ExperienceUseCases';
-import { ProfileUseCases } from './domain/application/useCases/profile/ProfileUseCases';
-import { AuthController } from './infra/controllers/auth.controller';
-import { ResumeController } from './infra/controllers/resume.controller';
-import { ExperienceController } from './infra/controllers/experience.controller';
-import { ProfileController } from './infra/controllers/profile.controller';
+import { APP_PIPE } from '@nestjs/core';
+import { ZodValidationPipe } from 'nestjs-zod';
+import { AppController } from './infra/controllers/app.controller';
 import { LoggerMiddleware } from './infra/middlewares/LoggerMiddleware';
 import { LoggingInterceptor } from './infra/middlewares/LoggingInterceptor';
-import { PrismaService } from './modules/common/infra/PrismaService';
 import {
   MyConfigService,
   configurations,
 } from './infra/services/MyConfigService';
-import { AuthTokenService } from './modules/auth/application/services/AuthTokenService';
-import { PasswordService } from './modules/auth/application/services/PasswordService';
-import { APP_PIPE } from '@nestjs/core';
-import { ZodValidationPipe } from 'nestjs-zod';
-import { EducationController } from './infra/controllers/education.controller';
-import { EducationUseCases } from './domain/application/useCases/education/EducationUseCases';
-import { LoginUseCase } from './modules/auth/application/use-cases/login/login.usecase';
-import { SignupUseCase } from './modules/auth/application/use-cases/signup/signup.usecase';
-import { UpdatePasswordUseCase } from './modules/auth/application/use-cases/update-password/update-password.usecase';
-import { ValidateTokenUseCase } from './modules/auth/application/use-cases/validate-token/validate-token.usecase';
-import { PrismaTransactionService } from './modules/common/infra/repositories/PrismaAppRepository';
-import { PrismaUserRepository } from './modules/auth/infra/repositories/PrismaUserRepository';
-import { PrismaCredentialRepository } from './modules/auth/infra/repositories/PrismaCredentialRepository';
-import { PrismaProfileRepository } from './modules/profile/infra/repositories/PrismaProfileRepository';
+import { AuthModule } from './modules/auth/auto.module';
 import { TransactionService } from './modules/common/application/repositories/TransactionService';
-import { CredentialRepository } from './modules/auth/application/repositories/CredentialRepository';
-import { UserRepository } from './modules/auth/application/repositories/UserRepository';
-import { ProfileRepository } from './modules/profile/domain/application/repositories/ProfileRepository';
+import { PrismaService } from './modules/common/infra/PrismaService';
+import { PrismaTransactionService } from './modules/common/infra/repositories/PrismaAppRepository';
+import { EducationModule } from './modules/education/education.module';
+import { ExperienceModule } from './modules/experience/experience.module';
+import { ProfileModule } from './modules/profile/profile.module';
+import { ResumeModule } from './modules/resume/resume.module';
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [configurations] }),
-    JwtModule.register({
-      global: true,
-      secret: configurations().jwtSecret,
-      //signOptions: { expiresIn: '60s' },
-    }),
+    ResumeModule,
+    ProfileModule,
+    ExperienceModule,
+    EducationModule,
+    AuthModule,
   ],
-  controllers: [
-    AppController,
-    ExperienceController,
-    ResumeController,
-    ProfileController,
-    AuthController,
-    EducationController,
-  ],
+  controllers: [AppController],
   providers: [
     { provide: APP_PIPE, useClass: ZodValidationPipe },
     MyConfigService,
     LoggerMiddleware,
     LoggingInterceptor,
     PrismaService,
-    ResumeUseCases,
-    ExperienceUseCases,
-    ProfileUseCases,
-    PasswordService,
-    AuthTokenService,
-    EducationUseCases,
-    //new repositories
     { provide: TransactionService, useClass: PrismaTransactionService },
-    { provide: UserRepository, useClass: PrismaUserRepository },
-    {
-      provide: CredentialRepository,
-      useClass: PrismaCredentialRepository,
-    },
-    { provide: ProfileRepository, useClass: PrismaProfileRepository },
-    //new usecases
-    LoginUseCase,
-    SignupUseCase,
-    UpdatePasswordUseCase,
-    ValidateTokenUseCase,
   ],
+  exports: [PrismaService, TransactionService],
 })
 export class AppModule {}

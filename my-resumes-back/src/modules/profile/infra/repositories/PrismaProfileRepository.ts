@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Profile as ProfileData } from '@prisma/client';
 import { TransactionOptions } from 'src/modules/common/application/repositories/TransactionService';
-import { Id } from 'src/modules/common/domain/value-objects/Id';
+import { Id } from 'src/modules/common/application/value-objects/Id';
 import { PrismaService } from 'src/modules/common/infra/PrismaService';
-import { ProfileRepository } from '../../domain/application/repositories/ProfileRepository';
-import { Profile } from '../../domain/entities/Profile.entity';
+import { ProfileRepository } from '../../application/repositories/ProfileRepository';
+import { Profile } from '../../application/entities/Profile.entity';
 
 @Injectable()
 export class PrismaProfileRepository extends ProfileRepository {
@@ -34,6 +34,32 @@ export class PrismaProfileRepository extends ProfileRepository {
     });
     if (!data) return null;
     return this.convertToEntity(data);
+  }
+
+  async findById(
+    id: Id,
+    options?: TransactionOptions | undefined,
+  ): Promise<Profile | null> {
+    const data = await this.prisma
+      .or(options?.transaction)
+      .profile.findUnique({ where: { id: id.value } });
+    if (!data) return null;
+    return this.convertToEntity(data);
+  }
+
+  async update(
+    profile: Profile,
+    options?: TransactionOptions | undefined,
+  ): Promise<void> {
+    await this.prisma.or(options?.transaction).profile.update({
+      where: { id: profile.id.value },
+      data: {
+        name: profile.name,
+        email: profile.email,
+        address: profile.address,
+        linkedin: profile.linkedin,
+      },
+    });
   }
 
   private convertToEntity(data: ProfileData): Profile {

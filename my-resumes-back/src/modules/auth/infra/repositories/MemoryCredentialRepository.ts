@@ -1,6 +1,6 @@
-import { Id } from 'src/modules/common/domain/value-objects/Id';
+import { Id } from 'src/modules/common/application/value-objects/Id';
 import { CredentialRepository } from '../../application/repositories/CredentialRepository';
-import { Credential } from '../../domain/entities/Credential.entity';
+import { Credential } from '../../application/entities/Credential.entity';
 import { EntityList } from 'src/modules/common/infra/repositories/EntityList';
 
 export class MemoryCredentialRepository extends CredentialRepository {
