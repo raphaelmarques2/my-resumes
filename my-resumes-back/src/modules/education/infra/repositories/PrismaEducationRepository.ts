@@ -1,7 +1,7 @@
 import { TransactionOptions } from 'src/modules/common/application/repositories/TransactionService';
 import { Education } from '../../application/entities/Education.entity';
 import { EducationRepository } from '../../application/repositories/EducationRepository';
-import { PrismaService } from 'src/modules/common/infra/PrismaService';
+import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
 import { Id } from 'src/modules/common/application/value-objects/Id';
 import { Injectable } from '@nestjs/common';
 import { Education as EducationData } from '@prisma/client';

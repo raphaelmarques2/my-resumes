@@ -23,7 +23,7 @@ import { LoginUseCase } from 'src/modules/auth/application/use-cases/login/login
 import { SignupDto } from 'src/modules/auth/application/use-cases/signup/signup.dto';
 import { SignupUseCase } from 'src/modules/auth/application/use-cases/signup/signup.usecase';
 import { ValidateTokenUseCase } from 'src/modules/auth/application/use-cases/validate-token/validate-token.usecase';
-import { AuthGuard } from './guards/AuthGuard';
+import { AuthGuard } from '../guards/AuthGuard';
 import { UserDto } from 'src/modules/auth/application/entities/User.dto';
 
 @ApiTags('auth')

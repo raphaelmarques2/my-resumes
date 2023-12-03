@@ -22,6 +22,8 @@ import { Resume } from 'src/modules/resume/application/entities/Resume.entity';
 import { ResumeDto } from 'src/modules/resume/application/entities/ResumeDto';
 import { Id } from '../application/value-objects/Id';
 import { Name } from '../application/value-objects/Name';
+import { MemoryEmailService } from '../infra/services/MemoryEmailService';
+import { MemoryResetPasswordRequestRepository } from 'src/modules/auth/infra/repositories/MemoryResetPasswordRequestRepository';
 
 export class MemoryUseCaseTester {
   services: Map<unknown, unknown>;
@@ -80,6 +82,13 @@ export class MemoryUseCaseTester {
   get resumeRepository() {
     return this.getOrCreate(MemoryResumeRepository);
   }
+  get resetPasswordRequestRepository() {
+    return this.getOrCreate(MemoryResetPasswordRequestRepository);
+  }
+
+  get emailService() {
+    return this.getOrCreate(MemoryEmailService);
+  }
 
   async signup(override?: Partial<SignupDto>): Promise<AuthOutputDto> {
     const signupDto: SignupDto = {
@@ -103,7 +112,6 @@ export class MemoryUseCaseTester {
 
   async login(input: LoginDto) {
     const login = new LoginUseCase(
-      this.transactionService,
       this.userRepository,
       this.credentialRepository,
       this.passwordService,
@@ -117,7 +125,6 @@ export class MemoryUseCaseTester {
       id: new Id(),
       title: new Name(faker.internet.domainWord()),
       company: new Name(faker.internet.displayName()),
-      technologies: ['A', 'B', 'C'].map((e) => new Name(e)),
       description: faker.lorem.paragraph(),
       startDate: faker.date.past({ years: 3 }),
       endDate: faker.date.past({ years: 2 }),

@@ -44,7 +44,6 @@ export class UpdateExperienceUseCase {
           description: input.description,
           startDate: this.convertDate(input.startDate),
           endDate: this.convertDate(input.endDate),
-          technologies: this.convertTechnologies(input.technologies),
         });
 
         await this.experienceRepository.update(experience, { transaction });
@@ -64,9 +63,5 @@ export class UpdateExperienceUseCase {
   private convertName(input: string | undefined): Name | undefined {
     if (input === undefined) return undefined;
     return new Name(input);
-  }
-  private convertTechnologies(input: string[] | undefined): Name[] | undefined {
-    if (input === undefined) return undefined;
-    return input.map((e) => new Name(e));
   }
 }

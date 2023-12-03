@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CredentialRepository } from '../../application/repositories/CredentialRepository';
-import { PrismaService } from 'src/modules/common/infra/PrismaService';
+import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
 import { TransactionOptions } from 'src/modules/common/application/repositories/TransactionService';
 import { Id } from 'src/modules/common/application/value-objects/Id';
 import { Credential } from '../../application/entities/Credential.entity';

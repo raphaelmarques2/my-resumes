@@ -15,11 +15,12 @@ model User {
   name  String
   email String @unique
 
-  profiles    Profile[]
-  experiences Experience[]
-  resumes     Resume[]
-  credential  UserCredential?
-  educations  Education[]
+  profiles              Profile[]
+  experiences           Experience[]
+  resumes               Resume[]
+  credential            UserCredential?
+  educations            Education[]
+  resetPasswordRequests ResetPasswordRequest[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
@@ -63,8 +64,6 @@ model Experience {
   description String
   startDate   DateTime? @map("start_date")
   endDate     DateTime? @map("end_date")
-
-  technologies String[]
 
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id])
@@ -125,4 +124,20 @@ model Education {
   updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
 
   @@map("education")
+}
+
+model ResetPasswordRequest {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expiresAt DateTime @map("expires_at")
+  token     String   @unique
+  active    Boolean
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("reset_password_request")
 }

@@ -13,7 +13,6 @@ describe('ExperienceDto', () => {
         title: new Name(faker.internet.displayName()),
         company: new Name(faker.internet.displayName()),
         description: faker.lorem.paragraph(),
-        technologies: ['A', 'B', 'C'].map((e) => new Name(e)),
         startDate: new Date('2023/01/02'),
         endDate: new Date('2023/01/03'),
       });
@@ -25,7 +24,6 @@ describe('ExperienceDto', () => {
         title: experience.title.value,
         company: experience.company.value,
         description: experience.description,
-        technologies: experience.technologies.map((e) => e.value),
         startDate: new Date('2023/01/02').toISOString(),
         endDate: new Date('2023/01/03').toISOString(),
       });
@@ -37,7 +35,6 @@ describe('ExperienceDto', () => {
         title: new Name(faker.internet.displayName()),
         company: new Name(faker.internet.displayName()),
         description: faker.lorem.paragraph(),
-        technologies: ['A', 'B', 'C'].map((e) => new Name(e)),
         startDate: null,
         endDate: null,
       });
@@ -48,7 +45,6 @@ describe('ExperienceDto', () => {
         title: experience.title.value,
         company: experience.company.value,
         description: experience.description,
-        technologies: experience.technologies.map((e) => e.value),
       });
     });
   });

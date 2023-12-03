@@ -30,7 +30,6 @@ describe('createExperience', () => {
       company: input.company,
       userId: input.userId,
       description: '',
-      technologies: [],
       startDate: undefined,
       endDate: undefined,
     });

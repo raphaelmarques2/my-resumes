@@ -11,12 +11,14 @@ import {
 } from './infra/services/MyConfigService';
 import { AuthModule } from './modules/auth/auto.module';
 import { TransactionService } from './modules/common/application/repositories/TransactionService';
-import { PrismaService } from './modules/common/infra/PrismaService';
+import { PrismaService } from './modules/common/infra/services/PrismaService';
 import { PrismaTransactionService } from './modules/common/infra/repositories/PrismaAppRepository';
 import { EducationModule } from './modules/education/education.module';
 import { ExperienceModule } from './modules/experience/experience.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { ResumeModule } from './modules/resume/resume.module';
+import { SendGridEmailService } from './modules/common/infra/services/SendGridEmailService';
+import { EmailService } from './modules/common/application/services/EmailService';
 
 @Global()
 @Module({
@@ -36,7 +38,8 @@ import { ResumeModule } from './modules/resume/resume.module';
     LoggingInterceptor,
     PrismaService,
     { provide: TransactionService, useClass: PrismaTransactionService },
+    { provide: EmailService, useClass: SendGridEmailService },
   ],
-  exports: [PrismaService, TransactionService],
+  exports: [PrismaService, TransactionService, EmailService],
 })
 export class AppModule {}

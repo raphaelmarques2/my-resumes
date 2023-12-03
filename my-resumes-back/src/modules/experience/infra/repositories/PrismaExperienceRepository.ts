@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/modules/common/infra/PrismaService';
+import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
 import { ExperienceRepository } from '../../application/repositories/ExperienceRepository';
 import { TransactionOptions } from 'src/modules/common/application/repositories/TransactionService';
 import { Id } from 'src/modules/common/application/value-objects/Id';
@@ -26,7 +26,6 @@ export class PrismaExperienceRepository extends ExperienceRepository {
         description: experience.description,
         startDate: experience.startDate,
         endDate: experience.endDate,
-        technologies: experience.technologies.map((e) => e.value),
       },
     });
   }
@@ -43,7 +42,6 @@ export class PrismaExperienceRepository extends ExperienceRepository {
         description: experience.description,
         startDate: experience.startDate,
         endDate: experience.endDate,
-        technologies: experience.technologies.map((e) => e.value),
       },
     });
   }
@@ -87,7 +85,6 @@ export class PrismaExperienceRepository extends ExperienceRepository {
       description: data.description,
       startDate: data.startDate,
       endDate: data.endDate,
-      technologies: data.technologies.map((e) => new Name(e)),
     });
   }
 }

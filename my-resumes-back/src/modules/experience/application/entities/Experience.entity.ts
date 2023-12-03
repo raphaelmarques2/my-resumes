@@ -10,7 +10,6 @@ export class Experience {
     public description: string,
     public startDate: Date | null,
     public endDate: Date | null,
-    public technologies: Name[],
   ) {}
 
   update(input: {
@@ -19,15 +18,12 @@ export class Experience {
     description?: string;
     startDate?: Date | null;
     endDate?: Date | null;
-    technologies?: Name[];
   }) {
     if (input.title !== undefined) this.title = input.title;
     if (input.company !== undefined) this.company = input.company;
     if (input.description !== undefined) this.description = input.description;
     if (input.startDate !== undefined) this.startDate = input.startDate;
     if (input.endDate !== undefined) this.endDate = input.endDate;
-    if (input.technologies !== undefined)
-      this.technologies = input.technologies;
   }
 
   static create({
@@ -39,7 +35,7 @@ export class Experience {
     title: Name;
     company: Name;
   }) {
-    return new Experience(new Id(), userId, title, company, '', null, null, []);
+    return new Experience(new Id(), userId, title, company, '', null, null);
   }
 
   static load({
@@ -50,7 +46,6 @@ export class Experience {
     description,
     startDate,
     endDate,
-    technologies,
   }: {
     id: Id;
     userId: Id;
@@ -59,7 +54,6 @@ export class Experience {
     description: string;
     startDate: Date | null;
     endDate: Date | null;
-    technologies: Name[];
   }) {
     return new Experience(
       id,
@@ -69,7 +63,6 @@ export class Experience {
       description,
       startDate,
       endDate,
-      technologies,
     );
   }
 }

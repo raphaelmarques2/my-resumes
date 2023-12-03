@@ -8,7 +8,6 @@ export const updateExperienceDtoSchema = z
     description: z.string().optional(),
     startDate: z.string().datetime().optional().or(z.string().length(0)),
     endDate: z.string().datetime().optional().or(z.string().length(0)),
-    technologies: z.array(z.string().min(1)).optional(),
   })
   .strict();
 

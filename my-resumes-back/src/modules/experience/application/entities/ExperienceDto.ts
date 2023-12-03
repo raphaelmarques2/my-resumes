@@ -11,7 +11,6 @@ export const experienceDtoSchema = z
     description: z.string(),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
-    technologies: z.array(z.string().min(1)),
   })
   .strict();
 
@@ -25,7 +24,6 @@ export class ExperienceDto extends createZodDto(experienceDtoSchema) {
       description: experience.description,
       startDate: experience.startDate?.toISOString(),
       endDate: experience.endDate?.toISOString(),
-      technologies: experience.technologies.map((e) => e.value),
     } satisfies ExperienceDto);
   }
 }

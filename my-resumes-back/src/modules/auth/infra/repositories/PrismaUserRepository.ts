@@ -4,7 +4,7 @@ import { TransactionOptions } from 'src/modules/common/application/repositories/
 import { Email } from 'src/modules/common/application/value-objects/Email';
 import { Id } from 'src/modules/common/application/value-objects/Id';
 import { Name } from 'src/modules/common/application/value-objects/Name';
-import { PrismaService } from 'src/modules/common/infra/PrismaService';
+import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
 import { User } from '../../application/entities/User.entity';
 import { UserRepository } from '../../application/repositories/UserRepository';
 

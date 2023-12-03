@@ -1,10 +1,11 @@
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { passwordSchema } from '../signup/signup.dto';
 
 export const updatePasswordDtoSchema = z
   .object({
     userId: z.string().uuid(),
-    password: z.string().min(3),
+    password: passwordSchema,
   })
   .strict();
 

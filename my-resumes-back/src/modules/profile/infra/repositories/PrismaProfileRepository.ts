@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Profile as ProfileData } from '@prisma/client';
 import { TransactionOptions } from 'src/modules/common/application/repositories/TransactionService';
 import { Id } from 'src/modules/common/application/value-objects/Id';
-import { PrismaService } from 'src/modules/common/infra/PrismaService';
+import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
 import { ProfileRepository } from '../../application/repositories/ProfileRepository';
 import { Profile } from '../../application/entities/Profile.entity';
 

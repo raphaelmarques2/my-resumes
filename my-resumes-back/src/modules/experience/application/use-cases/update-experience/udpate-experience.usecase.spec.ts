@@ -27,7 +27,6 @@ describe('updateExperience', () => {
       description: 'description2',
       startDate: startDate,
       endDate: endDate,
-      technologies: ['X', 'Y'],
     });
     expect(updated).toEqual({
       id: expect.any(String),
@@ -36,7 +35,6 @@ describe('updateExperience', () => {
       description: 'description2',
       startDate: startDate,
       endDate: endDate,
-      technologies: ['X', 'Y'],
       userId: auth.user.id,
     });
   });
@@ -47,14 +45,6 @@ describe('updateExperience', () => {
       title: 'title2',
     });
     expect(updated.title).toBe('title2');
-  });
-  it('should update an experience with empty technologies', async () => {
-    const auth = await tester.signup();
-    const experience = await tester.createExperience({ userId: auth.user.id });
-    const updated = await updateExperience.execute(experience.id, {
-      technologies: [],
-    });
-    expect(updated.technologies).toEqual([]);
   });
   it('should update an experience changing start-end dates', async () => {
     const auth = await tester.signup();

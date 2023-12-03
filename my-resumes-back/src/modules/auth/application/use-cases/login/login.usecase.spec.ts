@@ -11,7 +11,6 @@ describe('login', () => {
   beforeEach(() => {
     tester = new MemoryUseCaseTester();
     login = new LoginUseCase(
-      tester.transactionService,
       tester.userRepository,
       tester.credentialRepository,
       tester.passwordService,

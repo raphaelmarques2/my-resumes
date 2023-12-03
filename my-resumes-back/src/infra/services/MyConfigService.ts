@@ -29,6 +29,15 @@ export class MyConfigService {
   get logDb() {
     return Boolean(process.env.LOG_DB);
   }
+  get sendgridKey() {
+    return process.env.SENDGRID_KEY || '';
+  }
+  get sendgridFromName() {
+    return process.env.SENDGRID_FROM_NAME || '';
+  }
+  get sendgridFromEmail() {
+    return process.env.SENDGRID_FROM_EMAIL || '';
+  }
 
   validate() {
     if (!this.port) {

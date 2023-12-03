@@ -1,9 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Credential } from 'src/modules/auth/application/entities/Credential.entity';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserDto } from 'src/modules/auth/application/entities/User.dto';
-import { User } from 'src/modules/auth/application/entities/User.entity';
 import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
-import { TransactionService } from 'src/modules/common/application/repositories/TransactionService';
 import { validateDto } from 'src/modules/common/application/validation';
 import { Email } from 'src/modules/common/application/value-objects/Email';
 import { CredentialRepository } from '../../repositories/CredentialRepository';
@@ -15,7 +16,6 @@ import { LoginDto, loginDtoSchema } from './login.dto';
 @Injectable()
 export class LoginUseCase {
   constructor(
-    private transactionService: TransactionService,
     private userRepository: UserRepository,
     private credentialRepository: CredentialRepository,
     private passwordService: PasswordService,
@@ -31,7 +31,8 @@ export class LoginUseCase {
       throw new UnauthorizedException();
     }
 
-    const credential = await this.getOrCreateUserCredential(input, user);
+    const credential = await this.credentialRepository.findByUserId(user.id);
+    if (!credential) throw new BadRequestException('Invalid user');
 
     const isPasswordValid = await this.passwordService.comparePasswords(
       input.password,
@@ -49,33 +50,5 @@ export class LoginUseCase {
       token,
       user: UserDto.createFrom(user),
     };
-  }
-
-  private async getOrCreateUserCredential(input: LoginDto, user: User) {
-    const credential = await this.transactionService.transaction(
-      async (transaction) => {
-        const credential = await this.credentialRepository.findByUserId(
-          user.id,
-          { transaction },
-        );
-
-        if (credential) return credential;
-
-        //create credential if it does not exist
-        const passwordHash = await this.passwordService.hashPassword(
-          input.password,
-        );
-
-        const newCredential = Credential.create({
-          userId: user.id,
-          password: passwordHash,
-        });
-
-        await this.credentialRepository.add(newCredential, { transaction });
-
-        return newCredential;
-      },
-    );
-    return credential;
   }
 }
