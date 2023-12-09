@@ -1,0 +1,39 @@
+---
+interface Props {
+  label: string;
+  value?: string;
+  name: string;
+  placeholder: string;
+  type?: astroHTML.JSX.HTMLInputTypeAttribute;
+  area?: boolean;
+  required?: boolean;
+}
+
+const { label, value, name, placeholder, type, area, required } = Astro.props;
+---
+
+<label class="form-control w-full">
+  <div class="label">
+    <span class="label-text">{label}</span>
+  </div>
+  {
+    area ? (
+      <textarea
+        class="textarea textarea-bordered textarea-sm w-full"
+        value={value}
+        name="description"
+        placeholder="Description"
+        required={required}
+      />
+    ) : (
+      <input
+        class="input input-bordered input-sm w-full"
+        type={type ?? "text"}
+        value={value}
+        name={name}
+        placeholder={placeholder}
+        required={required}
+      />
+    )
+  }
+</label>

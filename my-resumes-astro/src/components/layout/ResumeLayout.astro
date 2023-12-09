@@ -1,0 +1,75 @@
+---
+import MainLayout from "../../components/layout/MainLayout.astro";
+
+const { id } = Astro.params;
+
+const steps = [
+  {
+    label: "Resume",
+    icon: "fa fa-pencil",
+    path: "/resume",
+    active: false,
+  },
+  {
+    label: "Profile",
+    icon: "fa fa-pencil",
+    path: "/profile",
+    active: false,
+  },
+  {
+    label: "Education",
+    icon: "fa fa-pencil",
+    path: "/education",
+    active: false,
+  },
+  {
+    label: "Experiences",
+    icon: "fa fa-pencil",
+    path: "/experiences",
+    active: false,
+  },
+  {
+    label: "Review",
+    icon: "fa fa-pencil",
+    path: "/review",
+    active: false,
+  },
+];
+
+function updateStepsActiveState() {
+  const currentStepIndex = steps.findIndex((step) =>
+    Astro.url.pathname.endsWith(step.path)
+  );
+  if (currentStepIndex >= 0) {
+    for (let i = 0; i <= currentStepIndex; i++) {
+      steps[i].active = true;
+    }
+  }
+}
+updateStepsActiveState();
+
+const resume = {
+  title: "Backend engineer",
+};
+---
+
+<MainLayout>
+  <main class="flex flex-col items-center">
+    <h1>{resume.title}</h1>
+
+    <ul class="steps steps-horizontal my-4">
+      {
+        steps.map((step) => (
+          <li
+            class={`step ${step.active ? "step-primary" : ""}`}
+            data-content={step.active ? "✓" : undefined}
+          >
+            <a href={`/resumes/${id}${step.path}`}>{step.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <slot />
+  </main>
+</MainLayout>
