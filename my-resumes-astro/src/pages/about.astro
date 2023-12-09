@@ -1,0 +1,58 @@
+---
+import MainLayout from "../components/layout/MainLayout.astro";
+---
+
+<MainLayout>
+  <main class="container mx-auto text-center pb-4">
+    <h1 class="text-primary">About me</h1>
+    <h2>Raphael Marques</h2>
+    <div class="text-sm">Fullstack Developer</div>
+    <div class="flex justify-center space-x-4 mt-2">
+      <a class="link-icon" href="mailto:jose.raphael.marques@gmail.com">
+        <span class="icon-box">
+          <i class="fa fa-envelope" aria-hidden="true"></i>
+        </span>
+      </a>
+      <a class="link-icon" href="https://www.linkedin.com/in/raphaelmarques84/">
+        <span class="icon-box">
+          <i class="fa fa-linkedin" aria-hidden="true"></i>
+        </span>
+      </a>
+      <a class="link-icon" href="https://github.com/raphaelmarques2">
+        <span class="icon-box">
+          <i class="fa fa-github" aria-hidden="true"></i>
+        </span>
+      </a>
+    </div>
+    <p>
+      Hi! I'm Raphael. I'm a fullstack web developer.<br />I've created this
+      project for my portfolio.
+    </p>
+    <p>
+      This project was made using Postgres,
+      <br />
+       Node, NestJS, Astro, Tailwind and DaisyUI
+      <br />
+       More details on project's
+      <a
+        class="link link-primary"
+        href="https://github.com/raphaelmarques2/my-resumes"
+      >
+        github page
+      </a>.
+    </p>
+    <p></p>
+    <p>
+      <span class="font-semibold">Let's talk?</span>
+      <a class="link link-primary" href="mailto:jose.raphael.marques@gmail.com">
+        jose.raphael.marques@gmail.com
+      </a>
+    </p>
+  </main>
+</MainLayout>
+
+<style>
+  .link-icon {
+    @apply w-6 h-6 rounded flex items-center justify-center bg-gray-200 hover:bg-gray-300;
+  }
+</style>

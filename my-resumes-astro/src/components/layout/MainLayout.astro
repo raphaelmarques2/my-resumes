@@ -1,0 +1,48 @@
+---
+import TheHeader from "../TheHeader.astro";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <script
+      src="https://kit.fontawesome.com/0848db7773.js"
+      crossorigin="anonymous"></script>
+
+    <title>My Resumes</title>
+  </head>
+  <body>
+    <TheHeader />
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  .debug {
+    @apply border border-red-500;
+  }
+  h1 {
+    @apply text-2xl font-semibold;
+  }
+  h2 {
+    @apply text-lg font-semibold;
+  }
+  p {
+    @apply my-2;
+  }
+  .icon-box {
+    @apply inline-flex w-6 h-6 justify-center items-center;
+  }
+  .form-card {
+    @apply border border-gray-200 p-4;
+  }
+  .input {
+    @apply rounded;
+  }
+  .textarea {
+    @apply rounded;
+  }
+</style>

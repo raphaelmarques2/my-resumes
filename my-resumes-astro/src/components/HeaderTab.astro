@@ -1,0 +1,20 @@
+---
+interface Props {
+  active: boolean;
+  href: string;
+}
+const { active, href } = Astro.props;
+---
+
+<a class={`border-b-2 ${active ? "activeTab" : "inactiveTab"} `} href={href}>
+  <slot />
+</a>
+
+<style>
+  .activeTab {
+    @apply border-primary font-bold;
+  }
+  .inactiveTab {
+    @apply border-transparent;
+  }
+</style>
