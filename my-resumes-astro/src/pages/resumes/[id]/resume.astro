@@ -2,17 +2,30 @@
 import FormSubmit from "../../../components/FormSubmit.astro";
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
 import TextInput from "../../../components/TextInput.astro";
-import { ResumePdf } from "../../../components/react/ResumePdf";
+import ProfilePdfPreview from "../../../components/pdf/ProfilePdfPreview.astro";
+import { type Resume } from "../../../services/types/Resume";
 import { z } from "astro/zod";
+import type { Profile } from "../../../services/types/Profile";
 
 const { id } = Astro.params;
 
 let error = "";
 
-const resume = {
+const resume: Resume = {
+  id: id || "123",
+  userId: "userid",
   title: "Lorem ipsum dolor",
   description:
     "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus numquam corrupti sunt consequuntur a quaerat voluptates, quasi perspiciatis deserunt aliquid labore nulla cumque minus. Inventore, error. Sunt veritatis minima quibusdam?",
+  experiences: ["1", "2", "3", "4"],
+};
+const profile: Profile = {
+  id: "123",
+  userId: "userid",
+  name: "John",
+  email: "john@test.com",
+  address: "City X",
+  linkedin: "https://linkedin.com",
 };
 
 if (Astro.request.method === "POST") {
@@ -62,7 +75,7 @@ if (Astro.request.method === "POST") {
       <FormSubmit error={error} />
     </form>
     <div class="w-80 form-card">
-      <ResumePdf client:load />
+      <ProfilePdfPreview resume={resume} profile={profile} />
     </div>
   </div>
 </ResumeLayout>

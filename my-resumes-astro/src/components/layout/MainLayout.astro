@@ -46,3 +46,31 @@ import TheHeader from "../TheHeader.astro";
     @apply rounded;
   }
 </style>
+
+<style is:global>
+  .pdf {
+    font-size: small;
+  }
+  .pdf .name {
+    font-size: 1.2em;
+    @apply font-bold text-center;
+  }
+  .pdf .title {
+    font-size: 1em;
+    @apply font-bold text-center;
+  }
+  .pdf .profile-item {
+    line-height: 1.2em;
+  }
+  .pdf .profile-description {
+    line-height: 1.2em;
+    @apply text-justify;
+  }
+  .pdf a {
+    color: blue;
+    text-decoration-line: underline;
+  }
+  .pdf .line {
+    @apply border-b border-black mt-2 mb-1;
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+import { type Resume } from "../../services/types/Resume";
+import { type Profile } from "../../services/types/Profile";
+
+interface Props {
+  resume: Resume;
+  profile: Profile;
+}
+
+const { resume, profile } = Astro.props;
+---
+
+<div class="pdf">
+  <div class="name">{profile.name}</div>
+  <div class="title">{resume.title}</div>
+  <div class="profile-item">{profile.address}</div>
+  <div class="profile-item">
+    E-mail: <a href={`mailto:${profile.email}`}>{profile.email}</a>
+  </div>
+  <div class="profile-item">
+    LinkedIn: <a href={profile.linkedin}>{profile.linkedin}</a>
+  </div>
+  <div class="line"></div>
+  <div class="profile-description">{resume.description}</div>
+</div>
