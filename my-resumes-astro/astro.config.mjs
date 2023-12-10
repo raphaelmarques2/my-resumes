@@ -9,9 +9,9 @@ export default defineConfig({
   integrations: [tailwind(), react()],
   output: "server",
   adapter: node({
-    mode: "standalone"
+    mode: "standalone",
   }),
   redirects: {
-    "/resumes/[id]": "/resumes/[id]/resume"
-  }
+    "/resumes/[id]": "/resumes/[id]/resume",
+  },
 });

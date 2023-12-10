@@ -1,62 +1,20 @@
 ---
-import { FormSubmit } from "../../../components/react/FormSubmit.tsx";
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
-import { TextInput } from "../../../components/react/TextInput.tsx";
 import { HeaderPdfPreview } from "../../../components/react/HeaderPdfPreview.tsx";
-import { type Resume } from "../../../services/types/Resume";
-import { z } from "astro/zod";
-import type { Profile } from "../../../services/types/Profile";
-import { EditResume } from "../../../components/react/EditResume";
+import { EditResume } from "../../../components/react/resume/EditResume.tsx";
+import { SetSharedResume } from "../../../components/react/resume/SetSharedResume";
+import { backend } from "../../../services/backend";
 
 const { id } = Astro.params;
+if (!id) return Astro.redirect("/404");
 
-let error = "";
-
-const resume: Resume = {
-  id: id || "123",
-  userId: "userid",
-  title: "Lorem ipsum dolor",
-  description:
-    "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus numquam corrupti sunt consequuntur a quaerat voluptates, quasi perspiciatis deserunt aliquid labore nulla cumque minus. Inventore, error. Sunt veritatis minima quibusdam?",
-  experiences: ["1", "2", "3", "4"],
-};
-const profile: Profile = {
-  id: "123",
-  userId: "userid",
-  name: "John",
-  email: "john@test.com",
-  address: "City X",
-  linkedin: "https://linkedin.com",
-};
-
-if (Astro.request.method === "POST") {
-  const schema = z.object({
-    title: z
-      .string({ invalid_type_error: "Invalid title" })
-      .min(1, "Title must have at least 1 character"),
-    description: z.string({ invalid_type_error: "Invalid description" }),
-  });
-
-  const formData = Object.fromEntries(
-    (await Astro.request.formData()).entries()
-  );
-
-  const payload = schema.safeParse(formData);
-
-  if (payload.success) {
-    console.log("save", payload.data);
-    resume.title = payload.data.title;
-    resume.description = payload.data.description;
-
-    return Astro.redirect(`/resumes/${id}/profile`);
-  } else {
-    error = payload.error.errors[0]?.message ?? "Invalid data";
-  }
-}
+const resume = await backend.getResume(id);
+const profile = await backend.getUserProfile();
 ---
 
 <ResumeLayout>
   <div class="flex space-x-4">
+    <SetSharedResume resume={resume} client:load />
     <EditResume resume={resume} client:load />
     <div class="w-80 form-card">
       <HeaderPdfPreview profile={profile} client:load />
