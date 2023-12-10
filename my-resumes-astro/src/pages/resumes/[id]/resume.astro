@@ -1,11 +1,12 @@
 ---
-import FormSubmit from "../../../components/FormSubmit.astro";
+import { FormSubmit } from "../../../components/react/FormSubmit.tsx";
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
-import TextInput from "../../../components/TextInput.astro";
-import ProfilePdfPreview from "../../../components/pdf/ProfilePdfPreview.astro";
+import { TextInput } from "../../../components/react/TextInput.tsx";
+import { HeaderPdfPreview } from "../../../components/react/HeaderPdfPreview.tsx";
 import { type Resume } from "../../../services/types/Resume";
 import { z } from "astro/zod";
 import type { Profile } from "../../../services/types/Profile";
+import { EditResume } from "../../../components/react/EditResume";
 
 const { id } = Astro.params;
 
@@ -56,26 +57,9 @@ if (Astro.request.method === "POST") {
 
 <ResumeLayout>
   <div class="flex space-x-4">
-    <form class="w-80 form-card" method="post">
-      <TextInput
-        label="Title"
-        value={resume.title}
-        name="title"
-        required
-        placeholder="Title"
-      />
-      <TextInput
-        label="Description"
-        value={resume.description}
-        name="description"
-        placeholder="Description"
-        area={true}
-      />
-
-      <FormSubmit error={error} />
-    </form>
+    <EditResume resume={resume} client:load />
     <div class="w-80 form-card">
-      <ProfilePdfPreview resume={resume} profile={profile} />
+      <HeaderPdfPreview profile={profile} client:load />
     </div>
   </div>
 </ResumeLayout>
