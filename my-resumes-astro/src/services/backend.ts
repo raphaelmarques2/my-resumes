@@ -1,4 +1,5 @@
 import type { Education } from "./types/Education";
+import type { Experience } from "./types/Experience";
 import type { Profile } from "./types/Profile";
 import type { Resume } from "./types/Resume";
 
@@ -23,6 +24,29 @@ export class Backend {
     };
     return resume;
   }
+  async getEducation(id: string) {
+    const education: Education = {
+      id: `1`,
+      title: `Courst 1`,
+      institution: `Institution 1`,
+      userId: "123",
+      startDate: new Date().toISOString(),
+      endDate: new Date().toISOString(),
+    };
+    return education;
+  }
+  async getExperience(id: string) {
+    const experience: Experience = {
+      id: `1`,
+      userId: "123",
+      title: `title 1`,
+      company: `company 1`,
+      description: "lorem",
+      startDate: new Date().toISOString(),
+      endDate: new Date().toISOString(),
+    };
+    return experience;
+  }
 
   async getUserProfile() {
     const profile: Profile = {
@@ -39,7 +63,7 @@ export class Backend {
   async getUserResumes(): Promise<Resume[]> {
     const resumes: Resume[] = [];
 
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 4; i++) {
       resumes.push({
         id: `${i}`,
         title: `lorem${i}`,
@@ -68,6 +92,24 @@ export class Backend {
     }
 
     return educations;
+  }
+
+  async getUserExperiences(): Promise<Experience[]> {
+    const experiences: Experience[] = [];
+
+    for (let i = 1; i <= 10; i++) {
+      experiences.push({
+        id: `${i}`,
+        userId: "123",
+        title: `title ${i}`,
+        company: `company ${i}`,
+        description: "lorem",
+        startDate: new Date().toISOString(),
+        endDate: new Date().toISOString(),
+      });
+    }
+
+    return experiences;
   }
 }
 

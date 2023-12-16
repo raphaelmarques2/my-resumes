@@ -1,8 +1,8 @@
 interface Props {
   label: string;
   value?: string;
-  name: string;
-  placeholder: string;
+  name?: string;
+  placeholder?: string;
   type?: astroHTML.JSX.HTMLInputTypeAttribute;
   area?: boolean;
   required?: boolean;
@@ -28,8 +28,8 @@ export function TextInput({
         <textarea
           className="textarea textarea-bordered textarea-sm w-full"
           value={value}
-          name="description"
-          placeholder="Description"
+          name={name}
+          placeholder={placeholder}
           required={required}
           onInput={(event) => onInput && onInput(event.currentTarget.value)}
         />

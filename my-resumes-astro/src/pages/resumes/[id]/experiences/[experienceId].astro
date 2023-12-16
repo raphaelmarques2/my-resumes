@@ -1,0 +1,51 @@
+---
+import ResumeLayout from "../../../../components/layout/ResumeLayout.astro";
+import { TextInput } from "../../../../components/react/TextInput";
+import { backend } from "../../../../services/backend";
+
+const { id, experienceId } = Astro.params;
+if (!id || !experienceId) return Astro.redirect("/404");
+
+const experience = await backend.getExperience(experienceId);
+---
+
+<ResumeLayout>
+  <div class="flex space-x-4">
+    <div>
+      <div class="w-80 form-card">
+        <TextInput
+          label="Title"
+          value={experience.title}
+          required
+          placeholder="Title"
+        />
+        <TextInput
+          label="Company"
+          value={experience.company}
+          required
+          placeholder="Company"
+        />
+        <TextInput
+          label="Description"
+          value={experience.description}
+          placeholder="Description"
+          area
+        />
+        <TextInput
+          label="Start date"
+          value={experience.startDate}
+          type="date"
+        />
+        <TextInput label="End date" value={experience.endDate} type="date" />
+      </div>
+      <div class="flex flex-col items-center space-y-2 mt-4">
+        <a href={`/resumes/${id}/experiences`}>
+          <button class="btn btn-primary btn-wide">Update</button>
+        </a>
+        <button class="btn btn-ghost btn-wide">Cancel</button>
+        <button class="btn btn-ghost btn-wide">Delete</button>
+      </div>
+    </div>
+    <div class="w-80 form-card">PDF</div>
+  </div>
+</ResumeLayout>

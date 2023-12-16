@@ -8,45 +8,62 @@ const steps = [
     label: "Resume",
     icon: "fa fa-pencil",
     path: "/resume",
+    pathMatch: new RegExp("/resumes/[a-z0-9-]+/resume"),
     active: false,
+    done: false,
   },
   {
     label: "Profile",
     icon: "fa fa-pencil",
     path: "/profile",
+    pathMatch: new RegExp("/resumes/[a-z0-9-]+/profile"),
     active: false,
+    done: false,
   },
   {
     label: "Education",
     icon: "fa fa-pencil",
-    path: "/education",
+    path: "/educations",
+    pathMatch: new RegExp("/resumes/[a-z0-9-]+/educations(/[a-z0-9-]+)?"),
     active: false,
+    done: false,
   },
   {
     label: "Experiences",
     icon: "fa fa-pencil",
     path: "/experiences",
+    pathMatch: new RegExp("/resumes/[a-z0-9-]+/experiences(/[a-z0-9-]+)?"),
     active: false,
+    done: false,
   },
   {
     label: "Review",
     icon: "fa fa-pencil",
     path: "/review",
+    pathMatch: new RegExp("/resumes/[a-z0-9-]+/review"),
     active: false,
+    done: false,
   },
 ];
 
-function updateStepsActiveState() {
+console.log(
+  "match",
+  "/resumes/123/resume".match(/\/resumes\/[a-z0-9]+\/resume/g),
+  "/resumes/123/resume".match(new RegExp("/resumes/[a-z0-9]+/resume"))
+);
+
+function updateStepsStates() {
   const currentStepIndex = steps.findIndex((step) =>
-    Astro.url.pathname.endsWith(step.path)
+    Astro.url.pathname.match(step.pathMatch)
   );
   if (currentStepIndex >= 0) {
-    for (let i = 0; i <= currentStepIndex; i++) {
-      steps[i].active = true;
-    }
+    steps.forEach((step, i) => {
+      step.active = i <= currentStepIndex;
+      step.done = i < currentStepIndex;
+    });
   }
 }
-updateStepsActiveState();
+updateStepsStates();
 
 const resume = {
   title: "Backend engineer",
@@ -62,7 +79,7 @@ const resume = {
         steps.map((step) => (
           <li
             class={`step ${step.active ? "step-primary" : ""}`}
-            data-content={step.active ? "✓" : undefined}
+            data-content={step.done ? "✓" : undefined}
           >
             <a href={`/resumes/${id}${step.path}`}>{step.label}</a>
           </li>

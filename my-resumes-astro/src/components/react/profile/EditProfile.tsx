@@ -18,7 +18,7 @@ export function EditProfile(props: { profile: Profile }) {
       setError(err.message ?? "Error");
       throw err;
     });
-    window.location.href = `/resumes/${props.profile.id}/education`;
+    window.location.href = `/resumes/${props.profile.id}/educations`;
   }
 
   return (

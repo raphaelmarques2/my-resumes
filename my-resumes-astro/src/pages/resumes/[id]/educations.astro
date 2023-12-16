@@ -16,7 +16,7 @@ const educations = await backend.getUserEducations();
         {
           educations.map((education) => (
             <ListItem
-              href={`/educations/${education.id}`}
+              href={`/resumes/${id}/educations/${education.id}`}
               title={education.title}
               subtitle={education.institution}
             />
@@ -28,7 +28,9 @@ const educations = await backend.getUserEducations();
           Add new education
           <i class="fa fa-add" aria-hidden="true"></i>
         </button>
-        <button class="btn btn-primary btn-wide">Save and Continue</button>
+        <a href={`/resumes/${id}/experiences`}>
+          <button class="btn btn-primary btn-wide">Save and Continue</button>
+        </a>
       </div>
     </div>
     <div class="w-80 form-card">Right</div>
