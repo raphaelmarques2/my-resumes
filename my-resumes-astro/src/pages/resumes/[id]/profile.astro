@@ -1,85 +1,26 @@
 ---
 import { z } from "astro/zod";
-import { FormSubmit } from "../../../components/react/FormSubmit.tsx";
-import { TextInput } from "../../../components/react/TextInput.tsx";
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
+import { EditProfile } from "../../../components/react/profile/EditProfile.tsx";
+import { SetSharedProfile } from "../../../components/react/profile/SetSharedProfile";
+import { backend } from "../../../services/backend";
+import { HeaderPdfPreview } from "../../../components/react/HeaderPdfPreview";
+import { SetSharedResume } from "../../../components/react/resume/SetSharedResume";
 
 const { id } = Astro.params;
+if (!id) return Astro.redirect("/404");
 
-let error = "";
-
-const profile = {
-  name: "John",
-  email: "abc@test.com",
-  address: "Here",
-  linkedin: "http://linkedin.com/in/abc",
-};
-
-if (Astro.request.method === "POST") {
-  const schema = z.object({
-    name: z
-      .string({ invalid_type_error: "Invalid name" })
-      .min(1, "Name must have at least 1 character"),
-    email: z
-      .string({ invalid_type_error: "Invalid email" })
-      .min(1, "Email must have at least 1 character"),
-    address: z.string({ invalid_type_error: "Invalid address" }),
-    linkedin: z.string({ invalid_type_error: "Invalid linkedin" }),
-  });
-
-  const formData = Object.fromEntries(
-    (await Astro.request.formData()).entries()
-  );
-
-  const payload = schema.safeParse(formData);
-
-  if (payload.success) {
-    console.log("save", payload.data);
-    profile.name = payload.data.name;
-    profile.email = payload.data.email;
-    profile.address = payload.data.address;
-    profile.linkedin = payload.data.linkedin;
-
-    return Astro.redirect(`/resumes/${id}/education`);
-  } else {
-    error = payload.error.errors[0]?.message ?? "Invalid data";
-  }
-}
+const resume = await backend.getResume(id);
+const profile = await backend.getUserProfile();
 ---
 
 <ResumeLayout>
   <div class="flex space-x-4">
-    <form class="w-80 form-card" method="post">
-      <TextInput
-        label="Name"
-        value={profile.name}
-        name="name"
-        required
-        placeholder="My name"
-      />
-      <TextInput
-        label="Email"
-        value={profile.email}
-        name="email"
-        type="email"
-        required
-        placeholder="me@email.com"
-      />
-      <TextInput
-        label="Address"
-        value={profile.address}
-        name="address"
-        placeholder="City, State, Country..."
-      />
-      <TextInput
-        label="LinkedIn"
-        value={profile.linkedin}
-        name="linkedin"
-        placeholder="http://linkedin.com/in/..."
-      />
-
-      <FormSubmit error={error} />
-    </form>
-    <div class="w-80 form-card">Right</div>
+    <SetSharedResume resume={resume} client:load />
+    <SetSharedProfile profile={profile} client:load />
+    <EditProfile profile={profile} client:load />
+    <div class="w-80 form-card">
+      <HeaderPdfPreview client:load />
+    </div>
   </div>
 </ResumeLayout>

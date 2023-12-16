@@ -6,6 +6,10 @@ export class Backend {
   async updateResume(resume: Resume) {
     console.log("update-resume", resume);
   }
+  async updateProfile(profile: Profile) {
+    console.log("update-profile", profile);
+  }
+
   async getResume(id: string) {
     const resume: Resume = {
       id: id,

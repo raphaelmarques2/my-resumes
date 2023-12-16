@@ -27,7 +27,7 @@ export function EditResume(props: { resume: Resume }) {
   }
 
   return (
-    <form className="w-80 form-card" method="post" onSubmit={(e) => submit(e)}>
+    <form className="w-80 form-card" onSubmit={(e) => submit(e)}>
       <TextInput
         label="Title"
         value={resume.title}
