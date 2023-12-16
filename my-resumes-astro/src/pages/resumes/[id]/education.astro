@@ -1,9 +1,36 @@
 ---
+import ListItem from "../../../components/ListItem.astro";
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
+import { backend } from "../../../services/backend";
+
+const { id } = Astro.params;
+if (!id) return Astro.redirect("/404");
+
+const educations = await backend.getUserEducations();
 ---
 
 <ResumeLayout>
-  <div>
-    <h1>Education</h1>
+  <div class="flex space-x-4">
+    <div class="w-80 form-card">
+      <div class="space-y-2">
+        {
+          educations.map((education) => (
+            <ListItem
+              href={`/educations/${education.id}`}
+              title={education.title}
+              subtitle={education.institution}
+            />
+          ))
+        }
+      </div>
+      <div class="flex flex-col items-center mt-4 space-y-2">
+        <button class="btn btn-ghost btn-wide">
+          Add new education
+          <i class="fa fa-add" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-primary btn-wide">Save and Continue</button>
+      </div>
+    </div>
+    <div class="w-80 form-card">Right</div>
   </div>
 </ResumeLayout>

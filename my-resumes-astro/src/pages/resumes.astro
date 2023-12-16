@@ -1,43 +1,27 @@
 ---
-import { v } from "../../dist/server/chunks/astro_atEtkU_n.mjs";
+import ListItem from "../components/ListItem.astro";
 import MainLayout from "../components/layout/MainLayout.astro";
+import { backend } from "../services/backend";
 
-const resumes = [
-  { id: "1", title: "lorem1", date: new Date() },
-  { id: "2", title: "lorem1", date: new Date() },
-  { id: "3", title: "lorem1", date: new Date() },
-  { id: "4", title: "lorem1", date: new Date() },
-  { id: "5", title: "lorem1", date: new Date() },
-  { id: "6", title: "lorem1", date: new Date() },
-  { id: "7", title: "lorem1", date: new Date() },
-  { id: "8", title: "lorem1", date: new Date() },
-  { id: "9", title: "lorem1", date: new Date() },
-];
+const resumes = await backend.getUserResumes();
 ---
 
 <MainLayout>
   <main class="container mx-auto flex flex-col items-center pb-4">
     <h1>My Resumes</h1>
     <p>Create and edit your resumes</p>
-    <button class="btn btn-ghost">
+    <button class="btn btn-ghost btn-wide">
       Create new
       <i class="fa fa-add" aria-hidden="true"></i>
     </button>
-    <div class="space-y-2">
+    <div class="space-y-2 w-80 mt-4">
       {
         resumes.map((resume) => (
-          <a
-            class="flex items-center space-x-2 rounded-lg shadow-md px-4 py-2 w-80 bg-white border border-gray-100 hover:bg-gray-100"
+          <ListItem
             href={`/resumes/${resume.id}`}
-          >
-            <div class="flex-1">
-              <div class="font-semibold">{resume.title}</div>
-              <div class="text-sm">
-                Last update: {resume.date.toLocaleDateString()}
-              </div>
-            </div>
-            <i class="fa fa-pencil flex-none" aria-hidden="true" />
-          </a>
+            title={resume.title}
+            subtitle={`Last update: ${resume.updatedAt.toLocaleDateString()}`}
+          />
         ))
       }
     </div>

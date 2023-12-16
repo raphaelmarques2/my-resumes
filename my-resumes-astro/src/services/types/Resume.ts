@@ -4,4 +4,5 @@ export type Resume = {
   title: string;
   description: string;
   experiences: string[];
+  updatedAt: Date;
 };
