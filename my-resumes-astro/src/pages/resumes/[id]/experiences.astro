@@ -1,41 +1,25 @@
 ---
-import ListItem from "../../../components/ListItem.astro";
+import { EditExperienceList } from "../../../components/experience/EditExperienceList";
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
-import { backend } from "../../../services/backend";
-import { AddExperienceButton } from "../../../components/react/experience/AddExperienceButton";
 import { SetSharedExperiences } from "../../../components/react/experience/SetSharedExperiences";
 import { ExperiencePdfPreview } from "../../../components/react/pdf/ExperiencePdfPreview";
+import { SetSharedResume } from "../../../components/react/resume/SetSharedResume";
+import { backend } from "../../../services/backend";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
 
+const resume = await backend.getResume(id);
 const experiences = await backend.getUserExperiences();
 ---
 
 <ResumeLayout>
   <div class="flex space-x-4">
+    <SetSharedExperiences experiences={experiences} client:load />
+    <SetSharedResume resume={resume} client:load />
+    <EditExperienceList resumeId={id} client:load />
     <div class="w-80 form-card">
-      <div class="space-y-2">
-        {
-          experiences.map((experience) => (
-            <ListItem
-              href={`/resumes/${id}/experiences/${experience.id}`}
-              title={experience.title}
-              subtitle={experience.company}
-            />
-          ))
-        }
-      </div>
-      <div class="flex flex-col items-center mt-4 space-y-2">
-        <AddExperienceButton resumeId={id} client:load />
-        <a href={`/resumes/${id}/review`}>
-          <button class="btn btn-primary btn-wide">Save and Continue</button>
-        </a>
-      </div>
-    </div>
-    <div class="w-80 form-card">
-      <SetSharedExperiences experiences={experiences} client:load />
-      <ExperiencePdfPreview client:load />
+      <ExperiencePdfPreview fromResume client:load />
     </div>
   </div>
 </ResumeLayout>

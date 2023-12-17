@@ -46,12 +46,6 @@ const steps = [
   },
 ];
 
-console.log(
-  "match",
-  "/resumes/123/resume".match(/\/resumes\/[a-z0-9]+\/resume/g),
-  "/resumes/123/resume".match(new RegExp("/resumes/[a-z0-9]+/resume"))
-);
-
 function updateStepsStates() {
   const currentStepIndex = steps.findIndex((step) =>
     Astro.url.pathname.match(step.pathMatch)

@@ -1,5 +1,5 @@
 ---
-import ListItem from "../../../components/ListItem.astro";
+import { ListItem } from "../../../components/ListItem.tsx";
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
 import { backend } from "../../../services/backend";
 import { EducationPdfPreview } from "../../../components/react/pdf/EducationPdfPreview";
@@ -17,12 +17,15 @@ const educations = await backend.getUserEducations();
     <div class="w-80 form-card">
       <div class="space-y-2">
         {
-          educations.map((education) => (
-            <ListItem
-              href={`/resumes/${id}/educations/${education.id}`}
-              title={education.title}
-              subtitle={education.institution}
-            />
+          educations.map((education, i) => (
+            <div class="flex items-center space-x-2">
+              <input type="checkbox" checked={i === 0} class="form-checkbox" />
+              <ListItem
+                href={`/resumes/${id}/educations/${education.id}`}
+                title={education.title}
+                subtitle={education.institution}
+              />
+            </div>
           ))
         }
       </div>
