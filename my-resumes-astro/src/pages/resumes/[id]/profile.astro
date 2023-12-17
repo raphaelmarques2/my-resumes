@@ -4,7 +4,7 @@ import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
 import { EditProfile } from "../../../components/react/profile/EditProfile.tsx";
 import { SetSharedProfile } from "../../../components/react/profile/SetSharedProfile";
 import { backend } from "../../../services/backend";
-import { HeaderPdfPreview } from "../../../components/react/pdf/HeaderPdfPreview.tsx";
+import { ResumeAndProfilePdfPreview } from "../../../components/react/pdf/ResumeAndProfilePdfPreview.tsx";
 import { SetSharedResume } from "../../../components/react/resume/SetSharedResume";
 
 const { id } = Astro.params;
@@ -20,7 +20,8 @@ const profile = await backend.getUserProfile();
     <SetSharedProfile profile={profile} client:load />
     <EditProfile resumeId={id} client:load />
     <div class="w-80 form-card">
-      <HeaderPdfPreview client:load />
+      <ResumeAndProfilePdfPreview client:load />
     </div>
   </div>
 </ResumeLayout>
+ ../../../components/react/pdf/ResumeAndProfilePdfPreview.tsx

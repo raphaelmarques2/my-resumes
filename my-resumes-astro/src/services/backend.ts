@@ -14,11 +14,20 @@ export class Backend {
   async updateEducation(education: Education) {
     console.log("update-education", education);
   }
+  async updateExperience(experience: Experience) {
+    console.log("update-experience", experience);
+  }
   async deleteEducation(id: string) {
     console.log("delete-education", id);
   }
+  async deleteExperience(id: string) {
+    console.log("delete-experience", id);
+  }
   async addEducation(): Promise<Education> {
     return this.getEducation("1");
+  }
+  async addExperience() {
+    return this.getExperience("1");
   }
 
   async getResume(id: string) {

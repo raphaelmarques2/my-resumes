@@ -2,6 +2,9 @@
 import ListItem from "../../../components/ListItem.astro";
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
 import { backend } from "../../../services/backend";
+import { AddExperienceButton } from "../../../components/react/experience/AddExperienceButton";
+import { SetSharedExperiences } from "../../../components/react/experience/SetSharedExperiences";
+import { ExperiencePdfPreview } from "../../../components/react/pdf/ExperiencePdfPreview";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
@@ -24,15 +27,15 @@ const experiences = await backend.getUserExperiences();
         }
       </div>
       <div class="flex flex-col items-center mt-4 space-y-2">
-        <button class="btn btn-ghost btn-wide">
-          Add new experience
-          <i class="fa fa-add" aria-hidden="true"></i>
-        </button>
+        <AddExperienceButton resumeId={id} client:load />
         <a href={`/resumes/${id}/review`}>
           <button class="btn btn-primary btn-wide">Save and Continue</button>
         </a>
       </div>
     </div>
-    <div class="w-80 form-card">Right</div>
+    <div class="w-80 form-card">
+      <SetSharedExperiences experiences={experiences} client:load />
+      <ExperiencePdfPreview client:load />
+    </div>
   </div>
 </ResumeLayout>
