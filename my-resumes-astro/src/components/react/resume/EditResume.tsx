@@ -1,17 +1,11 @@
-import {
-  useEffect,
-  useState,
-  type FormEventHandler,
-  type FormEvent,
-} from "react";
-import type { Resume } from "../../../services/types/Resume";
+import { useStore } from "@nanostores/react";
+import { useState, type FormEvent } from "react";
+import { backend } from "../../../services/backend";
+import { sharedResume } from "../../../stores/sharedResume";
 import { FormSubmit } from "../FormSubmit";
 import { TextInput } from "../TextInput";
-import { sharedResume } from "../../../stores/sharedResume";
-import { useStore } from "@nanostores/react";
-import { backend } from "../../../services/backend";
 
-export function EditResume(props: { resume: Resume }) {
+export function EditResume(props: { resumeId: string }) {
   const [error, setError] = useState("");
 
   const resume = useStore(sharedResume);
@@ -23,7 +17,7 @@ export function EditResume(props: { resume: Resume }) {
       setError(err.message ?? "Error");
       throw err;
     });
-    window.location.href = `/resumes/${props.resume.id}/profile`;
+    window.location.href = `/resumes/${props.resumeId}/profile`;
   }
 
   return (

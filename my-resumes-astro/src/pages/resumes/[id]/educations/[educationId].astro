@@ -1,7 +1,9 @@
 ---
 import ResumeLayout from "../../../../components/layout/ResumeLayout.astro";
-import { TextInput } from "../../../../components/react/TextInput";
 import { backend } from "../../../../services/backend";
+import { EducationPdfPreview } from "../../../../components/react/pdf/EducationPdfPreview";
+import { SetSharedEducations } from "../../../../components/react/education/SetSharedEducations";
+import { EditEducation } from "../../../../components/react/education/EditEducation";
 
 const { id, educationId } = Astro.params;
 if (!id || !educationId) return Astro.redirect("/404");
@@ -11,31 +13,10 @@ const education = await backend.getEducation(educationId);
 
 <ResumeLayout>
   <div class="flex space-x-4">
-    <div>
-      <div class="w-80 form-card">
-        <TextInput
-          label="Title"
-          value={education.title}
-          required
-          placeholder="Title"
-        />
-        <TextInput
-          label="Institution"
-          value={education.institution}
-          required
-          placeholder="Title"
-        />
-        <TextInput label="Start date" value={education.startDate} type="date" />
-        <TextInput label="End date" value={education.endDate} type="date" />
-      </div>
-      <div class="flex flex-col items-center space-y-2 mt-4">
-        <a href={`/resumes/${id}/educations`}>
-          <button class="btn btn-primary btn-wide">Update</button>
-        </a>
-        <button class="btn btn-ghost btn-wide">Cancel</button>
-        <button class="btn btn-ghost btn-wide">Delete</button>
-      </div>
+    <SetSharedEducations educations={[education]} client:load />
+    <EditEducation resumeId={id} client:load />
+    <div class="w-80 form-card">
+      <EducationPdfPreview client:load />
     </div>
-    <div class="w-80 form-card">PDF</div>
   </div>
 </ResumeLayout>

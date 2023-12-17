@@ -11,6 +11,15 @@ export class Backend {
   async updateProfile(profile: Profile) {
     console.log("update-profile", profile);
   }
+  async updateEducation(education: Education) {
+    console.log("update-education", education);
+  }
+  async deleteEducation(id: string) {
+    console.log("delete-education", id);
+  }
+  async addEducation(): Promise<Education> {
+    return this.getEducation("1");
+  }
 
   async getResume(id: string) {
     const resume: Resume = {

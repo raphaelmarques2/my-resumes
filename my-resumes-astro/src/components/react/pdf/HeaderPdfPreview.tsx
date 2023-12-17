@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
-import { type Profile } from "../../services/types/Profile";
-import { sharedResume } from "../../stores/sharedResume";
-import { sharedProfile } from "../../stores/sharedProfile";
+import { type Profile } from "../../../services/types/Profile";
+import { sharedResume } from "../../../stores/sharedResume";
+import { sharedProfile } from "../../../stores/sharedProfile";
 
 export function HeaderPdfPreview() {
   const resume = useStore(sharedResume);

@@ -1,6 +1,6 @@
 ---
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
-import { HeaderPdfPreview } from "../../../components/react/HeaderPdfPreview.tsx";
+import { HeaderPdfPreview } from "../../../components/react/pdf/HeaderPdfPreview.tsx";
 import { SetSharedProfile } from "../../../components/react/profile/SetSharedProfile";
 import { EditResume } from "../../../components/react/resume/EditResume.tsx";
 import { SetSharedResume } from "../../../components/react/resume/SetSharedResume";
@@ -17,7 +17,7 @@ const profile = await backend.getUserProfile();
   <div class="flex space-x-4">
     <SetSharedResume resume={resume} client:load />
     <SetSharedProfile profile={profile} client:load />
-    <EditResume resume={resume} client:load />
+    <EditResume resumeId={id} client:load />
     <div class="w-80 form-card">
       <HeaderPdfPreview client:load />
     </div>

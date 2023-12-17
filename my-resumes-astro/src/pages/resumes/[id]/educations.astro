@@ -2,6 +2,9 @@
 import ListItem from "../../../components/ListItem.astro";
 import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
 import { backend } from "../../../services/backend";
+import { EducationPdfPreview } from "../../../components/react/pdf/EducationPdfPreview";
+import { SetSharedEducations } from "../../../components/react/education/SetSharedEducations";
+import { AddEducationButton } from "../../../components/react/education/AddEducationButton";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
@@ -24,15 +27,15 @@ const educations = await backend.getUserEducations();
         }
       </div>
       <div class="flex flex-col items-center mt-4 space-y-2">
-        <button class="btn btn-ghost btn-wide">
-          Add new education
-          <i class="fa fa-add" aria-hidden="true"></i>
-        </button>
+        <AddEducationButton resumeId={id} client:load />
         <a href={`/resumes/${id}/experiences`}>
           <button class="btn btn-primary btn-wide">Save and Continue</button>
         </a>
       </div>
     </div>
-    <div class="w-80 form-card">Right</div>
+    <div class="w-80 form-card">
+      <SetSharedEducations educations={educations} client:load />
+      <EducationPdfPreview client:load />
+    </div>
   </div>
 </ResumeLayout>

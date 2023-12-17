@@ -6,7 +6,7 @@ import { sharedProfile } from "../../../stores/sharedProfile";
 import { useStore } from "@nanostores/react";
 import { backend } from "../../../services/backend";
 
-export function EditProfile(props: { profile: Profile }) {
+export function EditProfile(props: { resumeId: string }) {
   const [error, setError] = useState("");
 
   const profile = useStore(sharedProfile);
@@ -18,7 +18,7 @@ export function EditProfile(props: { profile: Profile }) {
       setError(err.message ?? "Error");
       throw err;
     });
-    window.location.href = `/resumes/${props.profile.id}/educations`;
+    window.location.href = `/resumes/${props.resumeId}/educations`;
   }
 
   return (
