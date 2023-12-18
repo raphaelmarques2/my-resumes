@@ -14,7 +14,7 @@ import TheHeader from "../components/common/TheHeader.astro";
 
     <title>My Resumes</title>
   </head>
-  <body>
+  <body class="min-h-screen relative flex flex-col">
     <TheHeader />
     <slot />
   </body>
@@ -45,6 +45,12 @@ import TheHeader from "../components/common/TheHeader.astro";
   .textarea {
     line-height: 1.1rem;
     @apply rounded;
+  }
+  .form-control .label {
+    @apply pb-0;
+  }
+  .btn.btn-link {
+    @apply px-1;
   }
 </style>
 

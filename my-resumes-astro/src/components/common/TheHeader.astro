@@ -3,18 +3,39 @@ import HeaderTab from "./HeaderTab.astro";
 const isHome = Astro.url.pathname === "/";
 const isResumes = Astro.url.pathname === "/resumes";
 const isAbout = Astro.url.pathname === "/about";
+
+const token = Astro.cookies.get("token");
 ---
 
 <header class="navbar px-4 py-1 shadow mb-2">
   <div class="flex-1"></div>
   <div class="flex-1 flex justify-center items-center space-x-4">
     <HeaderTab href="/" active={isHome}>Home</HeaderTab>
-    <HeaderTab href="/resumes" active={isResumes}>Resumes</HeaderTab>
+    {
+      token && (
+        <HeaderTab href="/resumes" active={isResumes}>
+          Resumes
+        </HeaderTab>
+      )
+    }
     <HeaderTab href="/about" active={isAbout}>About</HeaderTab>
   </div>
-  <div class="flex-1 flex justify-end">
-    <button class="btn btn-ghost">Login</button>
-    <button class="btn btn-primary">Signup</button>
-    <button class="btn btn-ghost">Logout</button>
+  <div class="flex-1 flex justify-end space-x-2">
+    {
+      token ? (
+        <a class="btn btn-ghost" href="/logout">
+          Logout
+        </a>
+      ) : (
+        <>
+          <a class="btn btn-ghost" href="/login">
+            Login
+          </a>
+          <a class="btn btn-primary" href="/signup">
+            Signup
+          </a>
+        </>
+      )
+    }
   </div>
 </header>

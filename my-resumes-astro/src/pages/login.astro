@@ -1,0 +1,83 @@
+---
+import { z } from "astro/zod";
+import { TextInput } from "../components/common/TextInput";
+import MainLayout from "../layout/MainLayout.astro";
+import { backend } from "../services/backend";
+
+let error = "";
+let email = "";
+let password = "";
+
+if (Astro.request.method === "POST") {
+  const formData = await Astro.request.formData();
+  const entries = Object.fromEntries(formData.entries());
+
+  email = formData.get("email")?.toString() || "";
+  password = formData.get("password")?.toString() || "";
+
+  const schema = z.object({
+    email: z
+      .string({ required_error: "Email is required" })
+      .email("Invalid email"),
+    password: z
+      .string({ required_error: "Password is required" })
+      .min(3, "Password must be at least 3 characters"),
+  });
+
+  const payload = schema.safeParse(entries);
+
+  if (payload.success) {
+    try {
+      const result = await backend.login(payload.data);
+      Astro.cookies.set("token", result.token);
+      return Astro.redirect("/resumes");
+    } catch (error) {
+      console.error(error);
+      error = "Invalid email and/or password";
+    }
+  } else {
+    error = payload.error.issues[0].message;
+  }
+}
+---
+
+<MainLayout>
+  <div class="flex-1 flex items-center justify-center">
+    <form class="space-y-2" method="POST">
+      <div class="text-lg font-semibold text-center">Welcome back!</div>
+      <div class="text-sm text-center mb-4">
+        Please login to access your account.
+      </div>
+
+      <TextInput
+        label="E-mail"
+        name="email"
+        type="email"
+        value={email}
+        placeholder="Enter your email"
+        required
+      />
+
+      <TextInput
+        label="Password"
+        name="password"
+        type="password"
+        value={password}
+        placeholder="Enter your password"
+        required
+      />
+
+      <div>
+        <a class="btn btn-link" href="/forgot-password">Forgot password?</a>
+      </div>
+
+      <div class="text-error text-sm my-2">{error}</div>
+      <button type="submit" class="btn btn-primary btn-wide">Login</button>
+
+      <div>
+        Don't have an account?
+        <a href="/signup" class="btn btn-link">Sign up</a>
+      </div>
+    </form>
+  </div>
+</MainLayout>

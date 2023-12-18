@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   viewer: {
     width: "500px",
     height: "600px",
+    border: "1px solid gray",
   },
   document: {},
   page: {
@@ -30,10 +31,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     padding: 40,
   },
-  view: {
-    //fontSize: "20px",
-    //fontWeight: "bold",
-  },
+  view: {},
 
   documentTitle: {
     width: "100%",

@@ -3,8 +3,33 @@ import type { Experience } from "./types/Experience";
 import type { Profile } from "./types/Profile";
 import type { Resume } from "./types/Resume";
 
+interface LoginPayload {
+  email: string;
+  password: string;
+}
+interface SignupPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+interface AuthResult {
+  token: string;
+}
+
 export class Backend {
   constructor() {}
+
+  async login(payload: LoginPayload): Promise<AuthResult> {
+    return { token: "123" };
+  }
+  async signup(payload: SignupPayload): Promise<AuthResult> {
+    return { token: "123" };
+  }
+  async validateToken(token: string): Promise<boolean> {
+    return true;
+  }
+  async requestPasswordReset(email: string): Promise<void> {}
+
   async updateResume(resume: Resume) {
     console.log("update-resume", resume);
   }
