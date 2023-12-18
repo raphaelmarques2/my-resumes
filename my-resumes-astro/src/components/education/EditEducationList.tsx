@@ -9,33 +9,33 @@ import { ListItem } from "../common/ListItem";
 import { AddEducationButton } from "./AddEducationButton";
 
 export function EditEducationList({ resumeId }: { resumeId: string }) {
-  const educations = useStore(sharedEducations);
-  const resume = useStore(sharedResume);
+  const educations = useStore(sharedEducations.store);
+  const resume = useStore(sharedResume.store);
 
   const [error, setError] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateResume(sharedResume.get()!).catch((err) => {
+    await backend.updateResume(resume!).catch((err) => {
       setError(err.message ?? "Error");
       throw err;
     });
     window.location.href = `/resumes/${resumeId}/review`;
   }
 
-  function enableEducation(education: Education, enabled: boolean) {
+  function enableEducation(education: Education, include: boolean) {
     if (!resume) return;
 
     const educations = [...resume.educations];
 
-    if (resume.educations.includes(education.id)) {
+    if (include && !resume.educations.includes(education.id)) {
+      educations.push(education.id);
+    } else if (!include && resume.educations.includes(education.id)) {
       const index = educations.indexOf(education.id);
       educations.splice(index, 1);
-    } else {
-      educations.push(education.id);
     }
 
-    sharedResume.set({ ...resume, educations: educations });
+    sharedResume.update({ educations: educations });
   }
 
   return (

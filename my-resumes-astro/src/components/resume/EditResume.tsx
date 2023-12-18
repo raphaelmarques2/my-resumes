@@ -13,7 +13,7 @@ export function EditResume(props: { resumeId: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateResume(sharedResume.store.get()!).catch((err) => {
+    await backend.updateResume(resume!).catch((err) => {
       setError(err.message ?? "Error");
       throw err;
     });
@@ -23,9 +23,16 @@ export function EditResume(props: { resumeId: string }) {
   return (
     <form className="w-80 form-card" onSubmit={(e) => submit(e)}>
       <TextInput
+        label="Name"
+        value={resume.name}
+        required
+        placeholder="Name"
+        onInput={(value) => sharedResume.update({ name: value })}
+      />
+
+      <TextInput
         label="Title"
         value={resume.title}
-        name="title"
         required
         placeholder="Title"
         onInput={(value) => sharedResume.update({ title: value })}
@@ -34,7 +41,6 @@ export function EditResume(props: { resumeId: string }) {
       <TextInput
         label="Description"
         value={resume.description}
-        name="description"
         placeholder="Description"
         area={true}
         onInput={(value) => sharedResume.update({ description: value })}

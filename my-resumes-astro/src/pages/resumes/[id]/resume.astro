@@ -13,7 +13,7 @@ const resume = await backend.getResume(id);
 const profile = await backend.getUserProfile();
 ---
 
-<ResumeLayout>
+<ResumeLayout resume={resume}>
   <div class="flex space-x-4">
     <SetSharedResume resume={resume} client:load />
     <SetSharedProfile profile={profile} client:load />

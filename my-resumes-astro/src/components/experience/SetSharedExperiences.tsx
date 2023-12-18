@@ -8,7 +8,7 @@ export function SetSharedExperiences({
   experiences: Experience[];
 }) {
   useEffect(() => {
-    sharedExperiences.set(experiences);
+    sharedExperiences.store.set(experiences);
   }, []);
   return null;
 }

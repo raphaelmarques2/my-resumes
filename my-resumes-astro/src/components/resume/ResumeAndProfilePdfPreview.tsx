@@ -4,7 +4,7 @@ import { sharedResume } from "../../stores/sharedResume";
 
 export function ResumeAndProfilePdfPreview() {
   const resume = useStore(sharedResume.store);
-  const profile = useStore(sharedProfile);
+  const profile = useStore(sharedProfile.store);
 
   if (!resume) return null;
   if (!profile) return null;

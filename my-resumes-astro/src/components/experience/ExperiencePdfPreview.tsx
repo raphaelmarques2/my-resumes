@@ -5,8 +5,8 @@ import type { Experience } from "../../services/types/Experience";
 import { sharedResume } from "../../stores/sharedResume";
 
 export function ExperiencePdfPreview({ fromResume }: { fromResume?: boolean }) {
-  const experiences = useStore(sharedExperiences);
-  const resume = useStore(sharedResume);
+  const experiences = useStore(sharedExperiences.store);
+  const resume = useStore(sharedResume.store);
 
   if (fromResume && !resume) return null;
 

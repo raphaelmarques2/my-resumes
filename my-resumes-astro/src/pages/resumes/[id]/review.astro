@@ -1,9 +1,26 @@
 ---
+import { ResumePdf } from "../../../components/resume/ResumePdf";
 import ResumeLayout from "../../../layout/ResumeLayout.astro";
+import { backend } from "../../../services/backend";
+
+const { id } = Astro.params;
+if (!id) return Astro.redirect("/404");
+
+const resume = await backend.getResume(id);
+const profile = await backend.getUserProfile();
+const educations = await backend.getUserEducations();
+const experiences = await backend.getUserExperiences();
 ---
 
-<ResumeLayout>
+<ResumeLayout resume={resume}>
   <div>
-    <h1>Review</h1>
+    <h1 class="text-center mb-4">Review</h1>
+    <ResumePdf
+      resume={resume}
+      profile={profile}
+      educations={educations}
+      experiences={experiences}
+      client:only
+    />
   </div>
 </ResumeLayout>

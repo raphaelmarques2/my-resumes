@@ -5,7 +5,7 @@ import moment from "moment";
 import { sharedResume } from "../../stores/sharedResume";
 
 export function EducationPdfPreview({ fromResume }: { fromResume?: boolean }) {
-  const educations = useStore(sharedEducations);
+  const educations = useStore(sharedEducations.store);
   const resume = useStore(sharedResume.store);
 
   if (fromResume && !resume) return null;

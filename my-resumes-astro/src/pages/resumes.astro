@@ -19,7 +19,7 @@ const resumes = await backend.getUserResumes();
         resumes.map((resume) => (
           <ListItem
             href={`/resumes/${resume.id}`}
-            title={resume.title}
+            title={`${resume.name} (${resume.title})`}
             subtitle={`Last update: ${resume.updatedAt.toLocaleDateString()}`}
           />
         ))
@@ -27,4 +27,3 @@ const resumes = await backend.getUserResumes();
     </div>
   </main>
 </MainLayout>
- ../components/ListItem.tsx ../components/common/ListItem.tsx

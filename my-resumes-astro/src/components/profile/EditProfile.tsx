@@ -9,12 +9,12 @@ import { backend } from "../../services/backend";
 export function EditProfile(props: { resumeId: string }) {
   const [error, setError] = useState("");
 
-  const profile = useStore(sharedProfile);
+  const profile = useStore(sharedProfile.store);
   if (!profile) return <div>empt</div>;
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateProfile(sharedProfile.get()!).catch((err) => {
+    await backend.updateProfile(profile!).catch((err) => {
       setError(err.message ?? "Error");
       throw err;
     });
@@ -29,7 +29,7 @@ export function EditProfile(props: { resumeId: string }) {
         name="name"
         required
         placeholder="My name"
-        onInput={(value) => sharedProfile.set({ ...profile, name: value })}
+        onInput={(value) => sharedProfile.update({ name: value })}
       />
       <TextInput
         label="Email"
@@ -38,21 +38,21 @@ export function EditProfile(props: { resumeId: string }) {
         type="email"
         required
         placeholder="me@email.com"
-        onInput={(value) => sharedProfile.set({ ...profile, email: value })}
+        onInput={(value) => sharedProfile.update({ email: value })}
       />
       <TextInput
         label="Address"
         value={profile.address}
         name="address"
         placeholder="City, State, Country..."
-        onInput={(value) => sharedProfile.set({ ...profile, address: value })}
+        onInput={(value) => sharedProfile.update({ address: value })}
       />
       <TextInput
         label="LinkedIn"
         value={profile.linkedin}
         name="linkedin"
         placeholder="http://linkedin.com/in/..."
-        onInput={(value) => sharedProfile.set({ ...profile, linkedin: value })}
+        onInput={(value) => sharedProfile.update({ linkedin: value })}
       />
 
       <FormSubmit error={error} />

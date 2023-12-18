@@ -7,7 +7,7 @@ import { TextInput } from "../common/TextInput";
 export function EditEducation(props: { resumeId: string }) {
   const [error, setError] = useState("");
 
-  const educations = useStore(sharedEducations);
+  const educations = useStore(sharedEducations.store);
   if (!educations.length) return null;
   const education = educations[0];
 
@@ -17,7 +17,7 @@ export function EditEducation(props: { resumeId: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateEducation(sharedEducations.get()[0]).catch((err) => {
+    await backend.updateEducation(education).catch((err) => {
       setError(err.message ?? "Error");
       throw err;
     });
@@ -41,7 +41,7 @@ export function EditEducation(props: { resumeId: string }) {
         required
         placeholder="Title"
         onInput={(value) =>
-          sharedEducations.set([{ ...education, title: value }])
+          sharedEducations.update(education.id, { title: value })
         }
       />
       <TextInput
@@ -50,7 +50,7 @@ export function EditEducation(props: { resumeId: string }) {
         required
         placeholder="Title"
         onInput={(value) =>
-          sharedEducations.set([{ ...education, institution: value }])
+          sharedEducations.update(education.id, { institution: value })
         }
       />
       <TextInput
@@ -58,7 +58,7 @@ export function EditEducation(props: { resumeId: string }) {
         value={education.startDate}
         type="date"
         onInput={(value) =>
-          sharedEducations.set([{ ...education, startDate: value }])
+          sharedEducations.update(education.id, { startDate: value })
         }
       />
       <TextInput
@@ -66,7 +66,7 @@ export function EditEducation(props: { resumeId: string }) {
         value={education.endDate}
         type="date"
         onInput={(value) =>
-          sharedEducations.set([{ ...education, endDate: value }])
+          sharedEducations.update(education.id, { endDate: value })
         }
       />
       <div className="flex flex-col items-center space-y-2 mt-4">

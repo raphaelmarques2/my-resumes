@@ -1,7 +1,13 @@
 ---
+import type { Resume } from "../services/types/Resume";
 import MainLayout from "./MainLayout.astro";
 
-const { id } = Astro.params;
+export interface Props {
+  resume: Resume;
+}
+
+const { resume } = Astro.props;
+const id = resume.id;
 
 const steps = [
   {
@@ -58,15 +64,11 @@ function updateStepsStates() {
   }
 }
 updateStepsStates();
-
-const resume = {
-  title: "Backend engineer",
-};
 ---
 
 <MainLayout>
   <main class="flex flex-col items-center pb-4">
-    <h1>{resume.title}</h1>
+    <h1>{resume.name}</h1>
 
     <ul class="steps steps-horizontal my-4">
       {

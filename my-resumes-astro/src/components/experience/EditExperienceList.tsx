@@ -9,33 +9,33 @@ import { sharedResume } from "../../stores/sharedResume";
 import { backend } from "../../services/backend";
 
 export function EditExperienceList({ resumeId }: { resumeId: string }) {
-  const experiences = useStore(sharedExperiences);
-  const resume = useStore(sharedResume);
+  const experiences = useStore(sharedExperiences.store);
+  const resume = useStore(sharedResume.store);
 
   const [error, setError] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateResume(sharedResume.get()!).catch((err) => {
+    await backend.updateResume(resume!).catch((err) => {
       setError(err.message ?? "Error");
       throw err;
     });
     window.location.href = `/resumes/${resumeId}/review`;
   }
 
-  function enableExperience(experience: Experience, enabled: boolean) {
+  function enableExperience(experience: Experience, include: boolean) {
     if (!resume) return;
 
     const experiences = [...resume.experiences];
 
-    if (resume.experiences.includes(experience.id)) {
+    if (include && !resume.experiences.includes(experience.id)) {
+      experiences.push(experience.id);
+    } else if (!include && resume.experiences.includes(experience.id)) {
       const index = experiences.indexOf(experience.id);
       experiences.splice(index, 1);
-    } else {
-      experiences.push(experience.id);
     }
 
-    sharedResume.set({ ...resume, experiences: experiences });
+    sharedResume.update({ ...resume, experiences: experiences });
   }
 
   return (

@@ -4,7 +4,7 @@ import type { Profile } from "../../services/types/Profile";
 
 export function SetSharedProfile({ profile }: { profile: Profile }) {
   useEffect(() => {
-    sharedProfile.set(profile);
+    sharedProfile.store.set(profile);
   }, []);
   return null;
 }

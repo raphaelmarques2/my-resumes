@@ -7,7 +7,7 @@ import { TextInput } from "../common/TextInput";
 export function EditExperience(props: { resumeId: string }) {
   const [error, setError] = useState("");
 
-  const experiences = useStore(sharedExperiences);
+  const experiences = useStore(sharedExperiences.store);
   if (!experiences.length) return null;
   const experience = experiences[0];
 
@@ -17,7 +17,7 @@ export function EditExperience(props: { resumeId: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateExperience(sharedExperiences.get()[0]).catch((err) => {
+    await backend.updateExperience(experience).catch((err) => {
       setError(err.message ?? "Error");
       throw err;
     });
@@ -41,7 +41,7 @@ export function EditExperience(props: { resumeId: string }) {
         required
         placeholder="Title"
         onInput={(value) =>
-          sharedExperiences.set([{ ...experience, title: value }])
+          sharedExperiences.update(experience.id, { title: value })
         }
       />
       <TextInput
@@ -50,7 +50,7 @@ export function EditExperience(props: { resumeId: string }) {
         required
         placeholder="Company"
         onInput={(value) =>
-          sharedExperiences.set([{ ...experience, company: value }])
+          sharedExperiences.update(experience.id, { company: value })
         }
       />
       <TextInput
@@ -59,7 +59,7 @@ export function EditExperience(props: { resumeId: string }) {
         placeholder="Description"
         area
         onInput={(value) =>
-          sharedExperiences.set([{ ...experience, description: value }])
+          sharedExperiences.update(experience.id, { description: value })
         }
       />
       <TextInput
@@ -67,7 +67,7 @@ export function EditExperience(props: { resumeId: string }) {
         value={experience.startDate}
         type="date"
         onInput={(value) =>
-          sharedExperiences.set([{ ...experience, startDate: value }])
+          sharedExperiences.update(experience.id, { startDate: value })
         }
       />
       <TextInput
@@ -75,7 +75,7 @@ export function EditExperience(props: { resumeId: string }) {
         value={experience.endDate}
         type="date"
         onInput={(value) =>
-          sharedExperiences.set([{ ...experience, endDate: value }])
+          sharedExperiences.update(experience.id, { endDate: value })
         }
       />
 

@@ -8,10 +8,11 @@ import { EditEducation } from "../../../../components/education/EditEducation";
 const { id, educationId } = Astro.params;
 if (!id || !educationId) return Astro.redirect("/404");
 
+const resume = await backend.getResume(id);
 const education = await backend.getEducation(educationId);
 ---
 
-<ResumeLayout>
+<ResumeLayout resume={resume}>
   <div class="flex space-x-4">
     <SetSharedEducations educations={[education]} client:load />
     <EditEducation resumeId={id} client:load />

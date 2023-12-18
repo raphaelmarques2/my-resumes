@@ -13,7 +13,7 @@ const resume = await backend.getResume(id);
 const experiences = await backend.getUserExperiences();
 ---
 
-<ResumeLayout>
+<ResumeLayout resume={resume}>
   <div class="flex space-x-4">
     <SetSharedExperiences experiences={experiences} client:load />
     <SetSharedResume resume={resume} client:load />

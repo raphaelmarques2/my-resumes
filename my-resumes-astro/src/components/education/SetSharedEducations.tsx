@@ -8,7 +8,7 @@ export function SetSharedEducations({
   educations: Education[];
 }) {
   useEffect(() => {
-    sharedEducations.set(educations);
+    sharedEducations.store.set(educations);
   }, []);
   return null;
 }

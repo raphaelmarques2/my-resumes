@@ -8,10 +8,11 @@ import { ExperiencePdfPreview } from "../../../../components/experience/Experien
 const { id, experienceId } = Astro.params;
 if (!id || !experienceId) return Astro.redirect("/404");
 
+const resume = await backend.getResume(id);
 const experience = await backend.getExperience(experienceId);
 ---
 
-<ResumeLayout>
+<ResumeLayout resume={resume}>
   <div class="flex space-x-4">
     <div>
       <SetSharedExperiences experiences={[experience]} client:load />
@@ -22,5 +23,3 @@ const experience = await backend.getExperience(experienceId);
     </div>
   </div>
 </ResumeLayout>
- ../../../../components/experience/SetSharedExperiences
-../../../../components/experience/ExperiencePdfPreview
