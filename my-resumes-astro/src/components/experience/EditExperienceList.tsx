@@ -1,9 +1,9 @@
 import { useStore } from "@nanostores/react";
 import { sharedExperiences } from "../../stores/sharedExperiences";
 import type { Experience } from "../../services/types/Experience";
-import { ListItem } from "../ListItem";
-import { AddExperienceButton } from "../react/experience/AddExperienceButton";
-import { FormSubmit } from "../react/FormSubmit";
+import { ListItem } from "../common/ListItem";
+import { AddExperienceButton } from "./AddExperienceButton";
+import { FormSubmit } from "../common/FormSubmit";
 import { useState, type FormEvent } from "react";
 import { sharedResume } from "../../stores/sharedResume";
 import { backend } from "../../services/backend";
@@ -39,7 +39,7 @@ export function EditExperienceList({ resumeId }: { resumeId: string }) {
   }
 
   return (
-    <form className="w-80 form-card">
+    <form className="w-80 form-card" onSubmit={(e) => submit(e)}>
       <div className="space-y-2">
         {experiences.map((experience, i) => (
           <div className="flex items-center space-x-2">

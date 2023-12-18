@@ -1,44 +1,25 @@
 ---
-import { ListItem } from "../../../components/ListItem.tsx";
-import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
+import { EditEducationList } from "../../../components/education/EditEducationList";
+import { EducationPdfPreview } from "../../../components/education/EducationPdfPreview.tsx";
+import { SetSharedEducations } from "../../../components/education/SetSharedEducations.tsx";
+import { SetSharedResume } from "../../../components/resume/SetSharedResume";
+import ResumeLayout from "../../../layout/ResumeLayout.astro";
 import { backend } from "../../../services/backend";
-import { EducationPdfPreview } from "../../../components/react/pdf/EducationPdfPreview";
-import { SetSharedEducations } from "../../../components/react/education/SetSharedEducations";
-import { AddEducationButton } from "../../../components/react/education/AddEducationButton";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
 
+const resume = await backend.getResume(id);
 const educations = await backend.getUserEducations();
 ---
 
 <ResumeLayout>
   <div class="flex space-x-4">
+    <SetSharedResume resume={resume} client:load />
+    <SetSharedEducations educations={educations} client:load />
+    <EditEducationList resumeId={id} client:load />
     <div class="w-80 form-card">
-      <div class="space-y-2">
-        {
-          educations.map((education, i) => (
-            <div class="flex items-center space-x-2">
-              <input type="checkbox" checked={i === 0} class="form-checkbox" />
-              <ListItem
-                href={`/resumes/${id}/educations/${education.id}`}
-                title={education.title}
-                subtitle={education.institution}
-              />
-            </div>
-          ))
-        }
-      </div>
-      <div class="flex flex-col items-center mt-4 space-y-2">
-        <AddEducationButton resumeId={id} client:load />
-        <a href={`/resumes/${id}/experiences`}>
-          <button class="btn btn-primary btn-wide">Save and Continue</button>
-        </a>
-      </div>
-    </div>
-    <div class="w-80 form-card">
-      <SetSharedEducations educations={educations} client:load />
-      <EducationPdfPreview client:load />
+      <EducationPdfPreview fromResume client:load />
     </div>
   </div>
 </ResumeLayout>

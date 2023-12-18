@@ -1,10 +1,10 @@
 import { useState, type FormEvent } from "react";
-import type { Profile } from "../../../services/types/Profile";
-import { FormSubmit } from "../FormSubmit";
-import { TextInput } from "../TextInput";
-import { sharedProfile } from "../../../stores/sharedProfile";
+import type { Profile } from "../../services/types/Profile";
+import { FormSubmit } from "../common/FormSubmit";
+import { TextInput } from "../common/TextInput";
+import { sharedProfile } from "../../stores/sharedProfile";
 import { useStore } from "@nanostores/react";
-import { backend } from "../../../services/backend";
+import { backend } from "../../services/backend";
 
 export function EditProfile(props: { resumeId: string }) {
   const [error, setError] = useState("");

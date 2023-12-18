@@ -1,19 +1,19 @@
 import { useStore } from "@nanostores/react";
 import { useState, type FormEvent } from "react";
-import { backend } from "../../../services/backend";
-import { sharedResume } from "../../../stores/sharedResume";
-import { FormSubmit } from "../FormSubmit";
-import { TextInput } from "../TextInput";
+import { backend } from "../../services/backend";
+import { sharedResume } from "../../stores/sharedResume";
+import { FormSubmit } from "../common/FormSubmit";
+import { TextInput } from "../common/TextInput";
 
 export function EditResume(props: { resumeId: string }) {
   const [error, setError] = useState("");
 
-  const resume = useStore(sharedResume);
+  const resume = useStore(sharedResume.store);
   if (!resume) return null;
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateResume(sharedResume.get()!).catch((err) => {
+    await backend.updateResume(sharedResume.store.get()!).catch((err) => {
       setError(err.message ?? "Error");
       throw err;
     });
@@ -28,7 +28,7 @@ export function EditResume(props: { resumeId: string }) {
         name="title"
         required
         placeholder="Title"
-        onInput={(value) => sharedResume.set({ ...resume, title: value })}
+        onInput={(value) => sharedResume.update({ title: value })}
       />
 
       <TextInput
@@ -37,7 +37,7 @@ export function EditResume(props: { resumeId: string }) {
         name="description"
         placeholder="Description"
         area={true}
-        onInput={(value) => sharedResume.set({ ...resume, description: value })}
+        onInput={(value) => sharedResume.update({ description: value })}
       />
 
       <FormSubmit error={error} />

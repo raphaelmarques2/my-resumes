@@ -1,5 +1,5 @@
 ---
-import MainLayout from "../../components/layout/MainLayout.astro";
+import MainLayout from "./MainLayout.astro";
 
 const { id } = Astro.params;
 
@@ -65,7 +65,7 @@ const resume = {
 ---
 
 <MainLayout>
-  <main class="flex flex-col items-center">
+  <main class="flex flex-col items-center pb-4">
     <h1>{resume.title}</h1>
 
     <ul class="steps steps-horizontal my-4">

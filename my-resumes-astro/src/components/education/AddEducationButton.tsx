@@ -1,4 +1,4 @@
-import { backend } from "../../../services/backend";
+import { backend } from "../../services/backend";
 
 export function AddEducationButton(props: { resumeId: string }) {
   async function add() {

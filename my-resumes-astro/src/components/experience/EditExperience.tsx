@@ -1,8 +1,8 @@
 import { useStore } from "@nanostores/react";
 import { useState, type FormEvent } from "react";
-import { backend } from "../../../services/backend";
-import { sharedExperiences } from "../../../stores/sharedExperiences";
-import { TextInput } from "../TextInput";
+import { backend } from "../../services/backend";
+import { sharedExperiences } from "../../stores/sharedExperiences";
+import { TextInput } from "../common/TextInput";
 
 export function EditExperience(props: { resumeId: string }) {
   const [error, setError] = useState("");

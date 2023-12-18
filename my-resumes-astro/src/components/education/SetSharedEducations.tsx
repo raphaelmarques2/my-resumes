@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import type { Education } from "../../../services/types/Education";
-import { sharedEducations } from "../../../stores/sharedEducations";
+import type { Education } from "../../services/types/Education";
+import { sharedEducations } from "../../stores/sharedEducations";
 
 export function SetSharedEducations({
   educations,

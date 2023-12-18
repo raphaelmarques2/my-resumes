@@ -33,11 +33,13 @@ export class Backend {
   async getResume(id: string) {
     const resume: Resume = {
       id: id,
+      name: "Resume 1",
       userId: "userid",
       title: "Lorem ipsum dolor",
       description:
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus numquam corrupti sunt consequuntur a quaerat voluptates, quasi perspiciatis deserunt aliquid labore nulla cumque minus. Inventore, error. Sunt veritatis minima quibusdam?",
       experiences: ["1", "2", "3", "4"],
+      educations: ["1", "2", "3"],
       updatedAt: new Date(),
     };
     return resume;
@@ -84,11 +86,13 @@ export class Backend {
     for (let i = 1; i <= 4; i++) {
       resumes.push({
         id: `${i}`,
+        name: `Resume ${i}`,
         title: `lorem${i}`,
         updatedAt: new Date(),
         userId: "123",
         description: "lorem",
         experiences: [],
+        educations: [],
       });
     }
 

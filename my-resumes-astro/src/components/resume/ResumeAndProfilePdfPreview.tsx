@@ -1,9 +1,9 @@
 import { useStore } from "@nanostores/react";
-import { sharedProfile } from "../../../stores/sharedProfile";
-import { sharedResume } from "../../../stores/sharedResume";
+import { sharedProfile } from "../../stores/sharedProfile";
+import { sharedResume } from "../../stores/sharedResume";
 
 export function ResumeAndProfilePdfPreview() {
-  const resume = useStore(sharedResume);
+  const resume = useStore(sharedResume.store);
   const profile = useStore(sharedProfile);
 
   if (!resume) return null;

@@ -1,8 +1,8 @@
 import { useStore } from "@nanostores/react";
 import moment from "moment";
-import { sharedExperiences } from "../../../stores/sharedExperiences";
-import type { Experience } from "../../../services/types/Experience";
-import { sharedResume } from "../../../stores/sharedResume";
+import { sharedExperiences } from "../../stores/sharedExperiences";
+import type { Experience } from "../../services/types/Experience";
+import { sharedResume } from "../../stores/sharedResume";
 
 export function ExperiencePdfPreview({ fromResume }: { fromResume?: boolean }) {
   const experiences = useStore(sharedExperiences);

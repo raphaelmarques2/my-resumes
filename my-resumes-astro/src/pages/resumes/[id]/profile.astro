@@ -1,11 +1,10 @@
 ---
-import { z } from "astro/zod";
-import ResumeLayout from "../../../components/layout/ResumeLayout.astro";
-import { EditProfile } from "../../../components/react/profile/EditProfile.tsx";
-import { SetSharedProfile } from "../../../components/react/profile/SetSharedProfile";
+import ResumeLayout from "../../../layout/ResumeLayout.astro";
+import { EditProfile } from "../../../components/profile/EditProfile.tsx";
+import { SetSharedProfile } from "../../../components/profile/SetSharedProfile.tsx";
 import { backend } from "../../../services/backend";
-import { ResumeAndProfilePdfPreview } from "../../../components/react/pdf/ResumeAndProfilePdfPreview.tsx";
-import { SetSharedResume } from "../../../components/react/resume/SetSharedResume";
+import { ResumeAndProfilePdfPreview } from "../../../components/resume/ResumeAndProfilePdfPreview.tsx";
+import { SetSharedResume } from "../../../components/resume/SetSharedResume.tsx";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");

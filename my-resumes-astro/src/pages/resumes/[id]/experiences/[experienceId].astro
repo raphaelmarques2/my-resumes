@@ -1,9 +1,9 @@
 ---
-import ResumeLayout from "../../../../components/layout/ResumeLayout.astro";
-import { EditExperience } from "../../../../components/react/experience/EditExperience";
-import { SetSharedExperiences } from "../../../../components/react/experience/SetSharedExperiences";
+import ResumeLayout from "../../../../layout/ResumeLayout.astro";
+import { EditExperience } from "../../../../components/experience/EditExperience";
+import { SetSharedExperiences } from "../../../../components/experience/SetSharedExperiences";
 import { backend } from "../../../../services/backend";
-import { ExperiencePdfPreview } from "../../../../components/react/pdf/ExperiencePdfPreview";
+import { ExperiencePdfPreview } from "../../../../components/experience/ExperiencePdfPreview";
 
 const { id, experienceId } = Astro.params;
 if (!id || !experienceId) return Astro.redirect("/404");
@@ -22,3 +22,5 @@ const experience = await backend.getExperience(experienceId);
     </div>
   </div>
 </ResumeLayout>
+ ../../../../components/experience/SetSharedExperiences
+../../../../components/experience/ExperiencePdfPreview

@@ -1,9 +1,9 @@
 ---
-import ResumeLayout from "../../../../components/layout/ResumeLayout.astro";
+import ResumeLayout from "../../../../layout/ResumeLayout.astro";
 import { backend } from "../../../../services/backend";
-import { EducationPdfPreview } from "../../../../components/react/pdf/EducationPdfPreview";
-import { SetSharedEducations } from "../../../../components/react/education/SetSharedEducations";
-import { EditEducation } from "../../../../components/react/education/EditEducation";
+import { EducationPdfPreview } from "../../../../components/education/EducationPdfPreview";
+import { SetSharedEducations } from "../../../../components/education/SetSharedEducations";
+import { EditEducation } from "../../../../components/education/EditEducation";
 
 const { id, educationId } = Astro.params;
 if (!id || !educationId) return Astro.redirect("/404");
