@@ -1,7 +1,9 @@
 import { useStore } from "@nanostores/react";
 import { sharedEducations } from "../../stores/sharedEducations";
-import type { Education } from "../../services/types/Education";
-import moment from "moment";
+import {
+  type Education,
+  formatEducation,
+} from "../../services/types/Education";
 import { sharedResume } from "../../stores/sharedResume";
 
 export function EducationPdfPreview({ fromResume }: { fromResume?: boolean }) {
@@ -9,16 +11,6 @@ export function EducationPdfPreview({ fromResume }: { fromResume?: boolean }) {
   const resume = useStore(sharedResume.store);
 
   if (fromResume && !resume) return null;
-
-  function formatEducation(education: Education): string {
-    return [
-      education.title,
-      education.institution,
-      education.endDate ? moment(education.endDate).format("MMM YYYY") : "Now",
-    ]
-      .filter(Boolean)
-      .join(" - ");
-  }
 
   function getEducationList(): Education[] {
     if (!fromResume) return educations;

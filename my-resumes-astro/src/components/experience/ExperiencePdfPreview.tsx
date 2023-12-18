@@ -1,7 +1,10 @@
 import { useStore } from "@nanostores/react";
 import moment from "moment";
 import { sharedExperiences } from "../../stores/sharedExperiences";
-import type { Experience } from "../../services/types/Experience";
+import {
+  type Experience,
+  formatExperience,
+} from "../../services/types/Experience";
 import { sharedResume } from "../../stores/sharedResume";
 
 export function ExperiencePdfPreview({ fromResume }: { fromResume?: boolean }) {
@@ -9,20 +12,6 @@ export function ExperiencePdfPreview({ fromResume }: { fromResume?: boolean }) {
   const resume = useStore(sharedResume.store);
 
   if (fromResume && !resume) return null;
-
-  function formatExperience(experience: Experience): string {
-    return [
-      experience.company,
-      experience.startDate
-        ? moment(experience.startDate).format("MMM YYYY")
-        : "",
-      experience.endDate
-        ? moment(experience.endDate).format("MMM YYYY")
-        : "Now",
-    ]
-      .filter(Boolean)
-      .join(" - ");
-  }
 
   function getExperienceList(): Experience[] {
     if (!fromResume) return experiences;

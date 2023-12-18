@@ -8,58 +8,63 @@ import {
   Document,
   StyleSheet,
 } from "@react-pdf/renderer";
-import type { Education } from "../../services/types/Education";
-import type { Experience } from "../../services/types/Experience";
+import {
+  formatEducation,
+  type Education,
+} from "../../services/types/Education";
+import {
+  formatExperience,
+  type Experience,
+} from "../../services/types/Experience";
 import type { Profile } from "../../services/types/Profile";
 import type { Resume } from "../../services/types/Resume";
 
 const styles = StyleSheet.create({
   viewer: {
-    width: "400px",
+    width: "500px",
     height: "600px",
   },
+  document: {},
   page: {
-    fontSize: "12px",
-    padding: "20px",
-  },
-  document: {
-    //width: "500px",
+    fontFamily: "Helvetica",
+    fontSize: 12,
+    padding: 40,
   },
   view: {
-    //display: "block",
     //fontSize: "20px",
     //fontWeight: "bold",
   },
 
   documentTitle: {
-    //display: "block",
     width: "100%",
     textAlign: "center",
-    //fontSize: "1.2em",
-    fontWeight: "bold",
+    fontFamily: "Helvetica-Bold",
+    fontSize: 20,
   },
   documentSubtitle: {
-    //display: "block",
     width: "100%",
     textAlign: "center",
-    //fontSize: "1.1em",
-    fontWeight: "bold",
+    fontSize: 14,
+    marginBottom: 5,
   },
   sectionTitle: {
-    //display: "block",
-    fontSize: "20px",
-    fontWeight: "bold",
+    fontSize: 14,
+    fontFamily: "Helvetica-Bold",
+    marginTop: 5,
+    marginBottom: 5,
   },
   sectionSubtitle: {
-    //display: "block",
-    fontSize: "20px",
-    fontWeight: "bold",
+    fontSize: 12,
+    fontFamily: "Helvetica-Bold",
+    marginTop: 5,
   },
-  line: {
-    //display: "block",
+  experienceCompanyName: {
+    marginBottom: 5,
+  },
+  text: {
+    textAlign: "justify",
   },
   link: {
-    //display: "block",
     backgroundColor: "yellow",
   },
 });
@@ -72,44 +77,49 @@ interface Props {
 }
 
 export function ResumePdf({ resume, profile, educations, experiences }: Props) {
-  const [count, setCount] = useState(0);
+  function PdfLine() {
+    return (
+      <Text style={{ borderBottom: 1.5, marginTop: 10, marginBottom: 5 }} />
+    );
+  }
 
   function PdfHeader() {
     return (
       <>
-        <Text style={styles.documentTitle}>José Raphael Teixeira Marques</Text>
-        <Text style={styles.documentSubtitle}>Backend engineer</Text>
-        <Text style={styles.line}>João Pessoa - Brazil</Text>
-        <Text style={styles.line}>
-          E-mail:
-          <Link style={styles.link} src="mailto:jose.raphael.marques@gmail.com">
-            jose.raphael.marques@gmail.com
-          </Link>
-        </Text>
-        <Text style={styles.line}>
-          LinkedIn:
-          <Link
-            style={styles.link}
-            src="https://linkedin.com/in/raphaelmarques84"
-          >
-            https://linkedin.com/in/raphaelmarques84
-          </Link>
-        </Text>
+        <Text style={styles.documentTitle}>{profile.name}</Text>
+        <Text style={styles.documentSubtitle}>{resume.title}</Text>
+        {profile.address && <Text style={styles.text}>{profile.address}</Text>}
+        {profile.email && (
+          <Text style={styles.text}>
+            E-mail:
+            <Link style={styles.link} src={`mailto:${profile.email}`}>
+              {profile.email}
+            </Link>
+          </Text>
+        )}
+        {profile.linkedin && (
+          <Text style={styles.text}>
+            LinkedIn:
+            <Link style={styles.link} src={profile.linkedin}>
+              {profile.linkedin}
+            </Link>
+          </Text>
+        )}
+        <PdfLine />
         <Text style={styles.sectionTitle}>Profile</Text>
-        <Text style={styles.line}>description</Text>
+        <Text style={styles.text}>{resume.description}</Text>
       </>
     );
   }
 
-  function PdfEduations() {
+  function PdfEducations() {
     return (
       <>
+        <PdfLine />
         <Text style={styles.sectionTitle}>Educations</Text>
+
         {educations.map((education) => (
-          <>
-            <Text style={styles.line}>{education.title}</Text>
-            <Text style={styles.line}>{education.institution}</Text>
-          </>
+          <Text style={styles.text}>&#8226; {formatEducation(education)}</Text>
         ))}
       </>
     );
@@ -118,13 +128,16 @@ export function ResumePdf({ resume, profile, educations, experiences }: Props) {
   function PdfExperiences() {
     return (
       <>
+        <PdfLine />
         <Text style={styles.sectionTitle}>Experiences</Text>
         {experiences.map((experience) => (
-          <>
+          <View wrap={false}>
             <Text style={styles.sectionSubtitle}>{experience.title}</Text>
-            <Text style={styles.line}>{experience.company}</Text>
-            <Text style={styles.line}>{experience.description}</Text>
-          </>
+            <Text style={styles.experienceCompanyName}>
+              {formatExperience(experience)}
+            </Text>
+            <Text style={styles.text}>{experience.description}</Text>
+          </View>
         ))}
       </>
     );
@@ -138,7 +151,7 @@ export function ResumePdf({ resume, profile, educations, experiences }: Props) {
             <PdfHeader />
           </View>
           <View style={styles.view}>
-            <PdfEduations />
+            <PdfEducations />
           </View>
           <View style={styles.view}>
             <PdfExperiences />

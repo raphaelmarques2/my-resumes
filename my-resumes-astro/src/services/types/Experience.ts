@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export type Experience = {
   id: string;
   userId: string;
@@ -7,3 +9,13 @@ export type Experience = {
   startDate?: string;
   endDate?: string;
 };
+
+export function formatExperience(experience: Experience): string {
+  return [
+    experience.company,
+    experience.startDate ? moment(experience.startDate).format("MMM YYYY") : "",
+    experience.endDate ? moment(experience.endDate).format("MMM YYYY") : "Now",
+  ]
+    .filter(Boolean)
+    .join(" - ");
+}

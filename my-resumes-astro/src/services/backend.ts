@@ -46,7 +46,7 @@ export class Backend {
   }
   async getEducation(id: string) {
     const education: Education = {
-      id: `1`,
+      id: id,
       title: `Courst 1`,
       institution: `Institution 1`,
       userId: "123",
@@ -57,7 +57,7 @@ export class Backend {
   }
   async getExperience(id: string) {
     const experience: Experience = {
-      id: `1`,
+      id: id,
       userId: "123",
       title: `title 1`,
       company: `company 1`,
@@ -87,10 +87,11 @@ export class Backend {
       resumes.push({
         id: `${i}`,
         name: `Resume ${i}`,
-        title: `lorem${i}`,
+        title: `Engineer ${i}`,
         updatedAt: new Date(),
         userId: "123",
-        description: "lorem",
+        description:
+          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus numquam corrupti sunt consequuntur a quaerat voluptates",
         experiences: [],
         educations: [],
       });
@@ -125,7 +126,8 @@ export class Backend {
         userId: "123",
         title: `title ${i}`,
         company: `company ${i}`,
-        description: "lorem",
+        description:
+          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus numquam corrupti sunt consequuntur a quaerat voluptates",
         startDate: new Date().toISOString(),
         endDate: new Date().toISOString(),
       });

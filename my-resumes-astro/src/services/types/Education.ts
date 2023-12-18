@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export type Education = {
   id: string;
   userId: string;
@@ -6,3 +8,13 @@ export type Education = {
   startDate?: string;
   endDate?: string;
 };
+
+export function formatEducation(education: Education): string {
+  return [
+    education.title,
+    education.institution,
+    education.endDate ? moment(education.endDate).format("MMM YYYY") : "Now",
+  ]
+    .filter(Boolean)
+    .join(" - ");
+}
