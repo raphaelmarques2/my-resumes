@@ -37,6 +37,7 @@ export function EditEducation(props: { resumeId: string }) {
     <form className="w-80 form-card" onSubmit={(e) => submit(e)}>
       <TextInput
         label="Title"
+        name="title"
         value={education.title}
         required
         placeholder="Title"
@@ -46,6 +47,7 @@ export function EditEducation(props: { resumeId: string }) {
       />
       <TextInput
         label="Institution"
+        name="institution"
         value={education.institution}
         required
         placeholder="Title"
@@ -55,6 +57,7 @@ export function EditEducation(props: { resumeId: string }) {
       />
       <TextInput
         label="Start date"
+        name="startDate"
         value={education.startDate}
         type="date"
         onInput={(value) =>
@@ -63,6 +66,7 @@ export function EditEducation(props: { resumeId: string }) {
       />
       <TextInput
         label="End date"
+        name="endDate"
         value={education.endDate}
         type="date"
         onInput={(value) =>

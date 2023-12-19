@@ -20,12 +20,13 @@ export function TextInput({
   onInput,
 }: Props) {
   return (
-    <label className="form-control w-full">
+    <label htmlFor={name} className="form-control w-full">
       <div className="label">
         <span className="label-text">{label}</span>
       </div>
       {area ? (
         <textarea
+          id={name}
           className="textarea textarea-bordered textarea-sm w-full"
           value={value}
           name={name}
@@ -35,6 +36,7 @@ export function TextInput({
         />
       ) : (
         <input
+          id={name}
           className="input input-bordered input-sm w-full"
           type={type ?? "text"}
           value={value}

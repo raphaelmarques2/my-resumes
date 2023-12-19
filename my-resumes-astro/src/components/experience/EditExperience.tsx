@@ -37,6 +37,7 @@ export function EditExperience(props: { resumeId: string }) {
     <form className="w-80 form-card" onSubmit={(e) => submit(e)}>
       <TextInput
         label="Title"
+        name="title"
         value={experience.title}
         required
         placeholder="Title"
@@ -46,6 +47,7 @@ export function EditExperience(props: { resumeId: string }) {
       />
       <TextInput
         label="Company"
+        name="company"
         value={experience.company}
         required
         placeholder="Company"
@@ -55,6 +57,7 @@ export function EditExperience(props: { resumeId: string }) {
       />
       <TextInput
         label="Description"
+        name="description"
         value={experience.description}
         placeholder="Description"
         area
@@ -64,6 +67,7 @@ export function EditExperience(props: { resumeId: string }) {
       />
       <TextInput
         label="Start date"
+        name="startDate"
         value={experience.startDate}
         type="date"
         onInput={(value) =>
@@ -72,6 +76,7 @@ export function EditExperience(props: { resumeId: string }) {
       />
       <TextInput
         label="End date"
+        name="endDate"
         value={experience.endDate}
         type="date"
         onInput={(value) =>

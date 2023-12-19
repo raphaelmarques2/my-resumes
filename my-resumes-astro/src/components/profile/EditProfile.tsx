@@ -25,16 +25,16 @@ export function EditProfile(props: { resumeId: string }) {
     <form className="w-80 form-card" onSubmit={(e) => submit(e)}>
       <TextInput
         label="Name"
-        value={profile.name}
         name="name"
+        value={profile.name}
         required
         placeholder="My name"
         onInput={(value) => sharedProfile.update({ name: value })}
       />
       <TextInput
         label="Email"
-        value={profile.email}
         name="email"
+        value={profile.email}
         type="email"
         required
         placeholder="me@email.com"
@@ -42,15 +42,15 @@ export function EditProfile(props: { resumeId: string }) {
       />
       <TextInput
         label="Address"
-        value={profile.address}
         name="address"
+        value={profile.address}
         placeholder="City, State, Country..."
         onInput={(value) => sharedProfile.update({ address: value })}
       />
       <TextInput
         label="LinkedIn"
-        value={profile.linkedin}
         name="linkedin"
+        value={profile.linkedin}
         placeholder="http://linkedin.com/in/..."
         onInput={(value) => sharedProfile.update({ linkedin: value })}
       />
