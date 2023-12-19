@@ -2,6 +2,7 @@ import type { Education } from "./types/Education";
 import type { Experience } from "./types/Experience";
 import type { Profile } from "./types/Profile";
 import type { Resume } from "./types/Resume";
+import type { User } from "./types/User";
 
 interface LoginPayload {
   email: string;
@@ -29,6 +30,13 @@ export class Backend {
     return true;
   }
   async requestPasswordReset(email: string): Promise<void> {}
+  async getUser(): Promise<User> {
+    return {
+      id: "123",
+      name: "John",
+      email: "john@test.com",
+    };
+  }
 
   async updateResume(resume: Resume) {
     console.log("update-resume", resume);

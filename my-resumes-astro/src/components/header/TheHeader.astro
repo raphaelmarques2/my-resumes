@@ -1,10 +1,12 @@
 ---
 import HeaderTab from "./HeaderTab.astro";
+import UserAvatar from "./UserAvatar.astro";
+
 const isHome = Astro.url.pathname === "/";
 const isResumes = Astro.url.pathname === "/resumes";
 const isAbout = Astro.url.pathname === "/about";
 
-const token = Astro.cookies.get("token");
+const { isAuthenticated } = Astro.locals as { isAuthenticated: boolean };
 ---
 
 <header class="navbar px-4 py-1 shadow mb-2">
@@ -12,7 +14,7 @@ const token = Astro.cookies.get("token");
   <div class="flex-1 flex justify-center items-center space-x-4">
     <HeaderTab href="/" active={isHome}>Home</HeaderTab>
     {
-      token && (
+      isAuthenticated && (
         <HeaderTab href="/resumes" active={isResumes}>
           Resumes
         </HeaderTab>
@@ -22,10 +24,8 @@ const token = Astro.cookies.get("token");
   </div>
   <div class="flex-1 flex justify-end space-x-2">
     {
-      token ? (
-        <a class="btn btn-ghost" href="/logout">
-          Logout
-        </a>
+      isAuthenticated ? (
+        <UserAvatar />
       ) : (
         <>
           <a class="btn btn-ghost" href="/login">
