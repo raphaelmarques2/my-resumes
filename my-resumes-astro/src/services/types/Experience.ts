@@ -19,3 +19,11 @@ export function formatExperience(experience: Experience): string {
     .filter(Boolean)
     .join(" - ");
 }
+
+export function sortExperiencesByNewestFirst(experiences: Experience[]) {
+  return experiences.sort((a, b) => {
+    const aEndDate = a.endDate ? new Date(a.endDate) : new Date();
+    const bEndDate = b.endDate ? new Date(b.endDate) : new Date();
+    return bEndDate.getTime() - aEndDate.getTime();
+  });
+}

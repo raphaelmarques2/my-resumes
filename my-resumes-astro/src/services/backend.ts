@@ -75,12 +75,17 @@ export class Backend {
       "PATCH",
       `/resumes/${resume.id}`,
       {
+        name: resume.name,
         title: resume.title,
         description: resume.description,
         experiences: resume.experiences,
         educations: resume.educations,
       }
     );
+  }
+  async addResume() {
+    const result = await this.request<Resume>("POST", `/resumes`);
+    return result;
   }
 
   async getUserProfile() {

@@ -3,19 +3,20 @@ import moment from "moment";
 import { ListItem } from "../components/common/ListItem.tsx";
 import MainLayout from "../layout/MainLayout.astro";
 import { Backend } from "../services/backend";
+import { AddResumeButton } from "../components/resume/AddResumeButton";
+import { sortResumesByRecentlyUpdatedFirst } from "../services/types/Resume";
 
 const backend = new Backend(Astro.locals.token);
+
 const resumes = await backend.listUserResumes();
+sortResumesByRecentlyUpdatedFirst(resumes);
 ---
 
 <MainLayout>
   <main class="container mx-auto flex flex-col items-center pb-4">
     <h1>My Resumes</h1>
     <p>Create and edit your resumes</p>
-    <button class="btn btn-ghost btn-wide">
-      Create new
-      <i class="fa fa-add" aria-hidden="true"></i>
-    </button>
+    <AddResumeButton client:load />
     <div class="space-y-2 w-80 mt-4">
       {
         resumes.map((resume) => (

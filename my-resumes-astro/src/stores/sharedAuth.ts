@@ -8,7 +8,6 @@ export const store = atom({
 });
 
 function login(token: string, user: User) {
-  console.log("sharedAuth.login()");
   store.set({
     token,
     isAuthenticated: true,
@@ -16,7 +15,6 @@ function login(token: string, user: User) {
   });
 }
 function logout() {
-  console.log("sharedAuth.logout()");
   store.set({
     token: null,
     isAuthenticated: false,

@@ -5,6 +5,7 @@ import { SetSharedExperiences } from "../../../components/experience/SetSharedEx
 import { ExperiencePdfPreview } from "../../../components/experience/ExperiencePdfPreview";
 import { SetSharedResume } from "../../../components/resume/SetSharedResume";
 import { Backend } from "../../../services/backend";
+import { sortExperiencesByNewestFirst } from "../../../services/types/Experience";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
@@ -12,6 +13,7 @@ if (!id) return Astro.redirect("/404");
 const backend = new Backend(Astro.locals.token);
 const resume = await backend.getResume(id);
 const experiences = await backend.listUserExperiences();
+sortExperiencesByNewestFirst(experiences);
 ---
 
 <ResumeLayout resume={resume}>

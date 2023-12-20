@@ -2,6 +2,8 @@
 import { ResumePdf } from "../../../components/resume/ResumePdf";
 import ResumeLayout from "../../../layout/ResumeLayout.astro";
 import { Backend } from "../../../services/backend";
+import { sortEducationsByNewestFirst } from "../../../services/types/Education";
+import { sortExperiencesByNewestFirst } from "../../../services/types/Experience";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
@@ -11,6 +13,9 @@ const resume = await backend.getResume(id);
 const profile = await backend.getUserProfile();
 const educations = await backend.listUserEducations();
 const experiences = await backend.listUserExperiences();
+
+sortEducationsByNewestFirst(educations);
+sortExperiencesByNewestFirst(experiences);
 ---
 
 <ResumeLayout resume={resume}>

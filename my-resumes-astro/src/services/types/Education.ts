@@ -18,3 +18,11 @@ export function formatEducation(education: Education): string {
     .filter(Boolean)
     .join(" - ");
 }
+
+export function sortEducationsByNewestFirst(educations: Education[]) {
+  return educations.sort((a, b) => {
+    const aEndDate = a.endDate ? new Date(a.endDate) : new Date();
+    const bEndDate = b.endDate ? new Date(b.endDate) : new Date();
+    return bEndDate.getTime() - aEndDate.getTime();
+  });
+}
