@@ -43,8 +43,8 @@ export function EditExperienceList({ resumeId }: { resumeId: string }) {
   return (
     <form className="w-80 form-card" onSubmit={(e) => submit(e)}>
       <div className="space-y-2">
-        {experiences.map((experience, i) => (
-          <div className="flex items-center space-x-2">
+        {experiences.map((experience) => (
+          <div className="flex items-center space-x-2" key={experience.id}>
             <input
               type="checkbox"
               checked={resume?.experiences.includes(experience.id)}

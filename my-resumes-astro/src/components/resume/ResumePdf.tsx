@@ -117,7 +117,9 @@ export function ResumePdf({ resume, profile, educations, experiences }: Props) {
         <Text style={styles.sectionTitle}>Educations</Text>
 
         {educations.map((education) => (
-          <Text style={styles.text}>&#8226; {formatEducation(education)}</Text>
+          <Text style={styles.text} key={education.id}>
+            &#8226; {formatEducation(education)}
+          </Text>
         ))}
       </>
     );
@@ -129,7 +131,7 @@ export function ResumePdf({ resume, profile, educations, experiences }: Props) {
         <PdfLine />
         <Text style={styles.sectionTitle}>Experiences</Text>
         {experiences.map((experience) => (
-          <View wrap={false}>
+          <View wrap={false} key={experience.id}>
             <Text style={styles.sectionSubtitle}>{experience.title}</Text>
             <Text style={styles.experienceCompanyName}>
               {formatExperience(experience)}

@@ -28,7 +28,7 @@ export function EducationPdfPreview({ fromResume }: { fromResume?: boolean }) {
       <div className="section-title">Education</div>
       <ul className="list-disc list-inside">
         {educationsList.map((education) => (
-          <li>{formatEducation(education)}</li>
+          <li key={education.id}>{formatEducation(education)}</li>
         ))}
       </ul>
     </div>
