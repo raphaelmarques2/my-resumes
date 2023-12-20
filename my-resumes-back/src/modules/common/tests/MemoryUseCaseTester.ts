@@ -143,6 +143,7 @@ export class MemoryUseCaseTester {
     const resume = Resume.load({
       id: new Id(),
       userId: new Id(input.userId),
+      name: new Name(faker.internet.userName()),
       title: new Name(faker.lorem.word()),
       description: faker.lorem.paragraph(),
       experiences: input.experiences

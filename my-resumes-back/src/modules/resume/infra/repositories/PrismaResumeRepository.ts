@@ -30,6 +30,7 @@ export class PrismaResumeRepository extends ResumeRepository {
       data: {
         id: resume.id.value,
         userId: resume.userId.value,
+        name: resume.name.value,
         title: resume.title.value,
         description: resume.description,
         experienceToResumes: {
@@ -56,6 +57,7 @@ export class PrismaResumeRepository extends ResumeRepository {
       await prisma.resume.update({
         where: { id: resume.id.value },
         data: {
+          name: resume.name.value,
           title: resume.title.value,
           description: resume.description,
           experienceToResumes: {
@@ -131,6 +133,7 @@ export class PrismaResumeRepository extends ResumeRepository {
     return Resume.load({
       id: new Id(data.id),
       userId: new Id(data.userId),
+      name: new Name(data.name),
       title: new Name(data.title),
       description: data.description,
       experiences: data.experienceToResumes.map((e) => new Id(e.experienceId)),

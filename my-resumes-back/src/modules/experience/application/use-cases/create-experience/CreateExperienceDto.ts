@@ -4,8 +4,8 @@ import { z } from 'zod';
 export const createExperienceDtoSchema = z
   .object({
     userId: z.string().uuid(),
-    title: z.string().min(1),
-    company: z.string().min(1),
+    title: z.string().min(1).optional(),
+    company: z.string().min(1).optional(),
   })
   .strict();
 

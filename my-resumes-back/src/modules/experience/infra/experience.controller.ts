@@ -19,7 +19,6 @@ import {
 } from '@nestjs/swagger';
 import { ExperienceDto } from 'src/modules/experience/application/entities/ExperienceDto';
 import { UpdateExperienceDto } from 'src/modules/experience/application/use-cases/update-experience/UpdateExperienceDto';
-import { CreateExperienceDto } from '../application/use-cases/create-experience/CreateExperienceDto';
 import { AuthGuard } from '../../auth/infra/guards/AuthGuard';
 import { CreateExperienceUseCase } from '../application/use-cases/create-experience/create-experience.usecase';
 import { DeleteExperienceUseCase } from '../application/use-cases/delete-experience/delete-experience.usecase';
@@ -44,10 +43,9 @@ export class ExperienceController {
   @Post('/experiences')
   @ApiOperation({ operationId: 'createExperience' })
   @ApiCreatedResponse({ type: ExperienceDto })
-  async createExperience(
-    @Body() body: CreateExperienceDto,
-  ): Promise<ExperienceDto> {
-    return this.createExperienceUseCase.execute(body);
+  async createExperience(@Req() req: Request): Promise<ExperienceDto> {
+    const auth = req['auth'] as AuthOutputDto;
+    return this.createExperienceUseCase.execute({ userId: auth.user.id });
   }
 
   @Get('/experiences/:id')

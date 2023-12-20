@@ -31,6 +31,7 @@ export class UpdateResumeUseCase {
         }
 
         resume.update({
+          name: this.convertName(data.name),
           title: this.convertName(data.title),
           description: data.description,
           experiences: this.convertExperiences(data.experiences),
@@ -46,9 +47,9 @@ export class UpdateResumeUseCase {
     return ResumeDto.createFrom(updatedResume);
   }
 
-  private convertName(title: string | undefined): Name | undefined {
-    if (title === undefined) return undefined;
-    return new Name(title);
+  private convertName(value: string | undefined): Name | undefined {
+    if (value === undefined) return undefined;
+    return new Name(value);
   }
   private convertExperiences(
     experiences: string[] | undefined,

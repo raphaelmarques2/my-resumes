@@ -25,7 +25,8 @@ export class CreateResumeUseCase {
 
     const resume = Resume.create({
       userId: new Id(input.userId),
-      title: new Name(input.title),
+      name: new Name(input.name ?? 'Name'),
+      title: new Name(input.title ?? 'Title'),
       description: input.description,
       experiences: input.experiences?.map((e) => new Name(e)),
     });

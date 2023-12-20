@@ -16,7 +16,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateResumeDto } from 'src/modules/resume/application/use-cases/create-resume/CreateResumeDto';
+import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 import { ResumeDto } from 'src/modules/resume/application/entities/ResumeDto';
 import { UpdateResumeDto } from 'src/modules/resume/application/use-cases/update-resume/UpdateResumeDto';
 import { AuthGuard } from '../../auth/infra/guards/AuthGuard';
@@ -25,7 +25,6 @@ import { DeleteResumeUseCase } from '../application/use-cases/delete-resume/dele
 import { GetResumeByIdUseCase } from '../application/use-cases/get-resume-by-id/get-resume-by-id.usecase';
 import { ListUserResumesUseCase } from '../application/use-cases/list-user-resumes/list-user-resumes.usecase';
 import { UpdateResumeUseCase } from '../application/use-cases/update-resume/update-resume.usecase';
-import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 
 @ApiTags('resumes')
 @ApiBearerAuth()
@@ -43,8 +42,9 @@ export class ResumeController {
   @Post('/resumes')
   @ApiOperation({ operationId: 'createResume' })
   @ApiCreatedResponse({ type: ResumeDto })
-  async createResume(@Body() body: CreateResumeDto): Promise<ResumeDto> {
-    return this.createResumeUseCase.execute(body);
+  async createResume(@Req() req: Request): Promise<ResumeDto> {
+    const auth = req['auth'] as AuthOutputDto;
+    return this.createResumeUseCase.execute({ userId: auth.user.id });
   }
 
   @Get('/resumes/:id')

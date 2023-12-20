@@ -6,6 +6,7 @@ export const resumeDtoSchema = z
   .object({
     id: z.string().uuid(),
     userId: z.string().uuid(),
+    name: z.string().min(1),
     title: z.string().min(1),
     description: z.string(),
     experiences: z.array(z.string()),
@@ -19,6 +20,7 @@ export class ResumeDto extends createZodDto(resumeDtoSchema) {
     return ResumeDto.create({
       id: resume.id.value,
       userId: resume.userId.value,
+      name: resume.name.value,
       title: resume.title.value,
       description: resume.description,
       experiences: resume.experiences.map((item) => item.value),

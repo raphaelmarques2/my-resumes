@@ -78,6 +78,7 @@ model Experience {
 
 model Resume {
   id          String @id @default(uuid())
+  name        String
   title       String
   description String
 

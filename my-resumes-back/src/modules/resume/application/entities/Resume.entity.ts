@@ -6,6 +6,7 @@ export class Resume implements Entity {
   private constructor(
     readonly id: Id,
     readonly userId: Id,
+    public name: Name,
     public title: Name,
     public description: string,
     public experiences: Id[],
@@ -14,11 +15,13 @@ export class Resume implements Entity {
   ) {}
 
   update(input: {
+    name?: Name;
     title?: Name;
     description?: string;
     experiences?: Id[];
     educations?: Id[];
   }) {
+    if (input.name !== undefined) this.name = input.name;
     if (input.title !== undefined) this.title = input.title;
     if (input.description !== undefined) this.description = input.description;
     if (input.experiences !== undefined) this.experiences = input.experiences;
@@ -27,12 +30,14 @@ export class Resume implements Entity {
 
   static create({
     userId,
+    name,
     title,
     description,
     experiences,
     educations,
   }: {
     userId: Id;
+    name: Name;
     title: Name;
     description?: string;
     experiences?: Id[];
@@ -41,6 +46,7 @@ export class Resume implements Entity {
     return new Resume(
       new Id(),
       userId,
+      name,
       title,
       description ?? '',
       experiences ?? [],
@@ -52,6 +58,7 @@ export class Resume implements Entity {
   static load({
     id,
     userId,
+    name,
     title,
     description,
     experiences,
@@ -60,6 +67,7 @@ export class Resume implements Entity {
   }: {
     id: Id;
     userId: Id;
+    name: Name;
     title: Name;
     description: string;
     experiences: Id[];
@@ -69,6 +77,7 @@ export class Resume implements Entity {
     return new Resume(
       id,
       userId,
+      name,
       title,
       description,
       experiences,

@@ -11,6 +11,7 @@ describe('ResumeDto', () => {
       const resume = Resume.load({
         id: new Id(),
         userId: new Id(),
+        name: new Name(faker.internet.userName()),
         title: new Name(faker.internet.displayName()),
         description: faker.lorem.paragraph(),
         experiences: [new Id(), new Id(), new Id()],
@@ -21,6 +22,7 @@ describe('ResumeDto', () => {
       expect(dto).toEqual({
         id: resume.id.value,
         userId: resume.userId.value,
+        name: resume.name.value,
         title: resume.title.value,
         description: resume.description,
         experiences: resume.experiences.map((e) => e.value),
@@ -33,6 +35,7 @@ describe('ResumeDto', () => {
       const resume = Resume.load({
         id: new Id(),
         userId: new Id(),
+        name: new Name(faker.internet.userName()),
         title: new Name(faker.internet.displayName()),
         description: faker.lorem.paragraph(),
         experiences: [],
@@ -43,6 +46,7 @@ describe('ResumeDto', () => {
       expect(dto).toEqual({
         id: resume.id.value,
         userId: resume.userId.value,
+        name: resume.name.value,
         title: resume.title.value,
         description: resume.description,
         experiences: [],

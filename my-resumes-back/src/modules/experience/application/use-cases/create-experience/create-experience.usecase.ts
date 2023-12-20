@@ -22,8 +22,8 @@ export class CreateExperienceUseCase {
 
     const experience = Experience.create({
       userId: new Id(input.userId),
-      title: new Name(input.title),
-      company: new Name(input.company),
+      title: new Name(input.title ?? 'Title'),
+      company: new Name(input.company ?? 'Company'),
     });
 
     await this.experienceRepository.add(experience);
