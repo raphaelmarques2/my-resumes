@@ -34,6 +34,7 @@ export class UpdateResumeUseCase {
           title: this.convertName(data.title),
           description: data.description,
           experiences: this.convertExperiences(data.experiences),
+          educations: this.convertEducations(data.educations),
         });
 
         await this.resumeRepository.update(resume, { transaction });
@@ -54,5 +55,11 @@ export class UpdateResumeUseCase {
   ): Id[] | undefined {
     if (experiences === undefined) return undefined;
     return experiences.map((e) => new Id(e));
+  }
+  private convertEducations(
+    educations: string[] | undefined,
+  ): Id[] | undefined {
+    if (educations === undefined) return undefined;
+    return educations.map((e) => new Id(e));
   }
 }

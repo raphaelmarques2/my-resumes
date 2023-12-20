@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { useState, type FormEvent } from "react";
-import { backend } from "../../services/backend";
+import { sharedBackend } from "../../stores/sharedBackend";
 import { sharedExperiences } from "../../stores/sharedExperiences";
 import { TextInput } from "../common/TextInput";
 
@@ -17,10 +17,12 @@ export function EditExperience(props: { resumeId: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateExperience(experience).catch((err) => {
-      setError(err.message ?? "Error");
-      throw err;
-    });
+    await sharedBackend()
+      .updateExperience(experience)
+      .catch((err) => {
+        setError(err.message ?? "Error");
+        throw err;
+      });
     redirectToExperiences();
   }
 
@@ -29,7 +31,7 @@ export function EditExperience(props: { resumeId: string }) {
   }
 
   async function deleteExperience() {
-    await backend.deleteExperience(experience.id);
+    await sharedBackend().deleteExperience(experience.id);
     redirectToExperiences();
   }
 

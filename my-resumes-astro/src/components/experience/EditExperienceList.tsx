@@ -1,12 +1,12 @@
 import { useStore } from "@nanostores/react";
-import { sharedExperiences } from "../../stores/sharedExperiences";
+import { useState, type FormEvent } from "react";
 import type { Experience } from "../../services/types/Experience";
+import { sharedBackend } from "../../stores/sharedBackend";
+import { sharedExperiences } from "../../stores/sharedExperiences";
+import { sharedResume } from "../../stores/sharedResume";
+import { FormSubmit } from "../common/FormSubmit";
 import { ListItem } from "../common/ListItem";
 import { AddExperienceButton } from "./AddExperienceButton";
-import { FormSubmit } from "../common/FormSubmit";
-import { useState, type FormEvent } from "react";
-import { sharedResume } from "../../stores/sharedResume";
-import { backend } from "../../services/backend";
 
 export function EditExperienceList({ resumeId }: { resumeId: string }) {
   const experiences = useStore(sharedExperiences.store);
@@ -16,10 +16,12 @@ export function EditExperienceList({ resumeId }: { resumeId: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateResume(resume!).catch((err) => {
-      setError(err.message ?? "Error");
-      throw err;
-    });
+    await sharedBackend()
+      .updateResume(resume!)
+      .catch((err) => {
+        setError(err.message ?? "Error");
+        throw err;
+      });
     window.location.href = `/resumes/${resumeId}/review`;
   }
 

@@ -1,12 +1,13 @@
 import { useStore } from "@nanostores/react";
 import { useState, type FormEvent } from "react";
-import { backend } from "../../services/backend";
+import { Backend } from "../../services/backend";
 import type { Education } from "../../services/types/Education";
 import { sharedEducations } from "../../stores/sharedEducations";
 import { sharedResume } from "../../stores/sharedResume";
 import { FormSubmit } from "../common/FormSubmit";
 import { ListItem } from "../common/ListItem";
 import { AddEducationButton } from "./AddEducationButton";
+import { sharedBackend } from "../../stores/sharedBackend";
 
 export function EditEducationList({ resumeId }: { resumeId: string }) {
   const educations = useStore(sharedEducations.store);
@@ -16,11 +17,13 @@ export function EditEducationList({ resumeId }: { resumeId: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateResume(resume!).catch((err) => {
-      setError(err.message ?? "Error");
-      throw err;
-    });
-    window.location.href = `/resumes/${resumeId}/review`;
+    await sharedBackend()
+      .updateResume(resume!)
+      .catch((err) => {
+        setError(err.message ?? "Error");
+        throw err;
+      });
+    window.location.href = `/resumes/${resumeId}/experiences`;
   }
 
   function enableEducation(education: Education, include: boolean) {

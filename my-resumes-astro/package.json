@@ -20,6 +20,7 @@
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "astro": "^4.0.3",
+    "axios": "^1.6.2",
     "moment": "^2.29.4",
     "nanostores": "^0.9.5",
     "react": "^18.2.0",

@@ -4,13 +4,14 @@ import ResumeLayout from "../../../layout/ResumeLayout.astro";
 import { SetSharedExperiences } from "../../../components/experience/SetSharedExperiences";
 import { ExperiencePdfPreview } from "../../../components/experience/ExperiencePdfPreview";
 import { SetSharedResume } from "../../../components/resume/SetSharedResume";
-import { backend } from "../../../services/backend";
+import { Backend } from "../../../services/backend";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
 
+const backend = new Backend(Astro.locals.token);
 const resume = await backend.getResume(id);
-const experiences = await backend.getUserExperiences();
+const experiences = await backend.listUserExperiences();
 ---
 
 <ResumeLayout resume={resume}>

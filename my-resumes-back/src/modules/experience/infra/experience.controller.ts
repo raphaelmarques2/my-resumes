@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -25,6 +26,7 @@ import { DeleteExperienceUseCase } from '../application/use-cases/delete-experie
 import { GetExperienceByIdUseCase } from '../application/use-cases/get-experience-by-id/get-experience-by-id.usecase';
 import { ListUserExperiencesUseCase } from '../application/use-cases/list-user-experiences/list-user-experiences.usecase';
 import { UpdateExperienceUseCase } from '../application/use-cases/update-experience/udpate-experience.usecase';
+import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 
 @ApiTags('experiences')
 @ApiBearerAuth()
@@ -55,13 +57,12 @@ export class ExperienceController {
     return this.getExperienceByIdUseCase.execute(id);
   }
 
-  @Get('/users/:userId/experiences')
+  @Get('/experiences')
   @ApiOperation({ operationId: 'listUserExperiences' })
   @ApiOkResponse({ type: [ExperienceDto] })
-  async listUserExperiences(
-    @Param('userId') userId: string,
-  ): Promise<ExperienceDto[]> {
-    return this.listUserExperiencesUseCase.execute(userId);
+  async listUserExperiences(@Req() req: Request): Promise<ExperienceDto[]> {
+    const auth = req['auth'] as AuthOutputDto;
+    return this.listUserExperiencesUseCase.execute(auth.user.id);
   }
 
   @Patch('/experiences/:id')

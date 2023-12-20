@@ -1,3 +1,4 @@
+import axios, { Axios, AxiosError } from "axios";
 import type { Education } from "./types/Education";
 import type { Experience } from "./types/Experience";
 import type { Profile } from "./types/Profile";
@@ -15,159 +16,182 @@ interface SignupPayload {
 }
 interface AuthResult {
   token: string;
+  user?: User;
 }
 
 export class Backend {
-  constructor() {}
+  baseUrl: string;
+  token?: string;
+
+  constructor(token?: string | null) {
+    this.baseUrl = "http://localhost:3001";
+    this.token = token || undefined;
+  }
 
   async login(payload: LoginPayload): Promise<AuthResult> {
-    return { token: "123" };
+    const result = await this.request<AuthResult>(
+      "POST",
+      "/auth/login",
+      payload
+    );
+    return result;
   }
   async signup(payload: SignupPayload): Promise<AuthResult> {
-    return { token: "123" };
+    const result = await this.request<AuthResult>(
+      "POST",
+      "/auth/signup",
+      payload
+    );
+    return result;
   }
   async validateToken(token: string): Promise<boolean> {
-    return true;
+    const result = await this.request<AuthResult>(
+      "POST",
+      "/auth/validate-token"
+    );
+    return Boolean(result.token);
   }
-  async requestPasswordReset(email: string): Promise<void> {}
+  async requestPasswordReset(email: string): Promise<void> {
+    console.log(
+      `BE${this.token ? "[Auth]" : ""}` + "request-password-reset",
+      email
+    );
+  }
   async getUser(): Promise<User> {
-    return {
-      id: "123",
-      name: "John",
-      email: "john@test.com",
-    };
+    const result = await this.request<User>("GET", "/auth/me");
+    return result;
   }
 
-  async updateResume(resume: Resume) {
-    console.log("update-resume", resume);
+  async listUserResumes(): Promise<Resume[]> {
+    const result = await this.request<Resume[]>("GET", "/resumes");
+    return result;
   }
-  async updateProfile(profile: Profile) {
-    console.log("update-profile", profile);
-  }
-  async updateEducation(education: Education) {
-    console.log("update-education", education);
-  }
-  async updateExperience(experience: Experience) {
-    console.log("update-experience", experience);
-  }
-  async deleteEducation(id: string) {
-    console.log("delete-education", id);
-  }
-  async deleteExperience(id: string) {
-    console.log("delete-experience", id);
-  }
-  async addEducation(): Promise<Education> {
-    return this.getEducation("1");
-  }
-  async addExperience() {
-    return this.getExperience("1");
-  }
-
   async getResume(id: string) {
-    const resume: Resume = {
-      id: id,
-      name: "Resume 1",
-      userId: "userid",
-      title: "Lorem ipsum dolor",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus numquam corrupti sunt consequuntur a quaerat voluptates, quasi perspiciatis deserunt aliquid labore nulla cumque minus. Inventore, error. Sunt veritatis minima quibusdam?",
-      experiences: ["1", "2", "3", "4"],
-      educations: ["1", "2", "3"],
-      updatedAt: new Date(),
-    };
-    return resume;
+    const result = await this.request<Resume>("GET", `/resumes/${id}`);
+    return result;
   }
-  async getEducation(id: string) {
-    const education: Education = {
-      id: id,
-      title: `Courst 1`,
-      institution: `Institution 1`,
-      userId: "123",
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
-    };
-    return education;
-  }
-  async getExperience(id: string) {
-    const experience: Experience = {
-      id: id,
-      userId: "123",
-      title: `title 1`,
-      company: `company 1`,
-      description: "lorem",
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
-    };
-    return experience;
+  async updateResume(resume: Resume) {
+    const result = await this.request<Resume>(
+      "PATCH",
+      `/resumes/${resume.id}`,
+      {
+        title: resume.title,
+        description: resume.description,
+        experiences: resume.experiences,
+        educations: resume.educations,
+      }
+    );
   }
 
   async getUserProfile() {
-    const profile: Profile = {
-      id: "123",
-      userId: "userid",
-      name: "John",
-      email: "john@test.com",
-      address: "City X",
-      linkedin: "https://linkedin.com",
-    };
-    return profile;
+    const result = await this.request<Profile>("GET", "/profile");
+    return result;
+  }
+  async updateProfile(profile: Profile) {
+    const result = await this.request<Profile>(
+      "PATCH",
+      `/profile/${profile.id}`,
+      {
+        name: profile.name,
+        email: profile.email,
+        address: profile.address,
+        linkedin: profile.linkedin,
+      }
+    );
   }
 
-  async getUserResumes(): Promise<Resume[]> {
-    const resumes: Resume[] = [];
-
-    for (let i = 1; i <= 4; i++) {
-      resumes.push({
-        id: `${i}`,
-        name: `Resume ${i}`,
-        title: `Engineer ${i}`,
-        updatedAt: new Date(),
-        userId: "123",
-        description:
-          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus numquam corrupti sunt consequuntur a quaerat voluptates",
-        experiences: [],
-        educations: [],
-      });
-    }
-
-    return resumes;
+  async listUserEducations(): Promise<Education[]> {
+    const result = await this.request<Education[]>("GET", "/educations");
+    return result;
+  }
+  async updateEducation(education: Education) {
+    const result = await this.request<Education>(
+      "PATCH",
+      `/educations/${education.id}`,
+      {
+        title: education.title,
+        institution: education.institution,
+        startDate: education.startDate,
+        endDate: education.endDate,
+      }
+    );
+  }
+  async deleteEducation(id: string) {
+    const result = await this.request<Education>("DELETE", `/educations/${id}`);
+  }
+  async addEducation(): Promise<Education> {
+    const result = await this.request<Education>("POST", `/educations`);
+    return result;
+  }
+  async getEducation(id: string) {
+    const result = await this.request<Education>("GET", `/educations/${id}`);
+    return result;
   }
 
-  async getUserEducations(): Promise<Education[]> {
-    const educations: Education[] = [];
-
-    for (let i = 1; i <= 3; i++) {
-      educations.push({
-        id: `${i}`,
-        title: `Courst ${i}`,
-        institution: `Institution ${i}`,
-        userId: "123",
-        startDate: new Date().toISOString(),
-        endDate: new Date().toISOString(),
-      });
-    }
-
-    return educations;
+  async listUserExperiences(): Promise<Experience[]> {
+    const result = await this.request<Experience[]>("GET", "/experiences");
+    return result;
+  }
+  async updateExperience(experience: Experience) {
+    const result = await this.request<Experience>(
+      "PATCH",
+      `/experiences/${experience.id}`,
+      {
+        title: experience.title,
+        company: experience.company,
+        description: experience.description,
+        startDate: experience.startDate,
+        endDate: experience.endDate,
+      }
+    );
+  }
+  async deleteExperience(id: string) {
+    const result = await this.request<Experience>(
+      "DELETE",
+      `/experiences/${id}`
+    );
+  }
+  async addExperience() {
+    const result = await this.request<Experience>("POST", `/experiences`);
+    return result;
+  }
+  async getExperience(id: string) {
+    const result = await this.request<Experience>("GET", `/experiences/${id}`);
+    return result;
   }
 
-  async getUserExperiences(): Promise<Experience[]> {
-    const experiences: Experience[] = [];
-
-    for (let i = 1; i <= 10; i++) {
-      experiences.push({
-        id: `${i}`,
-        userId: "123",
-        title: `title ${i}`,
-        company: `company ${i}`,
-        description:
-          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus numquam corrupti sunt consequuntur a quaerat voluptates",
-        startDate: new Date().toISOString(),
-        endDate: new Date().toISOString(),
+  private async request<T>(
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    path: string,
+    data?: unknown
+  ): Promise<T> {
+    const res = await axios
+      .request<T>({
+        baseURL: this.baseUrl,
+        url: path,
+        method,
+        headers: this.token
+          ? {
+              Authorization: `Bearer ${this.token}`,
+            }
+          : undefined,
+        data,
+      })
+      .catch((err: AxiosError) => {
+        console.error(
+          "axiosError",
+          method,
+          path,
+          data,
+          err.message,
+          err.response?.data
+        );
+        const msg =
+          // @ts-ignore
+          err.response?.data?.message ?? err.message ?? "Unknown error";
+        throw new Error(msg);
       });
-    }
 
-    return experiences;
+    return res.data;
   }
 }
-
-export const backend = new Backend();

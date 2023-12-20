@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -24,6 +25,7 @@ import { DeleteResumeUseCase } from '../application/use-cases/delete-resume/dele
 import { GetResumeByIdUseCase } from '../application/use-cases/get-resume-by-id/get-resume-by-id.usecase';
 import { ListUserResumesUseCase } from '../application/use-cases/list-user-resumes/list-user-resumes.usecase';
 import { UpdateResumeUseCase } from '../application/use-cases/update-resume/update-resume.usecase';
+import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 
 @ApiTags('resumes')
 @ApiBearerAuth()
@@ -52,11 +54,12 @@ export class ResumeController {
     return this.getResumeByIdUseCase.execute(id);
   }
 
-  @Get('/users/:userId/resumes')
+  @Get('/resumes')
   @ApiOperation({ operationId: 'listUserResumes' })
   @ApiOkResponse({ type: [ResumeDto] })
-  async listUserResumes(@Param('userId') userId: string): Promise<ResumeDto[]> {
-    return this.listUserResumesUseCase.execute(userId);
+  async listUserResumes(@Req() req: Request): Promise<ResumeDto[]> {
+    const auth = req['auth'] as AuthOutputDto;
+    return this.listUserResumesUseCase.execute(auth.user.id);
   }
 
   @Patch('/resumes/:id')

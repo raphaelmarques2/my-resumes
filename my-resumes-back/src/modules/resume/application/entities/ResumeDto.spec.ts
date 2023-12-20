@@ -7,12 +7,15 @@ import { Name } from 'src/modules/common/application/value-objects/Name';
 describe('ResumeDto', () => {
   describe('createFrom', () => {
     it('should create dto from entity with all fields', async () => {
+      const today = new Date();
       const resume = Resume.load({
         id: new Id(),
         userId: new Id(),
         title: new Name(faker.internet.displayName()),
         description: faker.lorem.paragraph(),
         experiences: [new Id(), new Id(), new Id()],
+        educations: [new Id(), new Id(), new Id()],
+        updatedAt: today,
       });
       const dto = ResumeDto.createFrom(resume);
       expect(dto).toEqual({
@@ -21,15 +24,20 @@ describe('ResumeDto', () => {
         title: resume.title.value,
         description: resume.description,
         experiences: resume.experiences.map((e) => e.value),
+        educations: resume.educations.map((e) => e.value),
+        updatedAt: today.toISOString(),
       });
     });
     it('should create dto from entity with empty experiences', async () => {
+      const today = new Date();
       const resume = Resume.load({
         id: new Id(),
         userId: new Id(),
         title: new Name(faker.internet.displayName()),
         description: faker.lorem.paragraph(),
         experiences: [],
+        educations: [],
+        updatedAt: today,
       });
       const dto = ResumeDto.createFrom(resume);
       expect(dto).toEqual({
@@ -38,6 +46,8 @@ describe('ResumeDto', () => {
         title: resume.title.value,
         description: resume.description,
         experiences: [],
+        educations: [],
+        updatedAt: today.toISOString(),
       });
     });
   });

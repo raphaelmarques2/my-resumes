@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOkResponse,
@@ -11,6 +19,7 @@ import { UpdateProfileDto } from 'src/modules/profile/application/use-cases/upda
 import { AuthGuard } from '../../auth/infra/guards/AuthGuard';
 import { GetUserProfileUseCase } from '../application/use-cases/get-user-profile/get-user-profile.usecase';
 import { UpdateProfileUseCase } from '../application/use-cases/update-profile/update-profile.usecase';
+import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 
 @ApiTags('profiles')
 @ApiBearerAuth()
@@ -22,13 +31,12 @@ export class ProfileController {
     private updateProfileUseCase: UpdateProfileUseCase,
   ) {}
 
-  @Get('/users/:userId/profile')
+  @Get('/profile')
   @ApiOperation({ operationId: 'getProfileByUserId' })
   @ApiOkResponse({ type: ProfileDto })
-  async getProfileByUserId(
-    @Param('userId') userId: string,
-  ): Promise<ProfileDto> {
-    return this.getUserProfileUseCase.execute(userId);
+  async getProfileByUserId(@Req() req: Request): Promise<ProfileDto> {
+    const auth = req['auth'] as AuthOutputDto;
+    return this.getUserProfileUseCase.execute(auth.user.id);
   }
 
   @Patch('/profiles/:id')

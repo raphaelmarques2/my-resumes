@@ -85,6 +85,7 @@ model Resume {
   user   User   @relation(fields: [userId], references: [id])
 
   experienceToResumes ExperienceToResume[]
+  educationToResumes  EducationToResume[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
@@ -109,6 +110,23 @@ model ExperienceToResume {
   @@map("experience_to_resume")
 }
 
+model EducationToResume {
+  id String @id @default(uuid())
+
+  order Int @default(0) //order of the education in a resume
+
+  educationId String    @map("education_id")
+  education   Education @relation(fields: [educationId], references: [id], onDelete: Cascade)
+
+  resumeId String @map("resume_id")
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("education_to_resume")
+}
+
 model Education {
   id String @id @default(uuid())
 
@@ -120,8 +138,9 @@ model Education {
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @default(now()) @updatedAt() @map("updated_at")
+  EducationToResume EducationToResume[]
 
   @@map("education")
 }

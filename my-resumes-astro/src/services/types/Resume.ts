@@ -6,5 +6,5 @@ export type Resume = {
   description: string;
   experiences: string[];
   educations: string[];
-  updatedAt: Date;
+  updatedAt: string;
 };

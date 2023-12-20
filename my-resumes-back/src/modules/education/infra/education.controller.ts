@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -23,8 +24,8 @@ import { GetEducationByIdUseCase } from '../application/use-cases/get-education-
 import { ListUserEducationsUseCase } from '../application/use-cases/list-user-educations/list-user-educations.usecase';
 import { UpdateEducationUseCase } from '../application/use-cases/update-education/update-education.usecase';
 import { EducationDto } from '../application/entities/EducationDto';
-import { CreateEducationDto } from '../application/use-cases/create-education/CreateEducationDto';
 import { UpdateEducationDto } from '../application/use-cases/update-education/UpdateEducationDto';
+import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 
 @ApiTags('educations')
 @ApiBearerAuth()
@@ -42,10 +43,10 @@ export class EducationController {
   @Post('/educations')
   @ApiOperation({ operationId: 'createEducation' })
   @ApiCreatedResponse({ type: EducationDto })
-  async createEducation(
-    @Body() body: CreateEducationDto,
-  ): Promise<EducationDto> {
-    return this.createEducationUseCase.execute(body);
+  async createEducation(@Req() req: Request): Promise<EducationDto> {
+    console.log('createEducation');
+    const auth = req['auth'] as AuthOutputDto;
+    return this.createEducationUseCase.execute({ userId: auth.user.id });
   }
 
   @Get('/educations/:id')
@@ -55,13 +56,12 @@ export class EducationController {
     return this.getEducationByIdUseCase.execute(id);
   }
 
-  @Get('/users/:userId/educations')
+  @Get('/educations')
   @ApiOperation({ operationId: 'listUserEducations' })
   @ApiOkResponse({ type: [EducationDto] })
-  async listUserEducations(
-    @Param('userId') userId: string,
-  ): Promise<EducationDto[]> {
-    return this.listUserEducationsUseCase.execute(userId);
+  async listUserEducations(@Req() req: Request): Promise<EducationDto[]> {
+    const auth = req['auth'] as AuthOutputDto;
+    return this.listUserEducationsUseCase.execute(auth.user.id);
   }
 
   @Patch('/educations/:id')

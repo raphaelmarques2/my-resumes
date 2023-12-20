@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { useState, type FormEvent } from "react";
-import { backend } from "../../services/backend";
+import { sharedBackend } from "../../stores/sharedBackend";
 import { sharedEducations } from "../../stores/sharedEducations";
 import { TextInput } from "../common/TextInput";
 
@@ -17,10 +17,12 @@ export function EditEducation(props: { resumeId: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateEducation(education).catch((err) => {
-      setError(err.message ?? "Error");
-      throw err;
-    });
+    await sharedBackend()
+      .updateEducation(education)
+      .catch((err) => {
+        setError(err.message ?? "Error");
+        throw err;
+      });
     redirectToEducation();
   }
 
@@ -29,7 +31,7 @@ export function EditEducation(props: { resumeId: string }) {
   }
 
   async function deleteEducation() {
-    await backend.deleteEducation(education.id);
+    await sharedBackend().deleteEducation(education.id);
     redirectToEducation();
   }
 

@@ -59,7 +59,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Post('/authenticate')
+  @Post('/validate-token')
   @ApiBearerAuth()
   @ApiOperation({ operationId: 'authenticate' })
   @ApiCreatedResponse({ type: AuthOutputDto })

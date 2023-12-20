@@ -1,15 +1,16 @@
 ---
 import { ResumePdf } from "../../../components/resume/ResumePdf";
 import ResumeLayout from "../../../layout/ResumeLayout.astro";
-import { backend } from "../../../services/backend";
+import { Backend } from "../../../services/backend";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
 
+const backend = new Backend(Astro.locals.token);
 const resume = await backend.getResume(id);
 const profile = await backend.getUserProfile();
-const educations = await backend.getUserEducations();
-const experiences = await backend.getUserExperiences();
+const educations = await backend.listUserEducations();
+const experiences = await backend.listUserExperiences();
 ---
 
 <ResumeLayout resume={resume}>

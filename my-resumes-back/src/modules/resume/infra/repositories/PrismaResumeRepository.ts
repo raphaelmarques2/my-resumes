@@ -7,9 +7,12 @@ import { PrismaClient, Resume as ResumeData } from '@prisma/client';
 import { Name } from 'src/modules/common/application/value-objects/Name';
 import { Injectable } from '@nestjs/common';
 
-type ResumeDataAndExperiences = ResumeData & {
+type ResumeDataAndRelations = ResumeData & {
   experienceToResumes: {
     experienceId: string;
+  }[];
+  educationToResumes: {
+    educationId: string;
   }[];
 };
 
@@ -46,6 +49,10 @@ export class PrismaResumeRepository extends ResumeRepository {
       await prisma.experienceToResume.deleteMany({
         where: { resumeId: resume.id.value },
       });
+      await prisma.educationToResume.deleteMany({
+        where: { resumeId: resume.id.value },
+      });
+
       await prisma.resume.update({
         where: { id: resume.id.value },
         data: {
@@ -54,6 +61,11 @@ export class PrismaResumeRepository extends ResumeRepository {
           experienceToResumes: {
             createMany: {
               data: resume.experiences.map((e) => ({ experienceId: e.value })),
+            },
+          },
+          educationToResumes: {
+            createMany: {
+              data: resume.educations.map((e) => ({ educationId: e.value })),
             },
           },
         },
@@ -88,6 +100,9 @@ export class PrismaResumeRepository extends ResumeRepository {
         experienceToResumes: {
           select: { experienceId: true },
         },
+        educationToResumes: {
+          select: { educationId: true },
+        },
       },
     });
     if (!data) return null;
@@ -104,18 +119,23 @@ export class PrismaResumeRepository extends ResumeRepository {
         experienceToResumes: {
           select: { experienceId: true },
         },
+        educationToResumes: {
+          select: { educationId: true },
+        },
       },
     });
     return data.map((e) => this.convertToEntity(e));
   }
 
-  private convertToEntity(data: ResumeDataAndExperiences): Resume {
+  private convertToEntity(data: ResumeDataAndRelations): Resume {
     return Resume.load({
       id: new Id(data.id),
       userId: new Id(data.userId),
       title: new Name(data.title),
       description: data.description,
       experiences: data.experienceToResumes.map((e) => new Id(e.experienceId)),
+      educations: data.educationToResumes.map((e) => new Id(e.educationId)),
+      updatedAt: data.updatedAt,
     });
   }
 }

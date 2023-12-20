@@ -6,6 +6,7 @@ export const updateResumeDtoSchema = z
     title: z.string().min(1).optional(),
     description: z.string().optional(),
     experiences: z.array(z.string().uuid()).optional(),
+    educations: z.array(z.string().uuid()).optional(),
   })
   .strict();
 

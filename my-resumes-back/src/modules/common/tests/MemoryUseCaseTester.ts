@@ -135,7 +135,11 @@ export class MemoryUseCaseTester {
     return ExperienceDto.createFrom(experience);
   }
 
-  async createResume(input: { userId: string; experiences?: string[] }) {
+  async createResume(input: {
+    userId: string;
+    experiences?: string[];
+    educations?: string[];
+  }) {
     const resume = Resume.load({
       id: new Id(),
       userId: new Id(input.userId),
@@ -144,6 +148,10 @@ export class MemoryUseCaseTester {
       experiences: input.experiences
         ? input.experiences.map((e) => new Id(e))
         : [],
+      educations: input.educations
+        ? input.educations.map((e) => new Id(e))
+        : [],
+      updatedAt: new Date(),
     });
     await this.resumeRepository.add(resume);
     return ResumeDto.createFrom(resume);

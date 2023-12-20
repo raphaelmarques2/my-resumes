@@ -4,13 +4,14 @@ import { EducationPdfPreview } from "../../../components/education/EducationPdfP
 import { SetSharedEducations } from "../../../components/education/SetSharedEducations.tsx";
 import { SetSharedResume } from "../../../components/resume/SetSharedResume";
 import ResumeLayout from "../../../layout/ResumeLayout.astro";
-import { backend } from "../../../services/backend";
+import { Backend } from "../../../services/backend";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
 
+const backend = new Backend(Astro.locals.token);
 const resume = await backend.getResume(id);
-const educations = await backend.getUserEducations();
+const educations = await backend.listUserEducations();
 ---
 
 <ResumeLayout resume={resume}>

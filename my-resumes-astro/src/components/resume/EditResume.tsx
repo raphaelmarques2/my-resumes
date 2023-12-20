@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { useState, type FormEvent } from "react";
-import { backend } from "../../services/backend";
+import { sharedBackend } from "../../stores/sharedBackend";
 import { sharedResume } from "../../stores/sharedResume";
 import { FormSubmit } from "../common/FormSubmit";
 import { TextInput } from "../common/TextInput";
@@ -13,10 +13,12 @@ export function EditResume(props: { resumeId: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await backend.updateResume(resume!).catch((err) => {
-      setError(err.message ?? "Error");
-      throw err;
-    });
+    await sharedBackend()
+      .updateResume(resume!)
+      .catch((err) => {
+        setError(err.message ?? "Error");
+        throw err;
+      });
     window.location.href = `/resumes/${props.resumeId}/profile`;
   }
 

@@ -9,12 +9,20 @@ export class Resume implements Entity {
     public title: Name,
     public description: string,
     public experiences: Id[],
+    public educations: Id[],
+    readonly updatedAt: Date,
   ) {}
 
-  update(input: { title?: Name; description?: string; experiences?: Id[] }) {
+  update(input: {
+    title?: Name;
+    description?: string;
+    experiences?: Id[];
+    educations?: Id[];
+  }) {
     if (input.title !== undefined) this.title = input.title;
     if (input.description !== undefined) this.description = input.description;
     if (input.experiences !== undefined) this.experiences = input.experiences;
+    if (input.educations !== undefined) this.educations = input.educations;
   }
 
   static create({
@@ -22,11 +30,13 @@ export class Resume implements Entity {
     title,
     description,
     experiences,
+    educations,
   }: {
     userId: Id;
     title: Name;
     description?: string;
     experiences?: Id[];
+    educations?: Id[];
   }) {
     return new Resume(
       new Id(),
@@ -34,6 +44,8 @@ export class Resume implements Entity {
       title,
       description ?? '',
       experiences ?? [],
+      educations ?? [],
+      new Date(),
     );
   }
 
@@ -43,13 +55,25 @@ export class Resume implements Entity {
     title,
     description,
     experiences,
+    educations,
+    updatedAt,
   }: {
     id: Id;
     userId: Id;
     title: Name;
     description: string;
     experiences: Id[];
+    educations: Id[];
+    updatedAt: Date;
   }) {
-    return new Resume(id, userId, title, description, experiences);
+    return new Resume(
+      id,
+      userId,
+      title,
+      description,
+      experiences,
+      educations,
+      updatedAt,
+    );
   }
 }

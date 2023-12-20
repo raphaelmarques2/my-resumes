@@ -1,9 +1,11 @@
 ---
+import moment from "moment";
 import { ListItem } from "../components/common/ListItem.tsx";
 import MainLayout from "../layout/MainLayout.astro";
-import { backend } from "../services/backend";
+import { Backend } from "../services/backend";
 
-const resumes = await backend.getUserResumes();
+const backend = new Backend(Astro.locals.token);
+const resumes = await backend.listUserResumes();
 ---
 
 <MainLayout>
@@ -20,7 +22,7 @@ const resumes = await backend.getUserResumes();
           <ListItem
             href={`/resumes/${resume.id}`}
             title={`${resume.name} (${resume.title})`}
-            subtitle={`Last update: ${resume.updatedAt.toLocaleDateString()}`}
+            subtitle={`Updated ${moment(resume.updatedAt).fromNow()}`}
           />
         ))
       }

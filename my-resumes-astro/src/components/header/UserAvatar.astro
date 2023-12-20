@@ -1,7 +1,7 @@
 ---
-import type { User } from "../../services/types/User";
+const { user } = Astro.locals;
 
-const { user } = Astro.locals as { user: User };
+if (!user) throw new Error("User not found");
 
 const firstLetter = user.name.charAt(0).toUpperCase();
 ---

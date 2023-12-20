@@ -28,8 +28,8 @@ export class CreateEducationUseCase {
 
     const education = Education.create({
       userId: new Id(data.userId),
-      title: new Name(data.title),
-      institution: new Name(data.institution),
+      title: new Name(data.title ?? 'Title'),
+      institution: new Name(data.institution ?? 'Institution'),
       startDate: this.convertDate(data.startDate),
       endDate: this.convertDate(data.endDate),
     });

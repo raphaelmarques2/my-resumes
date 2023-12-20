@@ -2,7 +2,9 @@
 import { z } from "astro/zod";
 import { TextInput } from "../components/common/TextInput";
 import MainLayout from "../layout/MainLayout.astro";
-import { backend } from "../services/backend";
+import { Backend } from "../services/backend";
+
+const backend = new Backend();
 
 let error = "";
 let name = "";

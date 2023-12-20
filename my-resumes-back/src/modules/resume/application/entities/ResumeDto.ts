@@ -9,6 +9,8 @@ export const resumeDtoSchema = z
     title: z.string().min(1),
     description: z.string(),
     experiences: z.array(z.string()),
+    educations: z.array(z.string()),
+    updatedAt: z.string(),
   })
   .strict();
 
@@ -20,6 +22,8 @@ export class ResumeDto extends createZodDto(resumeDtoSchema) {
       title: resume.title.value,
       description: resume.description,
       experiences: resume.experiences.map((item) => item.value),
+      educations: resume.educations.map((item) => item.value),
+      updatedAt: resume.updatedAt.toISOString(),
     } satisfies ResumeDto);
   }
 }

@@ -1,12 +1,12 @@
 import { defineMiddleware, sequence } from "astro:middleware";
-import { backend } from "./services/backend";
+import { Backend } from "./services/backend";
 
 const authMiddleware = defineMiddleware(async (context, next) => {
   const token = context.cookies.get("token")?.value;
-  context.locals = { ...context.locals, token };
+  context.locals.token = token;
 
   const isAuthenticated = Boolean(token);
-  context.locals = { ...context.locals, isAuthenticated };
+  context.locals.isAuthenticated = isAuthenticated;
 
   const protectedRoutes = [new RegExp("/resumes.*")];
 
@@ -23,8 +23,14 @@ const authMiddleware = defineMiddleware(async (context, next) => {
   }
 
   if (isAuthenticated) {
-    const user = await backend.getUser();
-    context.locals = { ...context.locals, user };
+    try {
+      const backend = new Backend(token);
+      const user = await backend.getUser();
+      context.locals.user = user;
+    } catch (error) {
+      console.error(error);
+      return await context.redirect("/");
+    }
   }
 
   return await next();

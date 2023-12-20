@@ -4,11 +4,12 @@ import { ResumeAndProfilePdfPreview } from "../../../components/resume/ResumeAnd
 import { SetSharedProfile } from "../../../components/profile/SetSharedProfile.tsx";
 import { EditResume } from "../../../components/resume/EditResume.tsx";
 import { SetSharedResume } from "../../../components/resume/SetSharedResume.tsx";
-import { backend } from "../../../services/backend";
+import { Backend } from "../../../services/backend";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
 
+const backend = new Backend(Astro.locals.token);
 const resume = await backend.getResume(id);
 const profile = await backend.getUserProfile();
 ---

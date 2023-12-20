@@ -41,7 +41,7 @@ export class PrismaUserRepository extends UserRepository {
   ): Promise<boolean> {
     const user = await this.prisma.or(options?.transaction).user.findUnique({
       where: { id: id.value },
-      select: {},
+      select: { id: true },
     });
     return user !== null;
   }
