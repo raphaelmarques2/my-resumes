@@ -6,7 +6,7 @@ import { Transaction } from 'src/modules/common/application/repositories/Transac
 export class PrismaService extends PrismaClient {
   constructor() {
     super();
-    console.log(`new PrismaService()`);
+    // console.log(`new PrismaService()`);
   }
 
   or(transaction?: Transaction): PrismaService {
