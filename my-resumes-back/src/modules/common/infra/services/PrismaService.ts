@@ -5,8 +5,13 @@ import { Transaction } from 'src/modules/common/application/repositories/Transac
 @Injectable()
 export class PrismaService extends PrismaClient {
   constructor() {
-    super();
-    // console.log(`new PrismaService()`);
+    const isJest = Boolean(process.env.JEST_WORKER_ID);
+    if (isJest) {
+      console.log(`new PrismaService(${process.env.TEST_DATABASE_URL}) [JEST]`);
+      super({ datasources: { db: { url: process.env.TEST_DATABASE_URL } } });
+    } else {
+      super();
+    }
   }
 
   or(transaction?: Transaction): PrismaService {
