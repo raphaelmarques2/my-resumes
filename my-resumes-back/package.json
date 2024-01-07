@@ -95,6 +95,9 @@
     },
     "globalSetup": "<rootDir>/infra/tests/setup.ts",
     "globalTeardown": "<rootDir>/infra/tests/teardown.ts",
+    "setupFilesAfterEnv": [
+      "<rootDir>/infra/tests/custom-matchers.ts"
+    ],
     "testTimeout": 3600000
   }
 }

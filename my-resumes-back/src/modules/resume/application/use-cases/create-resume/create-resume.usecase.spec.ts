@@ -25,8 +25,11 @@ describe('createResume', () => {
       id: expect.any(String),
       userId: auth.user.id,
       title: input.title,
+      name: 'Name',
+      updatedAt: expect.toBeIsoDate(),
       description: '',
       experiences: [],
+      educations: [],
     });
   });
   it('should create resume with description', async () => {
@@ -41,8 +44,11 @@ describe('createResume', () => {
       id: expect.any(String),
       userId: auth.user.id,
       title: input.title,
+      name: 'Name',
+      updatedAt: expect.toBeIsoDate(),
       description: input.description,
       experiences: [],
+      educations: [],
     });
   });
   it('should create resume with experiences', async () => {
@@ -63,8 +69,11 @@ describe('createResume', () => {
       id: expect.any(String),
       userId: auth.user.id,
       title: input.title,
+      name: 'Name',
+      updatedAt: expect.toBeIsoDate(),
       description: '',
       experiences,
+      educations: [],
     });
   });
 });
