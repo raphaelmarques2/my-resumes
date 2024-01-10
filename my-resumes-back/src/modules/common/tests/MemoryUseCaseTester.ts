@@ -11,7 +11,7 @@ import { MemoryCredentialRepository } from 'src/modules/auth/infra/repositories/
 import { MemoryUserRepository } from 'src/modules/auth/infra/repositories/MemoryUserRepository';
 import { MemoryExperienceRepository } from 'src/modules/experience/infra/repositories/MemoryExperienceRepository';
 import { MemoryProfileRepository } from 'src/modules/profile/infra/repositories/MemoryProfileRepository';
-import { MemoryTransactionService } from '../infra/repositories/MemoryAppRepository';
+import { MemoryTransactionService } from '../infra/repositories/MemoryTransactionService';
 import { Experience } from 'src/modules/experience/application/entities/Experience.entity';
 import { ExperienceDto } from 'src/modules/experience/application/entities/ExperienceDto';
 import { MemoryEducationRepository } from 'src/modules/education/infra/repositories/MemoryEducationRepository';

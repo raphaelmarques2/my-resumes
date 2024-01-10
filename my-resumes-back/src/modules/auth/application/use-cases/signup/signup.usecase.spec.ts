@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { MemoryTransactionService } from 'src/modules/common/infra/repositories/MemoryAppRepository';
+import { MemoryTransactionService } from 'src/modules/common/infra/repositories/MemoryTransactionService';
 import { MemoryUseCaseTester } from 'src/modules/common/tests/MemoryUseCaseTester';
 import { SignupDto } from './signup.dto';
 import { SignupUseCase } from './signup.usecase';

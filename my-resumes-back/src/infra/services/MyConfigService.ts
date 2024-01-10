@@ -20,6 +20,10 @@ export class MyConfigService {
   get databaseUrl() {
     return process.env.DATABASE_URL || '';
   }
+  get testDatabaseUrl() {
+    return process.env.TEST_DATABASE_URL || '';
+  }
+
   get jwtSecret() {
     return process.env.JWT_SECRET || 'abc';
   }

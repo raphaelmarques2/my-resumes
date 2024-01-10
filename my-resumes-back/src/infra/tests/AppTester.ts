@@ -7,6 +7,8 @@ import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth
 import * as request from 'supertest';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
+import { EmailService } from 'src/modules/common/application/services/EmailService';
+import { MemoryEmailService } from 'src/modules/common/infra/services/MemoryEmailService';
 
 export class AppTester {
   prisma!: PrismaService;
@@ -34,19 +36,18 @@ export function createAppTester() {
     if (!process.env.TEST_DATABASE_URL)
       throw new Error('No process.env.TEST_DATABASE_URL');
 
-    tester.prisma = new PrismaService({ url: process.env.TEST_DATABASE_URL });
-    await tester.prisma.$connect();
-
     const moduleBuilder = Test.createTestingModule({
       imports: [AppModule],
     });
-    moduleBuilder.overrideProvider(PrismaService).useValue(tester.prisma);
+
+    moduleBuilder.overrideProvider(EmailService).useClass(MemoryEmailService);
 
     const testingModule = await moduleBuilder.compile();
 
     const app = testingModule.createNestApplication();
     await app.init();
 
+    tester.prisma = testingModule.get(PrismaService);
     tester.server = app.getHttpServer();
   });
 

@@ -9,10 +9,10 @@ import {
   MyConfigService,
   configurations,
 } from './infra/services/MyConfigService';
-import { AuthModule } from './modules/auth/auto.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { TransactionService } from './modules/common/application/repositories/TransactionService';
 import { PrismaService } from './modules/common/infra/services/PrismaService';
-import { PrismaTransactionService } from './modules/common/infra/repositories/PrismaAppRepository';
+import { PrismaTransactionService } from './modules/common/infra/repositories/PrismaTransactionService';
 import { EducationModule } from './modules/education/education.module';
 import { ExperienceModule } from './modules/experience/experience.module';
 import { ProfileModule } from './modules/profile/profile.module';

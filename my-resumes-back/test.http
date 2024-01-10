@@ -22,4 +22,12 @@ content-type: application/json
     "password": "123"
 }
 
+### test update password by token
+POST {{base}}/auth/update-password-request/abc/update-password
+content-type: application/json
+
+{
+    "password": "123"
+}
+
 ###

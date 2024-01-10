@@ -6,7 +6,7 @@ import * as request from 'supertest';
 describe('auth.controller', () => {
   const tester = createAppTester();
 
-  describe('/auth/signup', () => {
+  describe('POST /auth/signup', () => {
     it('should create new user', async () => {
       const payload = {
         name: faker.person.fullName(),
@@ -47,7 +47,7 @@ describe('auth.controller', () => {
       expect(res2.status).toBe(HttpStatus.BAD_REQUEST);
     });
   });
-  describe('/auth/login', () => {
+  describe('POST /auth/login', () => {
     it('should login with valid credentials', async () => {
       const payload = {
         name: faker.person.fullName(),
@@ -102,7 +102,7 @@ describe('auth.controller', () => {
       expect(loginRes.status).toBe(HttpStatus.UNAUTHORIZED);
     });
   });
-  describe('/auth/validate-token', () => {
+  describe('POST /auth/validate-token', () => {
     it('should validate a valid token', async () => {
       const auth = await tester.signup();
 
@@ -120,7 +120,7 @@ describe('auth.controller', () => {
       expect(validateTokenRes.status).toBe(HttpStatus.UNAUTHORIZED);
     });
   });
-  describe('/auth/me', () => {
+  describe('GET /auth/me', () => {
     it('should return the user', async () => {
       const auth = await tester.signup();
 
