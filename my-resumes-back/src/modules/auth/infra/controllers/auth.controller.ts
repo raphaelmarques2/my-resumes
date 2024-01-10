@@ -36,14 +36,7 @@ export class AuthController {
   ) {}
 
   @Post('/signup')
-  @ApiOperation({
-    operationId: 'signup',
-    requestBody: {
-      content: {
-        'application/json': {},
-      },
-    },
-  })
+  @ApiOperation({ operationId: 'signup' })
   @ApiCreatedResponse({ type: AuthOutputDto })
   @ApiCreatedResponse({})
   async signup(@Body() body: SignupDto): Promise<AuthOutputDto> {
@@ -60,9 +53,10 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Post('/validate-token')
+  @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()
   @ApiOperation({ operationId: 'authenticate' })
-  @ApiCreatedResponse({ type: AuthOutputDto })
+  @ApiOkResponse({ type: AuthOutputDto })
   async authenticate(@Req() req: Request): Promise<AuthOutputDto> {
     const [, token] = req.headers.authorization?.split(' ') ?? [];
     return this.validateTokenUseCase.execute(token);

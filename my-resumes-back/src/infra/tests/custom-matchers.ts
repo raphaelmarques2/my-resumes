@@ -3,9 +3,11 @@ declare global {
   namespace jest {
     interface Matchers<R> {
       toBeIsoDate(): R;
+      toBeUUID(): R;
     }
     interface Expect {
       toBeIsoDate(): void;
+      toBeUUID(): void;
     }
   }
 }
@@ -23,6 +25,22 @@ expect.extend({
     } else {
       return {
         message: () => `expected ${received} to be a valid ISO date`,
+        pass: false,
+      };
+    }
+  },
+  toBeUUID(received: string) {
+    const pass = !!received.match(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/,
+    );
+    if (pass) {
+      return {
+        message: () => `expected ${received} not to be a valid UUID`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => `expected ${received} to be a valid UUID`,
         pass: false,
       };
     }

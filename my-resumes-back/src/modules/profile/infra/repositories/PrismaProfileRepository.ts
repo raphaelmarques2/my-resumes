@@ -16,7 +16,7 @@ export class PrismaProfileRepository extends ProfileRepository {
     await this.prisma.or(options?.transaction).profile.create({
       data: {
         id: profile.id.value,
-        userId: profile.id.value,
+        userId: profile.userId.value,
         name: profile.name,
         email: profile.email,
         address: profile.address,
