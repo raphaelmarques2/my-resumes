@@ -22,7 +22,7 @@ describe('createResume', () => {
     };
     const resume = await createResume.execute(input);
     expect(resume).toEqual({
-      id: expect.any(String),
+      id: expect.toBeUUID(),
       userId: auth.user.id,
       title: input.title,
       name: 'Name',
@@ -41,7 +41,7 @@ describe('createResume', () => {
     };
     const resume = await createResume.execute(input);
     expect(resume).toEqual({
-      id: expect.any(String),
+      id: expect.toBeUUID(),
       userId: auth.user.id,
       title: input.title,
       name: 'Name',
@@ -66,7 +66,7 @@ describe('createResume', () => {
     };
     const resume = await createResume.execute(input);
     expect(resume).toEqual({
-      id: expect.any(String),
+      id: expect.toBeUUID(),
       userId: auth.user.id,
       title: input.title,
       name: 'Name',

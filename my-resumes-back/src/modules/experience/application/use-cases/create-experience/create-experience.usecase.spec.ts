@@ -25,7 +25,7 @@ describe('createExperience', () => {
     };
     const result = await createExperience.execute(input);
     expect(result).toEqual({
-      id: expect.any(String),
+      id: expect.toBeUUID(),
       title: input.title,
       company: input.company,
       userId: input.userId,

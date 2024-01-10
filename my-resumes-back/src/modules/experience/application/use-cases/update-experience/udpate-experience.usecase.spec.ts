@@ -29,7 +29,7 @@ describe('updateExperience', () => {
       endDate: endDate,
     });
     expect(updated).toEqual({
-      id: expect.any(String),
+      id: expect.toBeUUID(),
       title: 'title2',
       company: 'company2',
       description: 'description2',

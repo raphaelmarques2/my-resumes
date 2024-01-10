@@ -24,7 +24,7 @@ describe('createEducation', () => {
     };
     const result = await createEducation.execute(input);
     expect(result).toEqual({
-      id: expect.any(String),
+      id: expect.toBeUUID(),
       title: input.title,
       institution: input.institution,
       userId: input.userId,

@@ -35,7 +35,7 @@ describe('login', () => {
     expect(result).toEqual({
       token: expect.any(String),
       user: {
-        id: expect.any(String),
+        id: expect.toBeUUID(),
         name: 'User',
         email: 'test@test.com',
       },

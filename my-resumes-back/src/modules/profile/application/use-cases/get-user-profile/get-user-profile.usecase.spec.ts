@@ -17,7 +17,7 @@ describe('getUserProfile', () => {
     const profile = await getUserProfile.execute(auth.user.id);
     expect(profile).toEqual(
       expect.objectContaining({
-        id: expect.any(String),
+        id: expect.toBeUUID(),
         userId: auth.user.id,
       }),
     );
