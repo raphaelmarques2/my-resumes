@@ -28,19 +28,14 @@ export class CreateEducationUseCase {
 
     const education = Education.create({
       userId: new Id(data.userId),
-      title: new Name(data.title ?? 'Title'),
-      institution: new Name(data.institution ?? 'Institution'),
-      startDate: this.convertDate(data.startDate),
-      endDate: this.convertDate(data.endDate),
+      title: new Name('Title'),
+      institution: new Name('Institution'),
+      startDate: null,
+      endDate: null,
     });
 
     await this.educationRepository.add(education);
 
     return EducationDto.createFrom(education);
-  }
-
-  private convertDate(input: string | undefined): Date | null {
-    if (input) return new Date(input);
-    return null;
   }
 }

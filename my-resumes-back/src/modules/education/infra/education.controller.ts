@@ -44,7 +44,6 @@ export class EducationController {
   @ApiOperation({ operationId: 'createEducation' })
   @ApiCreatedResponse({ type: EducationDto })
   async createEducation(@Req() req: Request): Promise<EducationDto> {
-    console.log('createEducation');
     const auth = req['auth'] as AuthOutputDto;
     return this.createEducationUseCase.execute({ userId: auth.user.id });
   }
