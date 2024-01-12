@@ -25,10 +25,11 @@ export class CreateResumeUseCase {
 
     const resume = Resume.create({
       userId: new Id(input.userId),
-      name: new Name(input.name ?? 'Name'),
-      title: new Name(input.title ?? 'Title'),
-      description: input.description,
-      experiences: input.experiences?.map((e) => new Name(e)),
+      name: new Name('Name'),
+      title: new Name('Title'),
+      description: '',
+      experiences: [],
+      educations: [],
     });
 
     await this.resumeRepository.add(resume);
