@@ -16,7 +16,7 @@ export class PrismaService extends PrismaClient {
     }
   }
 
-  or(transaction?: Transaction): PrismaService {
+  useTransaction(transaction?: Transaction): PrismaService {
     if (transaction && !(transaction instanceof PrismaClient)) {
       throw new Error('Transaction should be a PrismaClient instance');
     }

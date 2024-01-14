@@ -17,7 +17,7 @@ export class PrismaCredentialRepository extends CredentialRepository {
     options?: TransactionOptions,
   ): Promise<Credential | null> {
     const credential = await this.prisma
-      .or(options?.transaction)
+      .useTransaction(options?.transaction)
       .userCredential.findUnique({
         where: { userId: userId.value },
       });
@@ -29,25 +29,29 @@ export class PrismaCredentialRepository extends CredentialRepository {
     credential: Credential,
     options?: TransactionOptions,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).userCredential.create({
-      data: {
-        id: credential.id.value,
-        userId: credential.userId.value,
-        password: credential.password,
-      },
-    });
+    await this.prisma
+      .useTransaction(options?.transaction)
+      .userCredential.create({
+        data: {
+          id: credential.id.value,
+          userId: credential.userId.value,
+          password: credential.password,
+        },
+      });
   }
 
   async update(
     credential: Credential,
     options?: TransactionOptions,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).userCredential.update({
-      where: { id: credential.id.value },
-      data: {
-        password: credential.password,
-      },
-    });
+    await this.prisma
+      .useTransaction(options?.transaction)
+      .userCredential.update({
+        where: { id: credential.id.value },
+        data: {
+          password: credential.password,
+        },
+      });
   }
 
   private convertToEntity(data: CredentialData): Credential {

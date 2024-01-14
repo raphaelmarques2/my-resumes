@@ -13,7 +13,7 @@ export class PrismaProfileRepository extends ProfileRepository {
   }
 
   async add(profile: Profile, options?: TransactionOptions): Promise<void> {
-    await this.prisma.or(options?.transaction).profile.create({
+    await this.prisma.useTransaction(options?.transaction).profile.create({
       data: {
         id: profile.id.value,
         userId: profile.userId.value,
@@ -29,9 +29,11 @@ export class PrismaProfileRepository extends ProfileRepository {
     userId: Id,
     options?: TransactionOptions | undefined,
   ): Promise<Profile | null> {
-    const data = await this.prisma.or(options?.transaction).profile.findFirst({
-      where: { userId: userId.value },
-    });
+    const data = await this.prisma
+      .useTransaction(options?.transaction)
+      .profile.findFirst({
+        where: { userId: userId.value },
+      });
     if (!data) return null;
     return this.convertToEntity(data);
   }
@@ -41,7 +43,7 @@ export class PrismaProfileRepository extends ProfileRepository {
     options?: TransactionOptions | undefined,
   ): Promise<Profile | null> {
     const data = await this.prisma
-      .or(options?.transaction)
+      .useTransaction(options?.transaction)
       .profile.findUnique({ where: { id: id.value } });
     if (!data) return null;
     return this.convertToEntity(data);
@@ -51,7 +53,7 @@ export class PrismaProfileRepository extends ProfileRepository {
     profile: Profile,
     options?: TransactionOptions | undefined,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).profile.update({
+    await this.prisma.useTransaction(options?.transaction).profile.update({
       where: { id: profile.id.value },
       data: {
         name: profile.name,

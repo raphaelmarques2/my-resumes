@@ -26,7 +26,7 @@ export class PrismaResumeRepository extends ResumeRepository {
     resume: Resume,
     options?: TransactionOptions | undefined,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).resume.create({
+    await this.prisma.useTransaction(options?.transaction).resume.create({
       data: {
         id: resume.id.value,
         userId: resume.userId.value,
@@ -88,7 +88,7 @@ export class PrismaResumeRepository extends ResumeRepository {
     options?: TransactionOptions | undefined,
   ): Promise<void> {
     await this.prisma
-      .or(options?.transaction)
+      .useTransaction(options?.transaction)
       .resume.delete({ where: { id: id.value } });
   }
 
@@ -96,17 +96,19 @@ export class PrismaResumeRepository extends ResumeRepository {
     id: Id,
     options?: TransactionOptions | undefined,
   ): Promise<Resume | null> {
-    const data = await this.prisma.or(options?.transaction).resume.findUnique({
-      where: { id: id.value },
-      include: {
-        experienceToResumes: {
-          select: { experienceId: true },
+    const data = await this.prisma
+      .useTransaction(options?.transaction)
+      .resume.findUnique({
+        where: { id: id.value },
+        include: {
+          experienceToResumes: {
+            select: { experienceId: true },
+          },
+          educationToResumes: {
+            select: { educationId: true },
+          },
         },
-        educationToResumes: {
-          select: { educationId: true },
-        },
-      },
-    });
+      });
     if (!data) return null;
     return this.convertToEntity(data);
   }
@@ -115,17 +117,19 @@ export class PrismaResumeRepository extends ResumeRepository {
     userId: Id,
     options?: TransactionOptions | undefined,
   ): Promise<Resume[]> {
-    const data = await this.prisma.or(options?.transaction).resume.findMany({
-      where: { userId: userId.value },
-      include: {
-        experienceToResumes: {
-          select: { experienceId: true },
+    const data = await this.prisma
+      .useTransaction(options?.transaction)
+      .resume.findMany({
+        where: { userId: userId.value },
+        include: {
+          experienceToResumes: {
+            select: { experienceId: true },
+          },
+          educationToResumes: {
+            select: { educationId: true },
+          },
         },
-        educationToResumes: {
-          select: { educationId: true },
-        },
-      },
-    });
+      });
     return data.map((e) => this.convertToEntity(e));
   }
 

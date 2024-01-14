@@ -18,7 +18,7 @@ export class PrismaEducationRepository extends EducationRepository {
     options?: TransactionOptions | undefined,
   ): Promise<Education | null> {
     const data = await this.prisma
-      .or(options?.transaction)
+      .useTransaction(options?.transaction)
       .education.findUnique({ where: { id: id.value } });
     if (!data) return null;
     return this.convertToEntity(data);
@@ -28,7 +28,7 @@ export class PrismaEducationRepository extends EducationRepository {
     education: Education,
     options?: TransactionOptions | undefined,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).education.create({
+    await this.prisma.useTransaction(options?.transaction).education.create({
       data: {
         id: education.id.value,
         userId: education.userId.value,
@@ -44,7 +44,7 @@ export class PrismaEducationRepository extends EducationRepository {
     education: Education,
     options?: TransactionOptions | undefined,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).education.update({
+    await this.prisma.useTransaction(options?.transaction).education.update({
       where: { id: education.id.value },
       data: {
         title: education.title.value,
@@ -59,14 +59,16 @@ export class PrismaEducationRepository extends EducationRepository {
     userId: Id,
     options?: TransactionOptions | undefined,
   ): Promise<Education[]> {
-    const data = await this.prisma.or(options?.transaction).education.findMany({
-      where: { userId: userId.value },
-    });
+    const data = await this.prisma
+      .useTransaction(options?.transaction)
+      .education.findMany({
+        where: { userId: userId.value },
+      });
     return data.map((e) => this.convertToEntity(e));
   }
 
   async delete(id: Id, options?: TransactionOptions): Promise<void> {
-    await this.prisma.or(options?.transaction).education.delete({
+    await this.prisma.useTransaction(options?.transaction).education.delete({
       where: { id: id.value },
     });
   }

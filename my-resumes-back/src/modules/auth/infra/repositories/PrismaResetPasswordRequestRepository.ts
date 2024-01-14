@@ -17,7 +17,7 @@ export class PrismaResetPasswordRequestRepository extends ResetPasswordRequestRe
     options?: TransactionOptions,
   ): Promise<ResetPasswordRequest | null> {
     const data = await this.prisma
-      .or(options?.transaction)
+      .useTransaction(options?.transaction)
       .resetPasswordRequest.findUnique({
         where: { token: token.value },
       });
@@ -29,27 +29,31 @@ export class PrismaResetPasswordRequestRepository extends ResetPasswordRequestRe
     request: ResetPasswordRequest,
     options?: TransactionOptions,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).resetPasswordRequest.create({
-      data: {
-        id: request.id.value,
-        userId: request.userId.value,
-        expiresAt: request.expiresAt,
-        token: request.token.value,
-        active: request.active,
-      },
-    });
+    await this.prisma
+      .useTransaction(options?.transaction)
+      .resetPasswordRequest.create({
+        data: {
+          id: request.id.value,
+          userId: request.userId.value,
+          expiresAt: request.expiresAt,
+          token: request.token.value,
+          active: request.active,
+        },
+      });
   }
 
   async update(
     request: ResetPasswordRequest,
     options?: TransactionOptions,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).resetPasswordRequest.update({
-      where: { id: request.id.value },
-      data: {
-        active: request.active,
-      },
-    });
+    await this.prisma
+      .useTransaction(options?.transaction)
+      .resetPasswordRequest.update({
+        where: { id: request.id.value },
+        data: {
+          active: request.active,
+        },
+      });
   }
 
   private convertToEntity(data: Data): ResetPasswordRequest {

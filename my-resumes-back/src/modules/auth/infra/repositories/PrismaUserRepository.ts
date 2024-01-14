@@ -18,18 +18,22 @@ export class PrismaUserRepository extends UserRepository {
     email: Email,
     options?: TransactionOptions,
   ): Promise<User | null> {
-    const user = await this.prisma.or(options?.transaction).user.findUnique({
-      where: { email: email.value },
-    });
+    const user = await this.prisma
+      .useTransaction(options?.transaction)
+      .user.findUnique({
+        where: { email: email.value },
+      });
     if (!user) return null;
 
     return this.convertToEntity(user);
   }
 
   async findById(id: Id, options?: TransactionOptions): Promise<User | null> {
-    const user = await this.prisma.or(options?.transaction).user.findUnique({
-      where: { id: id.value },
-    });
+    const user = await this.prisma
+      .useTransaction(options?.transaction)
+      .user.findUnique({
+        where: { id: id.value },
+      });
     if (!user) return null;
 
     return this.convertToEntity(user);
@@ -39,15 +43,17 @@ export class PrismaUserRepository extends UserRepository {
     id: Id,
     options?: TransactionOptions | undefined,
   ): Promise<boolean> {
-    const user = await this.prisma.or(options?.transaction).user.findUnique({
-      where: { id: id.value },
-      select: { id: true },
-    });
+    const user = await this.prisma
+      .useTransaction(options?.transaction)
+      .user.findUnique({
+        where: { id: id.value },
+        select: { id: true },
+      });
     return user !== null;
   }
 
   async add(user: User, options?: TransactionOptions): Promise<void> {
-    await this.prisma.or(options?.transaction).user.create({
+    await this.prisma.useTransaction(options?.transaction).user.create({
       data: {
         id: user.id.value,
         name: user.name.value,

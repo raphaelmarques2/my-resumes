@@ -17,7 +17,7 @@ export class PrismaExperienceRepository extends ExperienceRepository {
     experience: Experience,
     options?: TransactionOptions | undefined,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).experience.create({
+    await this.prisma.useTransaction(options?.transaction).experience.create({
       data: {
         id: experience.id.value,
         userId: experience.userId.value,
@@ -34,7 +34,7 @@ export class PrismaExperienceRepository extends ExperienceRepository {
     experience: Experience,
     options?: TransactionOptions | undefined,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).experience.update({
+    await this.prisma.useTransaction(options?.transaction).experience.update({
       where: { id: experience.id.value },
       data: {
         title: experience.title.value,
@@ -50,7 +50,7 @@ export class PrismaExperienceRepository extends ExperienceRepository {
     id: Id,
     options?: TransactionOptions | undefined,
   ): Promise<void> {
-    await this.prisma.or(options?.transaction).experience.delete({
+    await this.prisma.useTransaction(options?.transaction).experience.delete({
       where: { id: id.value },
     });
   }
@@ -60,7 +60,7 @@ export class PrismaExperienceRepository extends ExperienceRepository {
     options?: TransactionOptions | undefined,
   ): Promise<Experience | null> {
     const data = await this.prisma
-      .or(options?.transaction)
+      .useTransaction(options?.transaction)
       .experience.findUnique({ where: { id: id.value } });
     if (!data) return null;
     return this.convertToEntity(data);
@@ -71,7 +71,7 @@ export class PrismaExperienceRepository extends ExperienceRepository {
     options?: TransactionOptions | undefined,
   ): Promise<Experience[]> {
     const data = await this.prisma
-      .or(options?.transaction)
+      .useTransaction(options?.transaction)
       .experience.findMany({ where: { userId: userId.value } });
     return data.map((e) => this.convertToEntity(e));
   }
