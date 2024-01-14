@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { User } from 'src/modules/auth/application/entities/User.entity';
-import { Id } from 'src/modules/common/application/value-objects/Id';
-import { Profile } from '../../application/entities/Profile.entity';
-import { Email } from 'src/modules/common/application/value-objects/Email';
-import { Name } from 'src/modules/common/application/value-objects/Name';
 import { createRepositoryTester } from 'src/infra/tests/repository-tester';
+import { createProfile } from 'src/infra/tests/test-helpers';
+import { User } from 'src/modules/auth/application/entities/User.entity';
+import { Email } from 'src/modules/common/application/value-objects/Email';
+import { Id } from 'src/modules/common/application/value-objects/Id';
+import { Name } from 'src/modules/common/application/value-objects/Name';
 
 describe('PrismaProfileRepository', () => {
   const { userRepository, profileRepository, transactionService } =
@@ -40,10 +40,9 @@ describe('PrismaProfileRepository', () => {
   });
   describe('findByUserId', () => {
     it('should return null if profile does not exist', async () => {
-      const user = createUser();
-      await userRepository.add(user);
-
-      const profileFound = await profileRepository.findByUserId(user.id);
+      const profileFound = await profileRepository.findByUserId(
+        new Id(faker.string.uuid()),
+      );
       expect(profileFound).toBeNull();
     });
     it('should return profile if profile exists', async () => {
@@ -168,16 +167,7 @@ function createUser() {
     email: new Email(faker.internet.email()),
   });
 }
-function createProfile(user: User) {
-  return Profile.load({
-    id: new Id(faker.string.uuid()),
-    userId: user.id,
-    name: faker.person.fullName(),
-    email: faker.internet.email(),
-    address: faker.lorem.sentence(),
-    linkedin: faker.internet.url(),
-  });
-}
+
 function createUserAndProfile() {
   const user = createUser();
   const profile = createProfile(user);

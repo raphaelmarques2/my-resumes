@@ -1,9 +1,8 @@
+import { faker } from '@faker-js/faker';
 import { createRepositoryTester } from 'src/infra/tests/repository-tester';
-import { User } from '../../application/entities/User.entity';
+import { createUser } from 'src/infra/tests/test-helpers';
 import { Email } from 'src/modules/common/application/value-objects/Email';
 import { Id } from 'src/modules/common/application/value-objects/Id';
-import { Name } from 'src/modules/common/application/value-objects/Name';
-import { faker } from '@faker-js/faker';
 
 describe('PrismaUserRepository', () => {
   const { userRepository, transactionService } = createRepositoryTester();
@@ -115,12 +114,3 @@ describe('PrismaUserRepository', () => {
     });
   });
 });
-
-function createUser() {
-  const user = User.load({
-    id: new Id(faker.string.uuid()),
-    name: new Name(faker.person.fullName()),
-    email: new Email(faker.internet.email()),
-  });
-  return user;
-}
