@@ -13,7 +13,7 @@ export function createRepositoryTester() {
   const prisma: PrismaService = new PrismaService();
 
   const userRepository = new PrismaUserRepository(prisma);
-  const profileReposotory = new PrismaProfileRepository(prisma);
+  const profileRepository = new PrismaProfileRepository(prisma);
   const credentialRepository = new PrismaCredentialRepository(prisma);
   const educationRepository = new PrismaEducationRepository(prisma);
   const experienceRepository = new PrismaExperienceRepository(prisma);
@@ -39,7 +39,7 @@ export function createRepositoryTester() {
   return {
     prisma,
     userRepository,
-    profileReposotory,
+    profileRepository,
     credentialRepository,
     educationRepository,
     experienceRepository,
