@@ -1,5 +1,4 @@
 import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
-import { cleanDatabase } from './db-test';
 import { Server } from 'http';
 import { Test } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
@@ -9,6 +8,7 @@ import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 import { EmailService } from 'src/modules/common/application/services/EmailService';
 import { MemoryEmailService } from 'src/modules/common/infra/services/MemoryEmailService';
+import { cleanDatabase } from './db-fixtures';
 
 export class AppTester {
   prisma!: PrismaService;

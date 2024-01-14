@@ -2,15 +2,12 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
 import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
 import { PasswordService } from 'src/modules/auth/application/services/PasswordService';
-import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
-import { cleanDatabase } from './db-test';
+import { cleanDatabase } from './db-fixtures';
 
 export class UseCaseTester {
   prisma!: PrismaService;
   tempDdSchema!: string;
-
-  auth!: AuthOutputDto;
 
   private _jwtService?: JwtService;
   get jwtService(): JwtService {
@@ -53,7 +50,6 @@ export function createUseCaseTester() {
   });
   beforeEach(async () => {
     await cleanDatabase(tester.prisma);
-    //tester.auth = await tester.createUser();
   });
 
   afterAll(async () => {
