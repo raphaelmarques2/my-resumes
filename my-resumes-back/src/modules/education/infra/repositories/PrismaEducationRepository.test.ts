@@ -1,12 +1,15 @@
 import { faker } from '@faker-js/faker';
+import { PrismaClient } from '@prisma/client';
 import { createRepositoryTester } from 'src/infra/tests/repository-tester';
 import { createEducation, createUser } from 'src/infra/tests/test-helpers';
 import { Id } from 'src/modules/common/application/value-objects/Id';
 import { Name } from 'src/modules/common/application/value-objects/Name';
 
 describe('PrismaEducationRepository', () => {
-  const { userRepository, educationRepository, transactionService } =
+  const { userRepository, educationRepository, transactionService, prisma } =
     createRepositoryTester();
+
+  const useTransactionSpy = jest.spyOn(prisma, 'useTransaction');
 
   describe('findById', () => {
     it('should return null if education does not exist', async () => {
@@ -35,6 +38,7 @@ describe('PrismaEducationRepository', () => {
           });
         },
       );
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       expect(educationFound).toEqual(education);
     });
@@ -57,11 +61,12 @@ describe('PrismaEducationRepository', () => {
     });
     it('should use transaction', async () => {
       const { user, education } = createUserAndEducation();
+      await userRepository.add(user);
 
       await transactionService.transaction(async (transaction) => {
-        await userRepository.add(user, { transaction });
         await educationRepository.add(education, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const educationFound = await educationRepository.findById(education.id);
       expect(educationFound).toEqual(education);
@@ -112,9 +117,11 @@ describe('PrismaEducationRepository', () => {
         title: new Name(faker.lorem.word()),
         institution: new Name(faker.company.name()),
       });
+
       await transactionService.transaction(async (transaction) => {
         await educationRepository.update(education, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const educationFound = await educationRepository.findById(education.id);
       expect(educationFound).toEqual(education);
@@ -156,6 +163,7 @@ describe('PrismaEducationRepository', () => {
           });
         },
       );
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
       expect(educationsFound).toEqual(educations);
     });
   });
@@ -183,6 +191,7 @@ describe('PrismaEducationRepository', () => {
       await transactionService.transaction(async (transaction) => {
         await educationRepository.delete(education.id, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const educationFound = await educationRepository.findById(education.id);
       expect(educationFound).toBeNull();

@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { PrismaClient } from '@prisma/client';
 import { createRepositoryTester } from 'src/infra/tests/repository-tester';
 import { createProfile } from 'src/infra/tests/test-helpers';
 import { User } from 'src/modules/auth/application/entities/User.entity';
@@ -7,8 +8,10 @@ import { Id } from 'src/modules/common/application/value-objects/Id';
 import { Name } from 'src/modules/common/application/value-objects/Name';
 
 describe('PrismaProfileRepository', () => {
-  const { userRepository, profileRepository, transactionService } =
+  const { userRepository, profileRepository, transactionService, prisma } =
     createRepositoryTester();
+
+  const useTransactionSpy = jest.spyOn(prisma, 'useTransaction');
 
   describe('add', () => {
     it('should add profile', async () => {
@@ -28,11 +31,12 @@ describe('PrismaProfileRepository', () => {
     });
     it('should use transaction', async () => {
       const { user, profile } = createUserAndProfile();
+      await userRepository.add(user);
 
       await transactionService.transaction(async (transaction) => {
-        await userRepository.add(user, { transaction });
         await profileRepository.add(profile, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const profileFound = await profileRepository.findByUserId(user.id);
       expect(profileFound).toEqual(profile);
@@ -65,6 +69,7 @@ describe('PrismaProfileRepository', () => {
           });
         },
       );
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
       expect(profileFound).toEqual(profile);
     });
   });
@@ -95,6 +100,7 @@ describe('PrismaProfileRepository', () => {
           });
         },
       );
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
       expect(profileFound).toEqual(profile);
     });
   });
@@ -153,6 +159,7 @@ describe('PrismaProfileRepository', () => {
       await transactionService.transaction(async (transaction) => {
         await profileRepository.update(profile, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const profileFound = await profileRepository.findById(profile.id);
       expect(profileFound).toEqual(profile);

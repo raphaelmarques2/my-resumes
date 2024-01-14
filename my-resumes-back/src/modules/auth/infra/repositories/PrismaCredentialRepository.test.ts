@@ -1,11 +1,14 @@
 import { faker } from '@faker-js/faker';
+import { PrismaClient } from '@prisma/client';
 import { createRepositoryTester } from 'src/infra/tests/repository-tester';
 import { createCredential, createUser } from 'src/infra/tests/test-helpers';
 import { Id } from 'src/modules/common/application/value-objects/Id';
 
 describe('PrismaCredentialRepository', () => {
-  const { userRepository, credentialRepository, transactionService } =
+  const { userRepository, credentialRepository, transactionService, prisma } =
     createRepositoryTester();
+
+  const useTransactionSpy = jest.spyOn(prisma, 'useTransaction');
 
   describe('findByUserId', () => {
     it('should return null if credential does not exist', async () => {
@@ -37,6 +40,7 @@ describe('PrismaCredentialRepository', () => {
         },
       );
 
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
       expect(credentialFound).toEqual(credential);
     });
   });
@@ -65,6 +69,7 @@ describe('PrismaCredentialRepository', () => {
         await userRepository.add(user, { transaction });
         await credentialRepository.add(credential, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const credentialFound = await credentialRepository.findByUserId(
         credential.userId,
@@ -101,6 +106,7 @@ describe('PrismaCredentialRepository', () => {
       await transactionService.transaction(async (transaction) => {
         await credentialRepository.update(credential, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const credentialFound = await credentialRepository.findByUserId(
         credential.userId,

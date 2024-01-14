@@ -1,12 +1,15 @@
 import { faker } from '@faker-js/faker';
+import { PrismaClient } from '@prisma/client';
 import { createRepositoryTester } from 'src/infra/tests/repository-tester';
 import { createUser, createExperience } from 'src/infra/tests/test-helpers';
 import { Id } from 'src/modules/common/application/value-objects/Id';
 import { Name } from 'src/modules/common/application/value-objects/Name';
 
 describe('PrismaExperienceRepository', () => {
-  const { userRepository, experienceRepository, transactionService } =
+  const { userRepository, experienceRepository, transactionService, prisma } =
     createRepositoryTester();
+
+  const useTransactionSpy = jest.spyOn(prisma, 'useTransaction');
 
   describe('add', () => {
     it('should add an experience', async () => {
@@ -28,11 +31,13 @@ describe('PrismaExperienceRepository', () => {
     });
     it('should use transaction', async () => {
       const { user, experience } = createUserAndExperience();
+      await userRepository.add(user);
 
       await transactionService.transaction(async (transaction) => {
-        await userRepository.add(user, { transaction });
         await experienceRepository.add(experience, { transaction });
       });
+
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const experienceFound = await experienceRepository.findById(
         experience.id,
@@ -98,6 +103,7 @@ describe('PrismaExperienceRepository', () => {
       await transactionService.transaction(async (transaction) => {
         await experienceRepository.update(experience, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const experienceFound = await experienceRepository.findById(
         experience.id,
@@ -133,6 +139,7 @@ describe('PrismaExperienceRepository', () => {
       await transactionService.transaction(async (transaction) => {
         await experienceRepository.delete(experience.id, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const experienceFound = await experienceRepository.findById(
         experience.id,
@@ -169,6 +176,7 @@ describe('PrismaExperienceRepository', () => {
           });
         },
       );
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       expect(experienceFound).toEqual(experience);
     });
@@ -207,6 +215,7 @@ describe('PrismaExperienceRepository', () => {
           });
         },
       );
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       expect(experiencesFound).toEqual(experiences);
     });

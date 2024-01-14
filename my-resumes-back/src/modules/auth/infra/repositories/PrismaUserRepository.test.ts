@@ -1,11 +1,15 @@
 import { faker } from '@faker-js/faker';
+import { PrismaClient } from '@prisma/client';
 import { createRepositoryTester } from 'src/infra/tests/repository-tester';
 import { createUser } from 'src/infra/tests/test-helpers';
 import { Email } from 'src/modules/common/application/value-objects/Email';
 import { Id } from 'src/modules/common/application/value-objects/Id';
 
 describe('PrismaUserRepository', () => {
-  const { userRepository, transactionService } = createRepositoryTester();
+  const { userRepository, transactionService, prisma } =
+    createRepositoryTester();
+
+  const useTransactionSpy = jest.spyOn(prisma, 'useTransaction');
 
   describe('findByEmail', () => {
     it('should return null if user does not exist', async () => {
@@ -31,6 +35,7 @@ describe('PrismaUserRepository', () => {
         },
       );
 
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
       expect(userFound).toEqual(user);
     });
   });
@@ -59,6 +64,7 @@ describe('PrismaUserRepository', () => {
         },
       );
 
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
       expect(userFound).toEqual(user);
     });
   });
@@ -86,6 +92,7 @@ describe('PrismaUserRepository', () => {
         },
       );
 
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
       expect(userExists).toBeTruthy();
     });
   });
@@ -108,6 +115,7 @@ describe('PrismaUserRepository', () => {
       await transactionService.transaction(async (transaction) => {
         await userRepository.add(user, { transaction });
       });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
 
       const userFound = await userRepository.findById(user.id);
       expect(userFound).toEqual(user);
