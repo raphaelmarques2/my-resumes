@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { Credential } from 'src/modules/auth/application/entities/Credential.entity';
 import { User } from 'src/modules/auth/application/entities/User.entity';
 import { Email } from 'src/modules/common/application/value-objects/Email';
 import { Id } from 'src/modules/common/application/value-objects/Id';
@@ -47,5 +48,13 @@ export function createExperience(user: User) {
     description: faker.lorem.paragraph(),
     startDate: faker.date.past(),
     endDate: faker.date.past(),
+  });
+}
+
+export function createCredential(user: User) {
+  return Credential.load({
+    id: new Id(faker.string.uuid()),
+    userId: user.id,
+    password: faker.internet.password(),
   });
 }
