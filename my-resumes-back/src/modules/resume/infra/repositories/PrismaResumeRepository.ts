@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient, Resume as ResumeData } from '@prisma/client';
+import { Resume as ResumeData } from '@prisma/client';
 import {
   TransactionOptions,
   TransactionService,
@@ -50,15 +50,6 @@ export class PrismaResumeRepository extends ResumeRepository {
           },
         },
       },
-    });
-  }
-
-  async update2(
-    resume: Resume,
-    options?: { transaction: PrismaClient },
-  ): Promise<void> {
-    await (options?.transaction || this.prisma).experienceToResume.deleteMany({
-      where: { resumeId: resume.id.value },
     });
   }
 

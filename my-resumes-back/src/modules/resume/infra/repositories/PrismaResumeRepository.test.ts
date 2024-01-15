@@ -214,12 +214,103 @@ describe('PrismaResumeRepository', () => {
     });
   });
   describe('delete', () => {
-    it('should delete resume without educations and experiences', async () => {});
-    it('should delete resume with educations and experiences', async () => {});
-    it('should throw error if resume does not exist', async () => {});
-    it('should use transaction', async () => {});
+    it('should delete resume without educations and experiences', async () => {
+      const { user, resume } = createResumeData();
+      await addAll({ user, resume, educations: [], experiences: [] });
+
+      await resumeRepository.delete(resume.id);
+
+      const resumeFound = await resumeRepository.findById(resume.id);
+      expect(resumeFound).toBeNull();
+    });
+    it('should delete resume with educations and experiences', async () => {
+      const { user, resume, educations, experiences } = createResumeData();
+
+      resume.educations = educations.map((e) => e.id);
+      resume.experiences = experiences.map((e) => e.id);
+
+      await addAll({ user, resume, educations, experiences });
+
+      await resumeRepository.delete(resume.id);
+
+      const resumeFound = await resumeRepository.findById(resume.id);
+      expect(resumeFound).toBeNull();
+    });
+    it('should throw error if resume does not exist', async () => {
+      const { resume } = createResumeData();
+
+      await expect(resumeRepository.delete(resume.id)).rejects.toThrow();
+    });
+    it('should use transaction', async () => {
+      const { user, resume } = createResumeData();
+      await addAll({ user, resume, educations: [], experiences: [] });
+
+      await transactionService.transaction(async (transaction) => {
+        await resumeRepository.delete(resume.id, { transaction });
+      });
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
+
+      const resumeFound = await resumeRepository.findById(resume.id);
+      expect(resumeFound).toBeNull();
+    });
   });
-  describe('listUserResumes', () => {});
+  describe('listUserResumes', () => {
+    it('should return empty array if user does not have resumes', async () => {
+      const { user } = createResumeData();
+      await userRepository.add(user);
+
+      const resumesFound = await resumeRepository.listUserResumes(user.id);
+      expect(resumesFound).toEqual([]);
+    });
+    it('should return resumes without educations and experiences', async () => {
+      const { user, resume } = createResumeData();
+      await addAll({ user, resume, educations: [], experiences: [] });
+
+      const resumesFound = await resumeRepository.listUserResumes(user.id);
+      expect(resumesFound).toEqual([
+        {
+          ...resume,
+          updatedAt: expect.any(Date),
+        },
+      ]);
+    });
+    it('should return resumes with educations and experiences', async () => {
+      const { user, resume, educations, experiences } = createResumeData();
+
+      resume.educations = educations.map((e) => e.id);
+      resume.experiences = experiences.map((e) => e.id);
+
+      await addAll({ user, resume, educations, experiences });
+
+      const resumesFound = await resumeRepository.listUserResumes(user.id);
+      expect(resumesFound).toEqual([
+        {
+          ...resume,
+          updatedAt: expect.any(Date),
+        },
+      ]);
+    });
+    it('should use transaction', async () => {
+      const { user, resume } = createResumeData();
+      await addAll({ user, resume, educations: [], experiences: [] });
+
+      const resumesFound = await transactionService.transaction(
+        async (transaction) => {
+          return await resumeRepository.listUserResumes(user.id, {
+            transaction,
+          });
+        },
+      );
+
+      expect(useTransactionSpy).toHaveBeenCalledWith(expect.any(PrismaClient));
+      expect(resumesFound).toEqual([
+        {
+          ...resume,
+          updatedAt: expect.any(Date),
+        },
+      ]);
+    });
+  });
 });
 
 function createResumeData() {
