@@ -12,16 +12,19 @@ import { PrismaResumeRepository } from 'src/modules/resume/infra/repositories/Pr
 export function createRepositoryTester() {
   const prisma: PrismaService = new PrismaService();
 
+  const transactionService = new PrismaTransactionService(prisma);
+
   const userRepository = new PrismaUserRepository(prisma);
   const profileRepository = new PrismaProfileRepository(prisma);
   const credentialRepository = new PrismaCredentialRepository(prisma);
   const educationRepository = new PrismaEducationRepository(prisma);
   const experienceRepository = new PrismaExperienceRepository(prisma);
-  const resumeRepository = new PrismaResumeRepository(prisma);
+  const resumeRepository = new PrismaResumeRepository(
+    prisma,
+    transactionService,
+  );
   const resetPasswordRequestRepository =
     new PrismaResetPasswordRequestRepository(prisma);
-
-  const transactionService = new PrismaTransactionService(prisma);
 
   beforeAll(async () => {
     await prisma.$connect();

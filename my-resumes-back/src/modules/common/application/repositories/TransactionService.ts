@@ -10,5 +10,6 @@ export type TransactionOptions = {
 export abstract class TransactionService {
   abstract transaction<T>(
     fn: (transaction: Transaction) => Promise<T>,
+    transaction?: Transaction,
   ): Promise<T>;
 }

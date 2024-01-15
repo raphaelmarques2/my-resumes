@@ -1,11 +1,14 @@
-import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
-import { ResumeRepository } from '../../application/repositories/ResumeRepository';
-import { TransactionOptions } from 'src/modules/common/application/repositories/TransactionService';
-import { Id } from 'src/modules/common/application/value-objects/Id';
-import { Resume } from '../../application/entities/Resume.entity';
-import { PrismaClient, Resume as ResumeData } from '@prisma/client';
-import { Name } from 'src/modules/common/application/value-objects/Name';
 import { Injectable } from '@nestjs/common';
+import { PrismaClient, Resume as ResumeData } from '@prisma/client';
+import {
+  TransactionOptions,
+  TransactionService,
+} from 'src/modules/common/application/repositories/TransactionService';
+import { Id } from 'src/modules/common/application/value-objects/Id';
+import { Name } from 'src/modules/common/application/value-objects/Name';
+import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
+import { Resume } from '../../application/entities/Resume.entity';
+import { ResumeRepository } from '../../application/repositories/ResumeRepository';
 
 type ResumeDataAndRelations = ResumeData & {
   experienceToResumes: {
@@ -18,7 +21,10 @@ type ResumeDataAndRelations = ResumeData & {
 
 @Injectable()
 export class PrismaResumeRepository extends ResumeRepository {
-  constructor(private prisma: PrismaService) {
+  constructor(
+    private prisma: PrismaService,
+    private transactionService: TransactionService,
+  ) {
     super();
   }
 
@@ -38,7 +44,21 @@ export class PrismaResumeRepository extends ResumeRepository {
             data: resume.experiences.map((e) => ({ experienceId: e.value })),
           },
         },
+        educationToResumes: {
+          createMany: {
+            data: resume.educations.map((e) => ({ educationId: e.value })),
+          },
+        },
       },
+    });
+  }
+
+  async update2(
+    resume: Resume,
+    options?: { transaction: PrismaClient },
+  ): Promise<void> {
+    await (options?.transaction || this.prisma).experienceToResume.deleteMany({
+      where: { resumeId: resume.id.value },
     });
   }
 
@@ -46,41 +66,42 @@ export class PrismaResumeRepository extends ResumeRepository {
     resume: Resume,
     options?: TransactionOptions | undefined,
   ): Promise<void> {
-    async function run(prisma: PrismaClient) {
-      await prisma.experienceToResume.deleteMany({
-        where: { resumeId: resume.id.value },
-      });
-      await prisma.educationToResume.deleteMany({
-        where: { resumeId: resume.id.value },
-      });
+    await this.transactionService.transaction(
+      async (transaction) => {
+        await this.prisma
+          .useTransaction(transaction)
+          .experienceToResume.deleteMany({
+            where: { resumeId: resume.id.value },
+          });
+        await this.prisma
+          .useTransaction(transaction)
+          .educationToResume.deleteMany({
+            where: { resumeId: resume.id.value },
+          });
 
-      await prisma.resume.update({
-        where: { id: resume.id.value },
-        data: {
-          name: resume.name.value,
-          title: resume.title.value,
-          description: resume.description,
-          experienceToResumes: {
-            createMany: {
-              data: resume.experiences.map((e) => ({ experienceId: e.value })),
+        await this.prisma.useTransaction(transaction).resume.update({
+          where: { id: resume.id.value },
+          data: {
+            name: resume.name.value,
+            title: resume.title.value,
+            description: resume.description,
+            experienceToResumes: {
+              createMany: {
+                data: resume.experiences.map((e) => ({
+                  experienceId: e.value,
+                })),
+              },
+            },
+            educationToResumes: {
+              createMany: {
+                data: resume.educations.map((e) => ({ educationId: e.value })),
+              },
             },
           },
-          educationToResumes: {
-            createMany: {
-              data: resume.educations.map((e) => ({ educationId: e.value })),
-            },
-          },
-        },
-      });
-    }
-
-    if (options?.transaction) {
-      await run(options.transaction as PrismaClient);
-    } else {
-      await this.prisma.$transaction(async (prisma) => {
-        await run(prisma as PrismaClient);
-      });
-    }
+        });
+      },
+      options?.transaction,
+    );
   }
 
   async delete(
