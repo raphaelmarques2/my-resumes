@@ -87,6 +87,9 @@ export class Backend {
     const result = await this.request<Resume>("POST", `/resumes`);
     return result;
   }
+  async deleteResume(id: string) {
+    await this.request<Resume>("DELETE", `/resumes/${id}`);
+  }
 
   async getUserProfile() {
     const result = await this.request<Profile>("GET", "/profile");
