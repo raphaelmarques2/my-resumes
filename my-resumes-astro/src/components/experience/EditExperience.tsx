@@ -3,6 +3,8 @@ import { useState, type FormEvent } from "react";
 import { sharedBackend } from "../../stores/sharedBackend";
 import { sharedExperiences } from "../../stores/sharedExperiences";
 import { TextInput } from "../common/TextInput";
+import { DateInput } from "../common/DateInput";
+import moment from "moment";
 
 export function EditExperience(props: { resumeId: string }) {
   const [error, setError] = useState("");
@@ -67,20 +69,18 @@ export function EditExperience(props: { resumeId: string }) {
           sharedExperiences.update(experience.id, { description: value })
         }
       />
-      <TextInput
+      <DateInput
         label="Start date"
         name="startDate"
         value={experience.startDate}
-        type="date"
         onInput={(value) =>
           sharedExperiences.update(experience.id, { startDate: value })
         }
       />
-      <TextInput
+      <DateInput
         label="End date"
         name="endDate"
         value={experience.endDate}
-        type="date"
         onInput={(value) =>
           sharedExperiences.update(experience.id, { endDate: value })
         }

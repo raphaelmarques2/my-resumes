@@ -95,7 +95,7 @@ export class Backend {
   async updateProfile(profile: Profile) {
     const result = await this.request<Profile>(
       "PATCH",
-      `/profile/${profile.id}`,
+      `/profiles/${profile.id}`,
       {
         name: profile.name,
         email: profile.email,

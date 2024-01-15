@@ -9,7 +9,7 @@ export function EditProfile(props: { resumeId: string }) {
   const [error, setError] = useState("");
 
   const profile = useStore(sharedProfile.store);
-  if (!profile) return <div>empt</div>;
+  if (!profile) return null;
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
