@@ -98,6 +98,7 @@ export class MemoryUseCaseTester {
       ...(override ?? {}),
     };
 
+    //example data will break all tests
     const signup = new SignupUseCase(
       this.transactionService,
       this.userRepository,

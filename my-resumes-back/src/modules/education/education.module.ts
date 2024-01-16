@@ -19,5 +19,6 @@ import { UpdateEducationUseCase } from './application/use-cases/update-education
     ListUserEducationsUseCase,
     UpdateEducationUseCase,
   ],
+  exports: [EducationRepository],
 })
 export class EducationModule {}

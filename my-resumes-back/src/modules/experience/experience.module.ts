@@ -19,5 +19,6 @@ import { PrismaExperienceRepository } from './infra/repositories/PrismaExperienc
     ListUserExperiencesUseCase,
     UpdateExperienceUseCase,
   ],
+  exports: [ExperienceRepository],
 })
 export class ExperienceModule {}

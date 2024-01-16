@@ -7,9 +7,12 @@ import { DeleteResumeUseCase } from './application/use-cases/delete-resume/delet
 import { GetResumeByIdUseCase } from './application/use-cases/get-resume-by-id/get-resume-by-id.usecase';
 import { ListUserResumesUseCase } from './application/use-cases/list-user-resumes/list-user-resumes.usecase';
 import { UpdateResumeUseCase } from './application/use-cases/update-resume/update-resume.usecase';
+import { CreateResumeExampleUseCase } from './application/use-cases/create-resume-example/create-resume-example.usecase';
+import { EducationModule } from '../education/education.module';
+import { ExperienceModule } from '../experience/experience.module';
 
 @Module({
-  imports: [],
+  imports: [EducationModule, ExperienceModule],
   controllers: [ResumeController],
   providers: [
     { provide: ResumeRepository, useClass: PrismaResumeRepository },
@@ -18,6 +21,7 @@ import { UpdateResumeUseCase } from './application/use-cases/update-resume/updat
     GetResumeByIdUseCase,
     ListUserResumesUseCase,
     UpdateResumeUseCase,
+    CreateResumeExampleUseCase,
   ],
 })
 export class ResumeModule {}

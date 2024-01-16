@@ -25,7 +25,7 @@ export class MemoryResumeRepository extends ResumeRepository {
   async findById(id: Id): Promise<Resume | null> {
     return this.items.findById(id);
   }
-  async listUserResumes(userId: Id): Promise<Resume[]> {
+  async listByUserId(userId: Id): Promise<Resume[]> {
     return this.items.filterBy((e) => e.userId.isEqual(userId));
   }
 }

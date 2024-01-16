@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { configurations } from 'src/infra/services/MyConfigService';
 import { ProfileModule } from '../profile/profile.module';
 import { CredentialRepository } from './application/repositories/CredentialRepository';
+import { ResetPasswordRequestRepository } from './application/repositories/ResetPasswordRequestRepository';
 import { UserRepository } from './application/repositories/UserRepository';
 import { AuthTokenService } from './application/services/AuthTokenService';
 import { PasswordService } from './application/services/PasswordService';
@@ -14,12 +15,11 @@ import { UpdatePasswordUseCase } from './application/use-cases/update-password/u
 import { ValidatePasswordResetTokenUseCase } from './application/use-cases/validate-password-reset-token/validate-password-reset-token.usecase';
 import { ValidateTokenUseCase } from './application/use-cases/validate-token/validate-token.usecase';
 import { AuthController } from './infra/controllers/auth.controller';
+import { UpdatePasswordRequestController } from './infra/controllers/update-password-request.controller';
 import { AuthGuard } from './infra/guards/AuthGuard';
 import { PrismaCredentialRepository } from './infra/repositories/PrismaCredentialRepository';
-import { PrismaUserRepository } from './infra/repositories/PrismaUserRepository';
-import { UpdatePasswordRequestController } from './infra/controllers/update-password-request.controller';
-import { ResetPasswordRequestRepository } from './application/repositories/ResetPasswordRequestRepository';
 import { PrismaResetPasswordRequestRepository } from './infra/repositories/PrismaResetPasswordRequestRepository';
+import { PrismaUserRepository } from './infra/repositories/PrismaUserRepository';
 
 @Global()
 @Module({

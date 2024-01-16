@@ -125,7 +125,7 @@ export class PrismaResumeRepository extends ResumeRepository {
     return this.convertToEntity(data);
   }
 
-  async listUserResumes(
+  async listByUserId(
     userId: Id,
     options?: TransactionOptions | undefined,
   ): Promise<Resume[]> {

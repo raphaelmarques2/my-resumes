@@ -30,12 +30,26 @@ export class Experience {
     userId,
     title,
     company,
+    description,
+    startDate,
+    endDate,
   }: {
     userId: Id;
     title: Name;
     company: Name;
+    description?: string;
+    startDate?: Date;
+    endDate?: Date;
   }) {
-    return new Experience(new Id(), userId, title, company, '', null, null);
+    return new Experience(
+      new Id(),
+      userId,
+      title,
+      company,
+      description ?? '',
+      startDate ?? null,
+      endDate ?? null,
+    );
   }
 
   static load({

@@ -1,22 +1,22 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { validateDto } from 'src/modules/common/application/validation';
+import { Credential } from 'src/modules/auth/application/entities/Credential.entity';
+import { UserDto } from 'src/modules/auth/application/entities/User.dto';
+import { User } from 'src/modules/auth/application/entities/User.entity';
+import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
 import {
   SignupDto,
   signupDtoSchema,
 } from 'src/modules/auth/application/use-cases/signup/signup.dto';
-import { AuthOutputDto } from '../login/auth-output.dto';
-import { AuthTokenService } from 'src/modules/auth/application/services/AuthTokenService';
-import { Credential } from 'src/modules/auth/application/entities/Credential.entity';
-import { UserDto } from 'src/modules/auth/application/entities/User.dto';
-import { User } from 'src/modules/auth/application/entities/User.entity';
 import { TransactionService } from 'src/modules/common/application/repositories/TransactionService';
+import { validateDto } from 'src/modules/common/application/validation';
 import { Email } from 'src/modules/common/application/value-objects/Email';
 import { Name } from 'src/modules/common/application/value-objects/Name';
-import { ProfileRepository } from 'src/modules/profile/application/repositories/ProfileRepository';
 import { Profile } from 'src/modules/profile/application/entities/Profile.entity';
+import { ProfileRepository } from 'src/modules/profile/application/repositories/ProfileRepository';
 import { CredentialRepository } from '../../repositories/CredentialRepository';
 import { UserRepository } from '../../repositories/UserRepository';
 import { PasswordService } from '../../services/PasswordService';
+import { AuthOutputDto } from '../login/auth-output.dto';
 
 @Injectable()
 export class SignupUseCase {

@@ -259,14 +259,14 @@ describe('PrismaResumeRepository', () => {
       const { user } = createResumeData();
       await userRepository.add(user);
 
-      const resumesFound = await resumeRepository.listUserResumes(user.id);
+      const resumesFound = await resumeRepository.listByUserId(user.id);
       expect(resumesFound).toEqual([]);
     });
     it('should return resumes without educations and experiences', async () => {
       const { user, resume } = createResumeData();
       await addAll({ user, resume, educations: [], experiences: [] });
 
-      const resumesFound = await resumeRepository.listUserResumes(user.id);
+      const resumesFound = await resumeRepository.listByUserId(user.id);
       expect(resumesFound).toEqual([
         {
           ...resume,
@@ -282,7 +282,7 @@ describe('PrismaResumeRepository', () => {
 
       await addAll({ user, resume, educations, experiences });
 
-      const resumesFound = await resumeRepository.listUserResumes(user.id);
+      const resumesFound = await resumeRepository.listByUserId(user.id);
       expect(resumesFound).toEqual([
         {
           ...resume,
@@ -296,7 +296,7 @@ describe('PrismaResumeRepository', () => {
 
       const resumesFound = await transactionService.transaction(
         async (transaction) => {
-          return await resumeRepository.listUserResumes(user.id, {
+          return await resumeRepository.listByUserId(user.id, {
             transaction,
           });
         },

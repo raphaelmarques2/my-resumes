@@ -11,7 +11,7 @@ export class ListUserResumesUseCase {
   async execute(userId: string): Promise<ResumeDto[]> {
     validateId(userId);
 
-    const resumes = await this.resumeRepository.listUserResumes(new Id(userId));
+    const resumes = await this.resumeRepository.listByUserId(new Id(userId));
 
     return resumes.map((item) => ResumeDto.createFrom(item));
   }

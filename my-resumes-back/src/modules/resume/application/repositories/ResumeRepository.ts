@@ -12,7 +12,7 @@ export abstract class ResumeRepository {
     id: Id,
     options?: TransactionOptions,
   ): Promise<Resume | null>;
-  abstract listUserResumes(
+  abstract listByUserId(
     userId: Id,
     options?: TransactionOptions,
   ): Promise<Resume[]>;
