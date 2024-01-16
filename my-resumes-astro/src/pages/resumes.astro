@@ -1,9 +1,10 @@
 ---
 import moment from "moment";
 import { ListItem } from "../components/common/ListItem.tsx";
+import { AddResumeButton } from "../components/resume/AddResumeButton";
+import { AddResumeExampleButton } from "../components/resume/AddResumeExampleButton";
 import MainLayout from "../layout/MainLayout.astro";
 import { Backend } from "../services/backend";
-import { AddResumeButton } from "../components/resume/AddResumeButton";
 import { sortResumesByRecentlyUpdatedFirst } from "../services/types/Resume";
 
 const backend = new Backend(Astro.locals.token);
@@ -16,7 +17,15 @@ sortResumesByRecentlyUpdatedFirst(resumes);
   <main class="container mx-auto flex flex-col items-center pb-4">
     <h1>My Resumes</h1>
     <p>Create and edit your resumes</p>
-    <AddResumeButton client:load />
+    {
+      resumes.length === 0 && (
+        <p class="text-sm my-6">You don't have any resumes yet!</p>
+      )
+    }
+    <div class="space-y-4">
+      <div><AddResumeExampleButton client:load /></div>
+      <div><AddResumeButton client:load /></div>
+    </div>
     <div class="space-y-2 w-80 mt-4">
       {
         resumes.map((resume) => (

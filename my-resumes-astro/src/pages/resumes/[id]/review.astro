@@ -14,8 +14,15 @@ const profile = await backend.getUserProfile();
 const educations = await backend.listUserEducations();
 const experiences = await backend.listUserExperiences();
 
-sortEducationsByNewestFirst(educations);
-sortExperiencesByNewestFirst(experiences);
+const filteredEducations = educations.filter((education) =>
+  resume.educations.includes(education.id)
+);
+const filteredExperiences = experiences.filter((experience) =>
+  resume.experiences.includes(experience.id)
+);
+
+sortEducationsByNewestFirst(filteredEducations);
+sortExperiencesByNewestFirst(filteredExperiences);
 ---
 
 <ResumeLayout resume={resume}>
@@ -24,8 +31,8 @@ sortExperiencesByNewestFirst(experiences);
     <ResumePdf
       resume={resume}
       profile={profile}
-      educations={educations}
-      experiences={experiences}
+      educations={filteredEducations}
+      experiences={filteredExperiences}
       client:only
     />
     <div class="flex justify-center mt-4">

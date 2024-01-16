@@ -87,6 +87,10 @@ export class Backend {
     const result = await this.request<Resume>("POST", `/resumes`);
     return result;
   }
+  async addResumeExample() {
+    await this.request<void>("POST", `/resumes/example`);
+  }
+
   async deleteResume(id: string) {
     await this.request<Resume>("DELETE", `/resumes/${id}`);
   }
