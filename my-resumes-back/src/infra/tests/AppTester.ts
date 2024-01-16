@@ -1,11 +1,11 @@
 import { PrismaService } from 'src/modules/common/infra/services/PrismaService';
 import { Server } from 'http';
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
 import { AuthOutputDto } from 'src/modules/auth/application/use-cases/login/auth-output.dto';
 import * as request from 'supertest';
 import { faker } from '@faker-js/faker';
-import { HttpStatus } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { EmailService } from 'src/modules/common/application/services/EmailService';
 import { MemoryEmailService } from 'src/modules/common/infra/services/MemoryEmailService';
 import { cleanDatabase } from './db-fixtures';
@@ -13,6 +13,8 @@ import { cleanDatabase } from './db-fixtures';
 export class AppTester {
   prisma!: PrismaService;
   server!: Server;
+  testingModule!: TestingModule;
+  app!: INestApplication<any>;
 
   async signup(): Promise<AuthOutputDto> {
     const payload = {
@@ -49,6 +51,8 @@ export function createAppTester() {
 
     tester.prisma = testingModule.get(PrismaService);
     tester.server = app.getHttpServer();
+    tester.testingModule = testingModule;
+    tester.app = app;
   });
 
   beforeEach(async () => {

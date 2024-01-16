@@ -5,6 +5,7 @@ import { UpdateResumeDto } from '../application/use-cases/update-resume/UpdateRe
 import { ResumeDto } from '../application/entities/ResumeDto';
 import { ExperienceDto } from 'src/modules/experience/application/entities/ExperienceDto';
 import { EducationDto } from 'src/modules/education/application/entities/EducationDto';
+import { CreateResumeExampleUseCase } from '../application/use-cases/create-resume-example/create-resume-example.usecase';
 
 describe('resume.controller', () => {
   const tester = createAppTester();
@@ -347,6 +348,31 @@ describe('resume.controller', () => {
         .send();
       expect(listRes.status).toBe(HttpStatus.OK);
       expect(listRes.body).toHaveLength(0);
+    });
+  });
+
+  describe('POST /resumes/example', () => {
+    it('should create resume example', async () => {
+      const auth = await tester.signup();
+
+      const createResumeExampleUseCase = tester.testingModule.get(
+        CreateResumeExampleUseCase,
+      );
+      const createResumeExampleUseCaseSpy = jest.spyOn(
+        createResumeExampleUseCase,
+        'execute',
+      );
+
+      const res = await request(tester.server)
+        .post('/resumes/example')
+        .set('Authorization', `Bearer ${auth.token}`)
+        .send();
+
+      expect(res.status).toBe(HttpStatus.CREATED);
+
+      expect(createResumeExampleUseCaseSpy).toHaveBeenCalledWith({
+        userId: auth.user.id,
+      });
     });
   });
 });

@@ -25,6 +25,7 @@ import { DeleteResumeUseCase } from '../application/use-cases/delete-resume/dele
 import { GetResumeByIdUseCase } from '../application/use-cases/get-resume-by-id/get-resume-by-id.usecase';
 import { ListUserResumesUseCase } from '../application/use-cases/list-user-resumes/list-user-resumes.usecase';
 import { UpdateResumeUseCase } from '../application/use-cases/update-resume/update-resume.usecase';
+import { CreateResumeExampleUseCase } from '../application/use-cases/create-resume-example/create-resume-example.usecase';
 
 @ApiTags('resumes')
 @ApiBearerAuth()
@@ -37,6 +38,7 @@ export class ResumeController {
     private getResumeByIdUseCase: GetResumeByIdUseCase,
     private listUserResumesUseCase: ListUserResumesUseCase,
     private updateResumeUseCase: UpdateResumeUseCase,
+    private createResumeExampleUseCase: CreateResumeExampleUseCase,
   ) {}
 
   @Post('/resumes')
@@ -45,6 +47,13 @@ export class ResumeController {
   async createResume(@Req() req: Request): Promise<ResumeDto> {
     const auth = req['auth'] as AuthOutputDto;
     return this.createResumeUseCase.execute({ userId: auth.user.id });
+  }
+
+  @Post('/resumes/example')
+  @ApiOperation({ operationId: 'createResumeExample' })
+  async createResumeExample(@Req() req: Request): Promise<void> {
+    const auth = req['auth'] as AuthOutputDto;
+    await this.createResumeExampleUseCase.execute({ userId: auth.user.id });
   }
 
   @Get('/resumes/:id')
