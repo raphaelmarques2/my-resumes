@@ -17,23 +17,31 @@ sortResumesByRecentlyUpdatedFirst(resumes);
   <main class="container mx-auto flex flex-col items-center pb-4">
     <h1>My Resumes</h1>
     <p>Create and edit your resumes</p>
-    {
-      resumes.length === 0 && (
-        <p class="text-sm my-6">You don't have any resumes yet!</p>
-      )
-    }
     <div class="space-y-4">
-      <div><AddResumeExampleButton client:load /></div>
+      {
+        resumes.length === 0 && (
+          <>
+            <p class="text-sm my-6 text-center">
+              You don't have any resumes yet!
+            </p>
+            <div>
+              <AddResumeExampleButton client:load />
+            </div>
+          </>
+        )
+      }
       <div><AddResumeButton client:load /></div>
     </div>
     <div class="space-y-2 w-80 mt-4">
       {
         resumes.map((resume) => (
-          <ListItem
-            href={`/resumes/${resume.id}`}
-            title={`${resume.name} (${resume.title})`}
-            subtitle={`Updated ${moment(resume.updatedAt).fromNow()}`}
-          />
+          <div>
+            <ListItem
+              href={`/resumes/${resume.id}`}
+              title={`${resume.name} (${resume.title})`}
+              subtitle={`Updated ${moment(resume.updatedAt).fromNow()}`}
+            />
+          </div>
         ))
       }
     </div>

@@ -6,15 +6,22 @@ interface Props {
 const { active, href } = Astro.props;
 ---
 
-<a class={`border-b-2 ${active ? "activeTab" : "inactiveTab"} `} href={href}>
+<a class={`${active ? "activeTab" : "inactiveTab"}`} href={href}>
   <slot />
+  <div class="w-full h-[2px]">
+    {
+      active && (
+        <div
+          transition:name="header-tab"
+          class="w-full h-full rounded-full bg-primary"
+        />
+      )
+    }
+  </div>
 </a>
 
 <style>
   .activeTab {
-    @apply border-primary font-bold;
-  }
-  .inactiveTab {
-    @apply border-transparent;
+    @apply font-bold;
   }
 </style>

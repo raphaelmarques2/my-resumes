@@ -1,5 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { validateDto } from 'src/modules/common/application/validation';
+import {
+  validateDto,
+  validateId,
+} from 'src/modules/common/application/validation';
 import {
   UpdatePasswordDto,
   updatePasswordDtoSchema,
@@ -18,27 +21,36 @@ export class UpdatePasswordUseCase {
     private passwordService: PasswordService,
   ) {}
 
-  async execute(input: UpdatePasswordDto): Promise<void> {
+  async execute(userId: string, input: UpdatePasswordDto): Promise<void> {
+    validateId(userId);
     validateDto(input, updatePasswordDtoSchema);
 
-    const user = await this.userRepository.findById(new Id(input.userId));
+    const user = await this.userRepository.findById(new Id(userId));
     if (!user) throw new BadRequestException('User not found');
 
-    const passwordHash = await this.passwordService.hashPassword(
-      input.password,
+    const newPasswordHash = await this.passwordService.hashPassword(
+      input.newPassword,
     );
 
     const credential = await this.credentialRepository.findByUserId(user.id);
-
-    if (credential) {
-      credential.password = passwordHash;
-      await this.credentialRepository.update(credential);
-    } else {
+    if (!credential) {
       const newCredential = Credential.create({
         userId: user.id,
-        password: passwordHash,
+        password: newPasswordHash,
       });
       await this.credentialRepository.add(newCredential);
+      return;
     }
+
+    const validPassword = await this.passwordService.comparePasswords(
+      input.currentPassword,
+      credential.password,
+    );
+    if (!validPassword) {
+      throw new BadRequestException('Invalid current password');
+    }
+
+    credential.password = newPasswordHash;
+    await this.credentialRepository.update(credential);
   }
 }

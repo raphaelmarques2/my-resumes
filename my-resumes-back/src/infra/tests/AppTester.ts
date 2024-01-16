@@ -16,11 +16,11 @@ export class AppTester {
   testingModule!: TestingModule;
   app!: INestApplication<any>;
 
-  async signup(): Promise<AuthOutputDto> {
+  async signup(input?: { password?: string }): Promise<AuthOutputDto> {
     const payload = {
       name: faker.person.fullName(),
       email: faker.internet.email(),
-      password: faker.internet.password({ length: 6 }),
+      password: input?.password ?? faker.internet.password({ length: 6 }),
     };
     const signupRes = await request(this.server)
       .post('/auth/signup')

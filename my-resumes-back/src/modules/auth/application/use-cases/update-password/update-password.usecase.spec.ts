@@ -16,11 +16,13 @@ describe('updatePassword', () => {
   });
 
   it('should update user password', async () => {
-    const auth = await tester.signup();
+    const currentPassword = 'a-password';
     const newPassword = 'a-new-password';
-    await updatePassword.execute({
-      userId: auth.user.id,
-      password: newPassword,
+
+    const auth = await tester.signup({ password: currentPassword });
+    await updatePassword.execute(auth.user.id, {
+      currentPassword,
+      newPassword,
     });
     const result = await tester.login({
       email: auth.user.email,
@@ -28,13 +30,27 @@ describe('updatePassword', () => {
     });
     expect(result.token).toBeDefined();
   });
-  it('should throw with a invalid password', async () => {
-    const auth = await tester.signup();
-    const invalidPassword = '0';
+  it('should throw with a invalid current password', async () => {
+    const currentPassword = 'a-password';
+    const newPassword = 'a-new-password';
+
+    const auth = await tester.signup({ password: currentPassword });
     await expect(
-      updatePassword.execute({
-        userId: auth.user.id,
-        password: invalidPassword,
+      updatePassword.execute(auth.user.id, {
+        currentPassword: 'invalid-current-password',
+        newPassword,
+      }),
+    ).rejects.toThrow(BadRequestException);
+  });
+  it('should throw with a invalid new password', async () => {
+    const currentPassword = 'a-password';
+    const newPassword = '0';
+
+    const auth = await tester.signup({ password: currentPassword });
+    await expect(
+      updatePassword.execute(auth.user.id, {
+        currentPassword,
+        newPassword,
       }),
     ).rejects.toThrow(BadRequestException);
   });

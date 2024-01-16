@@ -4,8 +4,8 @@ import { passwordSchema } from '../signup/signup.dto';
 
 export const updatePasswordDtoSchema = z
   .object({
-    userId: z.string().uuid(),
-    password: passwordSchema,
+    currentPassword: passwordSchema,
+    newPassword: passwordSchema,
   })
   .strict();
 

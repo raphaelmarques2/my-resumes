@@ -17,13 +17,13 @@ export class UpdateResumeUseCase {
     private resumeRepository: ResumeRepository,
   ) {}
 
-  async execute(id: string, data: UpdateResumeDto): Promise<ResumeDto> {
-    validateId(id);
+  async execute(userId: string, data: UpdateResumeDto): Promise<ResumeDto> {
+    validateId(userId);
     validateDto(data, updateResumeDtoSchema);
 
     const updatedResume = await this.transactionService.transaction(
       async (transaction) => {
-        const resume = await this.resumeRepository.findById(new Id(id), {
+        const resume = await this.resumeRepository.findById(new Id(userId), {
           transaction,
         });
         if (!resume) {

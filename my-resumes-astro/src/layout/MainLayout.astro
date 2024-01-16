@@ -1,14 +1,15 @@
 ---
+import { ViewTransitions } from "astro:transitions";
 import { SetSharedAuth } from "../components/common/SetSharedAuth";
 import TheHeader from "../components/header/TheHeader.astro";
 
 const { token, user } = Astro.locals;
 ---
 
-<html lang="en">
+<html lang="en" transition:animate="none">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/x-icon" href="/public/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <script
@@ -16,84 +17,84 @@ const { token, user } = Astro.locals;
       crossorigin="anonymous"></script>
 
     <title>My Resumes</title>
+    <ViewTransitions />
   </head>
   <body class="min-h-screen relative flex flex-col">
     <SetSharedAuth token={token} user={user} client:load />
     <TheHeader />
     <slot />
+    <style is:global>
+      .debug {
+        @apply border border-red-500;
+      }
+      h1 {
+        @apply text-2xl font-semibold;
+      }
+      h2 {
+        @apply text-lg font-semibold;
+      }
+      p {
+        @apply my-2;
+      }
+      .icon-box {
+        @apply inline-flex w-6 h-6 justify-center items-center;
+      }
+      .form-card {
+        @apply border border-gray-300 p-4;
+      }
+      .input {
+        @apply rounded;
+      }
+      .textarea {
+        line-height: 1.1rem;
+        @apply rounded;
+      }
+      .form-control .label {
+        @apply pb-0;
+      }
+      .btn.btn-link {
+        @apply px-1;
+      }
+      .modal .modal-box {
+        @apply border border-gray-200;
+      }
+    </style>
+
+    <style is:global>
+      .pdf {
+        font-size: small;
+      }
+      .pdf .name {
+        font-size: 1.2em;
+        @apply font-bold text-center;
+      }
+      .pdf .title {
+        font-size: 1em;
+        @apply font-bold text-center;
+      }
+      .pdf .profile-item {
+        line-height: 1.2em;
+      }
+      .pdf .profile-description {
+        line-height: 1.2em;
+        @apply text-justify;
+      }
+      .pdf a {
+        color: blue;
+        text-decoration-line: underline;
+      }
+      .pdf .line {
+        @apply border-b border-black mt-2 mb-1;
+      }
+      .pdf .section-title {
+        font-size: 1.1em;
+        @apply font-bold;
+      }
+      .pdf .section-subtitle {
+        @apply font-bold mt-2;
+      }
+      .pdf .section-item {
+      }
+    </style>
   </body>
 </html>
-
-<style is:global>
-  .debug {
-    @apply border border-red-500;
-  }
-  h1 {
-    @apply text-2xl font-semibold;
-  }
-  h2 {
-    @apply text-lg font-semibold;
-  }
-  p {
-    @apply my-2;
-  }
-  .icon-box {
-    @apply inline-flex w-6 h-6 justify-center items-center;
-  }
-  .form-card {
-    @apply border border-gray-300 p-4;
-  }
-  .input {
-    @apply rounded;
-  }
-  .textarea {
-    line-height: 1.1rem;
-    @apply rounded;
-  }
-  .form-control .label {
-    @apply pb-0;
-  }
-  .btn.btn-link {
-    @apply px-1;
-  }
-  .modal .modal-box {
-    @apply border border-gray-200;
-  }
-</style>
-
-<style is:global>
-  .pdf {
-    font-size: small;
-  }
-  .pdf .name {
-    font-size: 1.2em;
-    @apply font-bold text-center;
-  }
-  .pdf .title {
-    font-size: 1em;
-    @apply font-bold text-center;
-  }
-  .pdf .profile-item {
-    line-height: 1.2em;
-  }
-  .pdf .profile-description {
-    line-height: 1.2em;
-    @apply text-justify;
-  }
-  .pdf a {
-    color: blue;
-    text-decoration-line: underline;
-  }
-  .pdf .line {
-    @apply border-b border-black mt-2 mb-1;
-  }
-  .pdf .section-title {
-    font-size: 1.1em;
-    @apply font-bold;
-  }
-  .pdf .section-subtitle {
-    @apply font-bold mt-2;
-  }
-  .pdf .section-item {
-  }
-</style>

@@ -4,7 +4,6 @@ import { sharedBackend } from "../../stores/sharedBackend";
 import { sharedEducations } from "../../stores/sharedEducations";
 import { TextInput } from "../common/TextInput";
 import { DateInput } from "../common/DateInput";
-import moment from "moment";
 
 export function EditEducation(props: { resumeId: string }) {
   const [error, setError] = useState("");
@@ -76,6 +75,7 @@ export function EditEducation(props: { resumeId: string }) {
         }
       />
       <div className="flex flex-col items-center space-y-2 mt-4">
+        {error && <p className="text-error">{error}</p>}
         <button className="btn btn-primary btn-wide" type="submit">
           Save
         </button>

@@ -138,4 +138,26 @@ describe('auth.controller', () => {
       );
     });
   });
+
+  describe('POST /auth/update-password', () => {
+    it('should update password', async () => {
+      const auth = await tester.signup({ password: 'old-password' });
+
+      const updatePasswordRes = await request(tester.server)
+        .post('/auth/update-password')
+        .set('Authorization', `Bearer ${auth.token}`)
+        .send({
+          currentPassword: 'old-password',
+          newPassword: 'new-password',
+        });
+
+      expect(updatePasswordRes.status).toBe(HttpStatus.OK);
+
+      const loginRes = await request(tester.server).post('/auth/login').send({
+        email: auth.user.email,
+        password: 'new-password',
+      });
+      expect(loginRes.status).toBe(200);
+    });
+  });
 });

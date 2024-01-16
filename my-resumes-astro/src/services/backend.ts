@@ -18,6 +18,10 @@ interface AuthResult {
   token: string;
   user?: User;
 }
+interface UpdatePasswordPayload {
+  currentPassword: string;
+  newPassword: string;
+}
 
 export class Backend {
   baseUrl: string;
@@ -56,6 +60,9 @@ export class Backend {
       `BE${this.token ? "[Auth]" : ""}` + "request-password-reset",
       email
     );
+  }
+  async updatePassword(payload: UpdatePasswordPayload): Promise<void> {
+    await this.request<void>("POST", "/auth/update-password", payload);
   }
   async getUser(): Promise<User> {
     const result = await this.request<User>("GET", "/auth/me");

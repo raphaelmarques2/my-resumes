@@ -25,6 +25,8 @@ import { SignupUseCase } from 'src/modules/auth/application/use-cases/signup/sig
 import { ValidateTokenUseCase } from 'src/modules/auth/application/use-cases/validate-token/validate-token.usecase';
 import { AuthGuard } from '../guards/AuthGuard';
 import { UserDto } from 'src/modules/auth/application/entities/User.dto';
+import { UpdatePasswordUseCase } from '../../application/use-cases/update-password/update-password.usecase';
+import { UpdatePasswordDto } from '../../application/use-cases/update-password/update-password.dto';
 
 @ApiTags('auth')
 @Controller('/auth')
@@ -33,12 +35,12 @@ export class AuthController {
     private signupUseCase: SignupUseCase,
     private loginUseCase: LoginUseCase,
     private validateTokenUseCase: ValidateTokenUseCase,
+    private updatePasswordUseCase: UpdatePasswordUseCase,
   ) {}
 
   @Post('/signup')
   @ApiOperation({ operationId: 'signup' })
   @ApiCreatedResponse({ type: AuthOutputDto })
-  @ApiCreatedResponse({})
   async signup(@Body() body: SignupDto): Promise<AuthOutputDto> {
     return this.signupUseCase.execute(body);
   }
@@ -69,9 +71,20 @@ export class AuthController {
   @ApiOkResponse({ type: UserDto })
   async getMe(@Req() req: Request) {
     const auth = req['auth'] as AuthOutputDto | undefined;
-    if (!auth) {
-      throw new UnauthorizedException();
-    }
+    if (!auth) throw new UnauthorizedException();
     return auth.user;
+  }
+
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Post('/update-password')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ operationId: 'updatePassword' })
+  @ApiOkResponse()
+  async updatePassword(@Req() req: Request, @Body() body: UpdatePasswordDto) {
+    const auth = req['auth'] as AuthOutputDto | undefined;
+    if (!auth) throw new UnauthorizedException();
+
+    await this.updatePasswordUseCase.execute(auth.user.id, body);
   }
 }
