@@ -15,7 +15,7 @@ import { UpdatePasswordByResetTokenUseCase } from '../../application/use-cases/u
 import { ValidatePasswordResetTokenUseCase } from '../../application/use-cases/validate-password-reset-token/validate-password-reset-token.usecase';
 
 @ApiTags('updatePasswordPequest')
-@Controller('/auth/update-password-request')
+@Controller('/auth/password-reset')
 export class UpdatePasswordRequestController {
   constructor(
     private requestPasswordResetUseCase: RequestPasswordResetUseCase,
@@ -27,6 +27,7 @@ export class UpdatePasswordRequestController {
   async requestPasswordReset(
     @Body() body: RequestPasswordResetDto,
   ): Promise<void> {
+    console.log('UpdatePasswordRequestController.requestPasswordReset', body);
     await this.requestPasswordResetUseCase.execute(body);
   }
 

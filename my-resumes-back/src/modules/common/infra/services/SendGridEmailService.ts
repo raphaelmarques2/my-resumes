@@ -17,11 +17,13 @@ export class SendGridEmailService extends EmailService {
   }
 
   async sendUpdatePasswordEmail(payload: UpdatePasswordPayload): Promise<void> {
+    console.log('SendGridEmailService.sendUpdatePasswordEmail', payload);
+
     const url = 'https://api.sendgrid.com/v3/mail/send';
     const data = {
       personalizations: [
         {
-          to: [{ email: payload.email }],
+          to: [{ email: payload.email.value }],
           dynamic_template_data: {
             token: payload.token,
           },

@@ -56,11 +56,26 @@ export class Backend {
     return Boolean(result.token);
   }
   async requestPasswordReset(email: string): Promise<void> {
-    console.log(
-      `BE${this.token ? "[Auth]" : ""}` + "request-password-reset",
-      email
+    await this.request<void>("POST", "/auth/password-reset", {
+      email,
+    });
+  }
+  async getRequestPasswordReset(token: string): Promise<User> {
+    return await this.request<User>("GET", `/auth/password-reset/${token}`);
+  }
+  async resetPasswordUsingToken(
+    token: string,
+    password: string
+  ): Promise<void> {
+    await this.request<void>(
+      "POST",
+      `/auth/password-reset/${token}/update-password`,
+      {
+        password,
+      }
     );
   }
+
   async updatePassword(payload: UpdatePasswordPayload): Promise<void> {
     await this.request<void>("POST", "/auth/update-password", payload);
   }

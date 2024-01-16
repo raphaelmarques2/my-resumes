@@ -1,13 +1,17 @@
 ---
 import { z } from "astro/zod";
-import { TextInput } from "../components/common/TextInput";
-import Mainlayout from "../layout/MainLayout.astro";
-import { Backend } from "../services/backend";
+import { TextInput } from "../../components/common/TextInput";
+import MainLayout from "../../layout/MainLayout.astro";
+import { Backend } from "../../services/backend";
+
+const { token } = Astro.params;
+if (!token) return Astro.redirect("/404");
 
 let error = "";
 let passwordUpdated = false;
 
-const backend = new Backend(Astro.locals.token);
+const backend = new Backend();
+const user = await backend.getRequestPasswordReset(token);
 
 if (Astro.request.method === "POST") {
   const formData = await Astro.request.formData();
@@ -15,9 +19,6 @@ if (Astro.request.method === "POST") {
 
   const schema = z
     .object({
-      currentPassword: z.string({
-        required_error: "Current Password is required",
-      }),
       newPassword: z
         .string({ required_error: "New Password is required" })
         .min(6, "All passwords must have at least 6 characters"),
@@ -36,10 +37,7 @@ if (Astro.request.method === "POST") {
 
   if (payload.success) {
     try {
-      await backend.updatePassword({
-        currentPassword: payload.data.currentPassword,
-        newPassword: payload.data.newPassword,
-      });
+      await backend.resetPasswordUsingToken(token, payload.data.newPassword);
       passwordUpdated = true;
     } catch (err: any) {
       if (err.message) {
@@ -55,21 +53,16 @@ if (Astro.request.method === "POST") {
 }
 ---
 
-<Mainlayout>
+<MainLayout>
   <div class="flex-1 flex items-center justify-center">
     <form class="flex flex-col items-center space-y-2" method="POST">
       <div class="text-lg font-semibold text-center">Update Password</div>
-      <div class="text-sm text-center mb-4">
-        Type your current password and new password.
-      </div>
 
-      <TextInput
-        label="Current password"
-        name="currentPassword"
-        type="password"
-        placeholder="******"
-        required
-      />
+      <p class="text-sm text-center">Hi {user.name}</p>
+      <p class="text-sm text-center">
+        Type the new password for <span class="font-semibold">{user.email}</span
+        >.
+      </p>
 
       <TextInput
         label="New password"
@@ -94,13 +87,15 @@ if (Astro.request.method === "POST") {
     <dialog class="modal" open={passwordUpdated}>
       <div class="modal-box">
         <h3 class="font-bold text-lg">Password updated!</h3>
-        <p class="py-4">Your password is updated.</p>
+        <p class="py-4">
+          Your password is updated. Make login using your new password.
+        </p>
         <div class="modal-action">
           <form method="dialog">
-            <a href="/resumes" class="btn btn-primary">Ok</a>
+            <a href="/login" class="btn btn-primary">Go to Login page</a>
           </form>
         </div>
       </div>
     </dialog>
   </div>
-</Mainlayout>
+</MainLayout>
