@@ -10,7 +10,7 @@ export function ResumeAndProfilePdfPreview() {
   if (!profile) return null;
 
   return (
-    <div className="pdf">
+    <div className="pdf relative">
       <div className="name">{profile.name}</div>
       <div className="title">{resume?.title}</div>
       <div className="profile-item">{profile.address}</div>

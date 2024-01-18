@@ -73,10 +73,7 @@ updateStepsStates();
     <ul class="steps steps-horizontal my-4">
       {
         steps.map((step) => (
-          <li
-            class={`step ${step.active ? "step-primary" : ""}`}
-            data-content={step.done ? "✓" : undefined}
-          >
+          <li class={`step ${step.active ? "step-primary" : ""}`}>
             <a href={`/resumes/${id}${step.path}`}>{step.label}</a>
           </li>
         ))
@@ -86,3 +83,9 @@ updateStepsStates();
     <slot />
   </main>
 </MainLayout>
+
+<style is:global>
+  .edit-resume-boxes {
+    @apply flex space-y-4 flex-col md:flex-row md:space-y-0 md:space-x-4;
+  }
+</style>

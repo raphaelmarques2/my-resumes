@@ -6,6 +6,7 @@ import { ExperiencePdfPreview } from "../../../components/experience/ExperienceP
 import { SetSharedResume } from "../../../components/resume/SetSharedResume";
 import { Backend } from "../../../services/backend";
 import { sortExperiencesByNewestFirst } from "../../../services/types/Experience";
+import PdfPreviewBadge from "../../../components/common/PdfPreviewBadge.astro";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
@@ -16,12 +17,14 @@ const experiences = await backend.listUserExperiences();
 sortExperiencesByNewestFirst(experiences);
 ---
 
+<SetSharedExperiences experiences={experiences} client:load />
+<SetSharedResume resume={resume} client:load />
+
 <ResumeLayout resume={resume}>
-  <div class="flex space-x-4">
-    <SetSharedExperiences experiences={experiences} client:load />
-    <SetSharedResume resume={resume} client:load />
+  <div class="edit-resume-boxes">
     <EditExperienceList resumeId={id} client:load />
-    <div class="w-80 form-card">
+    <div class="w-80 form-card relative">
+      <PdfPreviewBadge />
       <ExperiencePdfPreview fromResume client:load />
     </div>
   </div>

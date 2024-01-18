@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   PDFViewer,
   Page,
@@ -7,6 +6,8 @@ import {
   View,
   Document,
   StyleSheet,
+  BlobProvider,
+  PDFDownloadLink,
 } from "@react-pdf/renderer";
 import {
   formatEducation,
@@ -18,6 +19,13 @@ import {
 } from "../../services/types/Experience";
 import type { Profile } from "../../services/types/Profile";
 import type { Resume } from "../../services/types/Resume";
+
+interface Props {
+  resume: Resume;
+  profile: Profile;
+  educations: Education[];
+  experiences: Experience[];
+}
 
 const styles = StyleSheet.create({
   viewer: {
@@ -66,13 +74,6 @@ const styles = StyleSheet.create({
     backgroundColor: "yellow",
   },
 });
-
-interface Props {
-  resume: Resume;
-  profile: Profile;
-  educations: Education[];
-  experiences: Experience[];
-}
 
 export function ResumePdf({ resume, profile, educations, experiences }: Props) {
   function PdfLine() {
@@ -143,21 +144,37 @@ export function ResumePdf({ resume, profile, educations, experiences }: Props) {
     );
   }
 
-  return (
-    <PDFViewer style={styles.viewer}>
-      <Document pageLayout="oneColumn" style={styles.document}>
-        <Page size="A4" style={styles.page}>
-          <View style={styles.view}>
-            <PdfHeader />
-          </View>
-          <View style={styles.view}>
-            <PdfEducations />
-          </View>
-          <View style={styles.view}>
-            <PdfExperiences />
-          </View>
-        </Page>
-      </Document>
-    </PDFViewer>
+  const MyDoc = () => (
+    <Document pageLayout="oneColumn" style={styles.document}>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.view}>
+          <PdfHeader />
+        </View>
+        <View style={styles.view}>
+          <PdfEducations />
+        </View>
+        <View style={styles.view}>
+          <PdfExperiences />
+        </View>
+      </Page>
+    </Document>
   );
+
+  const pdfAvailable = window.navigator.pdfViewerEnabled;
+
+  if (pdfAvailable) {
+    return <PDFViewer style={styles.viewer}>{<MyDoc />}</PDFViewer>;
+  } else {
+    return (
+      <PDFDownloadLink document={<MyDoc />} fileName={`cv-${resume.name}.pdf`}>
+        {({ blob, url, loading, error }) =>
+          loading ? (
+            "Loading..."
+          ) : (
+            <button className="btn btn-primary btn-wide">Download PDF</button>
+          )
+        }
+      </PDFDownloadLink>
+    );
+  }
 }

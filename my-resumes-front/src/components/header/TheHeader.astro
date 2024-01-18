@@ -10,8 +10,10 @@ const { isAuthenticated } = Astro.locals;
 ---
 
 <header class="navbar px-4 py-1 shadow mb-2">
-  <div class="flex-1"></div>
-  <div class="flex-1 flex justify-center items-center space-x-4">
+  <div class="sm:flex-1"></div>
+  <div
+    class="flex-1 flex justify-start sm:justify-center items-center space-x-4"
+  >
     <HeaderTab href="/" active={isHome}>Home</HeaderTab>
     {
       isAuthenticated && (

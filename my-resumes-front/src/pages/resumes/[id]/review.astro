@@ -28,17 +28,17 @@ sortExperiencesByNewestFirst(filteredExperiences);
 <ResumeLayout resume={resume}>
   <div>
     <h1 class="text-center mb-4">Review</h1>
-    <ResumePdf
-      resume={resume}
-      profile={profile}
-      educations={filteredEducations}
-      experiences={filteredExperiences}
-      client:only
-    />
-    <div class="flex justify-center mt-4">
-      <a class="btn btn-primary btn-wide" href="/resumes">
-        Go back to my resumes
-      </a>
+    <div class="">
+      <ResumePdf
+        resume={resume}
+        profile={profile}
+        educations={filteredEducations}
+        experiences={filteredExperiences}
+        client:only
+      />
+      <div class="flex justify-center mt-4">
+        <a class="btn btn-wide" href="/resumes">Go back to my resumes</a>
+      </div>
     </div>
   </div>
 </ResumeLayout>

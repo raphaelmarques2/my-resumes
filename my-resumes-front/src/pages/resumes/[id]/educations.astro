@@ -1,4 +1,5 @@
 ---
+import PdfPreviewBadge from "../../../components/common/PdfPreviewBadge.astro";
 import { EditEducationList } from "../../../components/education/EditEducationList";
 import { EducationPdfPreview } from "../../../components/education/EducationPdfPreview.tsx";
 import { SetSharedEducations } from "../../../components/education/SetSharedEducations.tsx";
@@ -16,12 +17,14 @@ const educations = await backend.listUserEducations();
 sortEducationsByNewestFirst(educations);
 ---
 
+<SetSharedResume resume={resume} client:load />
+<SetSharedEducations educations={educations} client:load />
+
 <ResumeLayout resume={resume}>
-  <div class="flex space-x-4">
-    <SetSharedResume resume={resume} client:load />
-    <SetSharedEducations educations={educations} client:load />
+  <div class="edit-resume-boxes">
     <EditEducationList resumeId={id} client:load />
-    <div class="w-80 form-card">
+    <div class="w-80 form-card relative">
+      <PdfPreviewBadge />
       <EducationPdfPreview fromResume client:load />
     </div>
   </div>
