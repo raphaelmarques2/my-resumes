@@ -8,9 +8,7 @@ const authMiddleware = defineMiddleware(async (context, next) => {
   const isAuthenticated = Boolean(token);
   context.locals.isAuthenticated = isAuthenticated;
 
-  console.log(
-    `[authMiddleware] to(${context.url.pathname}) isAuth(${isAuthenticated})`
-  );
+  // console.log(`[authMiddleware] to(${context.url.pathname}) isAuth(${isAuthenticated})`);
 
   const protectedRoutes = [
     new RegExp("/resumes.*"),

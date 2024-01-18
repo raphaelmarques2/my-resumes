@@ -1,0 +1,34 @@
+.debug {
+  @apply border border-red-500;
+}
+h1 {
+  @apply text-2xl font-semibold;
+}
+h2 {
+  @apply text-lg font-semibold;
+}
+p {
+  @apply my-2;
+}
+.icon-box {
+  @apply inline-flex w-6 h-6 justify-center items-center;
+}
+.form-card {
+  @apply border border-gray-300 p-4 pt-10;
+}
+.input {
+  @apply rounded;
+}
+.textarea {
+  line-height: 1.1rem;
+  @apply rounded;
+}
+.form-control .label {
+  @apply pb-0;
+}
+.btn.btn-link {
+  @apply px-1;
+}
+.modal .modal-box {
+  @apply border border-gray-200;
+}
