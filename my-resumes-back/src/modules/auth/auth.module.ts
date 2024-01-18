@@ -27,7 +27,7 @@ import { PrismaUserRepository } from './infra/repositories/PrismaUserRepository'
     JwtModule.register({
       global: true,
       secret: configurations().jwtSecret,
-      //signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '7d' },
     }),
     ProfileModule,
   ],
