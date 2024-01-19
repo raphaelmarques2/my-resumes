@@ -1,13 +1,12 @@
 import {
+  Document,
+  Link,
+  PDFDownloadLink,
   PDFViewer,
   Page,
-  Text,
-  Link,
-  View,
-  Document,
   StyleSheet,
-  BlobProvider,
-  PDFDownloadLink,
+  Text,
+  View,
 } from "@react-pdf/renderer";
 import {
   formatEducation,

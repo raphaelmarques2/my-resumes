@@ -1,11 +1,10 @@
 ---
+import { EditEducation } from "../../../../components/education/EditEducation";
+import { SetSharedEducations } from "../../../../components/education/SetSharedEducations";
+import PdfPreviewBadge from "../../../../components/pdf/PdfPreviewBadge.astro";
+import { ResumePdfPreview } from "../../../../components/pdf/ResumePdfPreview";
 import ResumeLayout from "../../../../layout/ResumeLayout.astro";
 import { Backend } from "../../../../services/backend";
-import { EducationPdfPreview } from "../../../../components/education/EducationPdfPreview";
-import { SetSharedEducations } from "../../../../components/education/SetSharedEducations";
-import { EditEducation } from "../../../../components/education/EditEducation";
-import { ResumePdfPreview } from "../../../../components/resume/ResumePdfPreview";
-import PdfPreviewBadge from "../../../../components/common/PdfPreviewBadge.astro";
 
 const { id, educationId } = Astro.params;
 if (!id || !educationId) return Astro.redirect("/404");

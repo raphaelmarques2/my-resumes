@@ -1,13 +1,12 @@
 ---
 import { EditExperienceList } from "../../../components/experience/EditExperienceList";
-import ResumeLayout from "../../../layout/ResumeLayout.astro";
 import { SetSharedExperiences } from "../../../components/experience/SetSharedExperiences";
-import { ExperiencePdfPreview } from "../../../components/experience/ExperiencePdfPreview";
+import PdfPreviewBadge from "../../../components/pdf/PdfPreviewBadge.astro";
+import { ResumePdfPreview } from "../../../components/pdf/ResumePdfPreview";
 import { SetSharedResume } from "../../../components/resume/SetSharedResume";
+import ResumeLayout from "../../../layout/ResumeLayout.astro";
 import { Backend } from "../../../services/backend";
 import { sortExperiencesByNewestFirst } from "../../../services/types/Experience";
-import PdfPreviewBadge from "../../../components/common/PdfPreviewBadge.astro";
-import { ResumePdfPreview } from "../../../components/resume/ResumePdfPreview";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
