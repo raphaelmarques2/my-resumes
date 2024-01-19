@@ -6,6 +6,7 @@ import { EditResume } from "../../../components/resume/EditResume.tsx";
 import { SetSharedResume } from "../../../components/resume/SetSharedResume.tsx";
 import { Backend } from "../../../services/backend";
 import PdfPreviewBadge from "../../../components/common/PdfPreviewBadge.astro";
+import { ResumePdfPreview } from "../../../components/resume/ResumePdfPreview";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
@@ -23,7 +24,7 @@ const profile = await backend.getUserProfile();
     <EditResume resumeId={id} client:load />
     <div class="w-80 form-card relative">
       <PdfPreviewBadge />
-      <ResumeAndProfilePdfPreview client:load />
+      <ResumePdfPreview previewType="resume" client:load />
     </div>
   </div>
 </ResumeLayout>

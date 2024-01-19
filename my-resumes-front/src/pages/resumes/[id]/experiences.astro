@@ -7,6 +7,7 @@ import { SetSharedResume } from "../../../components/resume/SetSharedResume";
 import { Backend } from "../../../services/backend";
 import { sortExperiencesByNewestFirst } from "../../../services/types/Experience";
 import PdfPreviewBadge from "../../../components/common/PdfPreviewBadge.astro";
+import { ResumePdfPreview } from "../../../components/resume/ResumePdfPreview";
 
 const { id } = Astro.params;
 if (!id) return Astro.redirect("/404");
@@ -25,7 +26,7 @@ sortExperiencesByNewestFirst(experiences);
     <EditExperienceList resumeId={id} client:load />
     <div class="w-80 form-card relative">
       <PdfPreviewBadge />
-      <ExperiencePdfPreview fromResume client:load />
+      <ResumePdfPreview previewType="experience" filterFromResume client:load />
     </div>
   </div>
 </ResumeLayout>

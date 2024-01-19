@@ -115,7 +115,7 @@ export function ResumePdf({ resume, profile, educations, experiences }: Props) {
     return (
       <>
         <PdfLine />
-        <Text style={styles.sectionTitle}>Educations</Text>
+        <Text style={styles.sectionTitle}>Education</Text>
 
         {educations.map((education) => (
           <Text style={styles.text} key={education.id}>

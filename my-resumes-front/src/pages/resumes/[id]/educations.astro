@@ -3,6 +3,7 @@ import PdfPreviewBadge from "../../../components/common/PdfPreviewBadge.astro";
 import { EditEducationList } from "../../../components/education/EditEducationList";
 import { EducationPdfPreview } from "../../../components/education/EducationPdfPreview.tsx";
 import { SetSharedEducations } from "../../../components/education/SetSharedEducations.tsx";
+import { ResumePdfPreview } from "../../../components/resume/ResumePdfPreview";
 import { SetSharedResume } from "../../../components/resume/SetSharedResume";
 import ResumeLayout from "../../../layout/ResumeLayout.astro";
 import { Backend } from "../../../services/backend";
@@ -25,7 +26,7 @@ sortEducationsByNewestFirst(educations);
     <EditEducationList resumeId={id} client:load />
     <div class="w-80 form-card relative">
       <PdfPreviewBadge />
-      <EducationPdfPreview fromResume client:load />
+      <ResumePdfPreview previewType="education" filterFromResume client:load />
     </div>
   </div>
 </ResumeLayout>

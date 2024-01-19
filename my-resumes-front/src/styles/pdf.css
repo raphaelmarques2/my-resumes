@@ -2,12 +2,12 @@
   font-size: small;
 }
 .pdf .name {
-  font-size: 1.2em;
+  font-size: 1.4em;
   @apply font-bold text-center;
 }
 .pdf .title {
   font-size: 1em;
-  @apply font-bold text-center;
+  @apply font-semibold text-center;
 }
 .pdf .profile-item {
   line-height: 1.2em;

@@ -4,6 +4,8 @@ import { Backend } from "../../../../services/backend";
 import { EducationPdfPreview } from "../../../../components/education/EducationPdfPreview";
 import { SetSharedEducations } from "../../../../components/education/SetSharedEducations";
 import { EditEducation } from "../../../../components/education/EditEducation";
+import { ResumePdfPreview } from "../../../../components/resume/ResumePdfPreview";
+import PdfPreviewBadge from "../../../../components/common/PdfPreviewBadge.astro";
 
 const { id, educationId } = Astro.params;
 if (!id || !educationId) return Astro.redirect("/404");
@@ -13,12 +15,14 @@ const resume = await backend.getResume(id);
 const education = await backend.getEducation(educationId);
 ---
 
+<SetSharedEducations educations={[education]} client:load />
+
 <ResumeLayout resume={resume}>
   <div class="flex space-x-4">
-    <SetSharedEducations educations={[education]} client:load />
     <EditEducation resumeId={id} client:load />
-    <div class="w-80 form-card">
-      <EducationPdfPreview client:load />
+    <div class="w-80 form-card relative">
+      <PdfPreviewBadge />
+      <ResumePdfPreview previewType="education" client:load />
     </div>
   </div>
 </ResumeLayout>

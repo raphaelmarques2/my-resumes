@@ -1,0 +1,65 @@
+---
+import { SetSharedEducations } from "../../../components/education/SetSharedEducations";
+import { SetSharedExperiences } from "../../../components/experience/SetSharedExperiences";
+import { SetSharedProfile } from "../../../components/profile/SetSharedProfile";
+import { ResumePdf } from "../../../components/resume/ResumePdf";
+import { ResumePdfPreview } from "../../../components/resume/ResumePdfPreview";
+import { SetSharedResume } from "../../../components/resume/SetSharedResume";
+import MainLayout from "../../../layout/MainLayout.astro";
+import ResumeLayout from "../../../layout/ResumeLayout.astro";
+import { Backend } from "../../../services/backend";
+import { sortEducationsByNewestFirst } from "../../../services/types/Education";
+import { sortExperiencesByNewestFirst } from "../../../services/types/Experience";
+
+const { id } = Astro.params;
+if (!id) return Astro.redirect("/404");
+
+const backend = new Backend(Astro.locals.token);
+const resume = await backend.getResume(id);
+const profile = await backend.getUserProfile();
+const educations = await backend.listUserEducations();
+const experiences = await backend.listUserExperiences();
+
+const filteredEducations = educations.filter((education) =>
+  resume.educations.includes(education.id)
+);
+const filteredExperiences = experiences.filter((experience) =>
+  resume.experiences.includes(experience.id)
+);
+
+sortEducationsByNewestFirst(filteredEducations);
+sortExperiencesByNewestFirst(filteredExperiences);
+---
+
+<SetSharedResume resume={resume} client:load />
+<SetSharedProfile profile={profile} client:load />
+<SetSharedEducations educations={filteredEducations} client:load />
+<SetSharedExperiences experiences={filteredExperiences} client:load />
+
+<MainLayout>
+  <main class="flex space-x-4 p-4">
+    <div class="flex-1 space-y-2">
+      <div class="form-card">
+        <ResumePdfPreview previewType="resume" client:load />
+      </div>
+      <div class="form-card">
+        <ResumePdfPreview previewType="education" client:load />
+      </div>
+      <div class="form-card">
+        <ResumePdfPreview previewType="experience" client:load />
+      </div>
+      <div class="form-card">
+        <ResumePdfPreview previewType="all" client:load />
+      </div>
+    </div>
+    <div class="flex-1 debug">
+      <ResumePdf
+        resume={resume}
+        profile={profile}
+        educations={filteredEducations}
+        experiences={filteredExperiences}
+        client:only
+      />
+    </div>
+  </main>
+</MainLayout>
