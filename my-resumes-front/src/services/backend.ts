@@ -28,7 +28,8 @@ export class Backend {
   token?: string;
 
   constructor(token?: string | null) {
-    this.baseUrl = "http://localhost:3001";
+    this.baseUrl =
+      import.meta.env.PUBLIC_BACKEND_URL ?? "http://localhost:3001";
     this.token = token || undefined;
   }
 

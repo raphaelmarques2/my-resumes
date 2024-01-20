@@ -35,9 +35,20 @@ if (Astro.request.method === "POST") {
 
   if (payload.success) {
     try {
+      console.log("signup payload", payload);
+
       const result = await backend.signup(payload.data);
-      Astro.cookies.set("token", result.token);
-      return Astro.redirect("/resumes");
+
+      console.log("signup result", result);
+
+      Astro.cookies.set("token", result.token, { path: "/" });
+      return new Response(null, {
+        status: 303,
+        headers: {
+          "Set-Cookie": `token=${result.token}; Path=/`,
+          Location: "/resumes",
+        },
+      });
     } catch (error) {
       console.error(error);
       error = "Signup failed";
