@@ -42,8 +42,10 @@ async function bootstrap() {
 //   execSync(`set DATABASE_URL=${url} && npx prisma migrate deploy`);
 // }
 
-//bootstrap();
-module.exports = new Promise(async (resolve) => {
-  const { app } = await bootstrap();
-  resolve(app);
-});
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+bootstrap();
+
+// module.exports = new Promise(async (resolve) => {
+//   const { app } = await bootstrap();
+//   resolve(app);
+// });
