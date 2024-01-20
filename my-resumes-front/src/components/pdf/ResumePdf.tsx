@@ -160,8 +160,9 @@ export function ResumePdf({ resume, profile, educations, experiences }: Props) {
   );
 
   const pdfAvailable = window.navigator.pdfViewerEnabled;
+  const showPdf = pdfAvailable && false;
 
-  if (pdfAvailable) {
+  if (showPdf) {
     return <PDFViewer style={styles.viewer}>{<MyDoc />}</PDFViewer>;
   } else {
     return (

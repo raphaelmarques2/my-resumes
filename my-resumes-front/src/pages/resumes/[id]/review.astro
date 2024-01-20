@@ -1,5 +1,10 @@
 ---
+import { SetSharedEducations } from "../../../components/education/SetSharedEducations";
+import { SetSharedExperiences } from "../../../components/experience/SetSharedExperiences";
 import { ResumePdf } from "../../../components/pdf/ResumePdf";
+import { ResumePdfPreview } from "../../../components/pdf/ResumePdfPreview";
+import { SetSharedProfile } from "../../../components/profile/SetSharedProfile";
+import { SetSharedResume } from "../../../components/resume/SetSharedResume";
 import ResumeLayout from "../../../layout/ResumeLayout.astro";
 import { Backend } from "../../../services/backend";
 import { sortEducationsByNewestFirst } from "../../../services/types/Education";
@@ -25,10 +30,15 @@ sortEducationsByNewestFirst(filteredEducations);
 sortExperiencesByNewestFirst(filteredExperiences);
 ---
 
+<SetSharedResume resume={resume} client:load />
+<SetSharedProfile profile={profile} client:load />
+<SetSharedEducations educations={filteredEducations} client:load />
+<SetSharedExperiences experiences={filteredExperiences} client:load />
+
 <ResumeLayout resume={resume}>
   <div>
     <h1 class="text-center mb-4">Review</h1>
-    <div class="">
+    <div class="flex flex-col items-center space-y-4">
       <ResumePdf
         resume={resume}
         profile={profile}
@@ -36,8 +46,15 @@ sortExperiencesByNewestFirst(filteredExperiences);
         experiences={filteredExperiences}
         client:only
       />
+
+      <div class="max-w-sm md:max-w-lg form-card relative">
+        <ResumePdfPreview previewType="all" client:load />
+      </div>
+
       <div class="flex justify-center mt-4">
-        <a class="btn btn-wide" href="/resumes">Go back to my resumes</a>
+        <a class="btn btn-primary btn-wide" href="/resumes">
+          Go back to my resumes
+        </a>
       </div>
     </div>
   </div>
