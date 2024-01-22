@@ -39,22 +39,23 @@ sortExperiencesByNewestFirst(filteredExperiences);
   <div>
     <h1 class="text-center mb-4">Review</h1>
     <div class="flex flex-col items-center space-y-4">
-      <ResumePdf
-        resume={resume}
-        profile={profile}
-        educations={filteredEducations}
-        experiences={filteredExperiences}
-        client:only
-      />
+      <a class="btn btn-primary btn-wide" href="/resumes">
+        Go back to my resumes
+      </a>
 
       <div class="max-w-sm md:max-w-lg form-card relative">
         <ResumePdfPreview previewType="all" client:load />
       </div>
 
       <div class="flex justify-center mt-4">
-        <a class="btn btn-primary btn-wide" href="/resumes">
-          Go back to my resumes
-        </a>
+        <ResumePdf
+          resume={resume}
+          profile={profile}
+          educations={filteredEducations}
+          experiences={filteredExperiences}
+          download={true}
+          client:only
+        />
       </div>
     </div>
   </div>

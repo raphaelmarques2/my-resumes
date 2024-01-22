@@ -24,6 +24,7 @@ interface Props {
   profile: Profile;
   educations: Education[];
   experiences: Experience[];
+  download?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -74,7 +75,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ResumePdf({ resume, profile, educations, experiences }: Props) {
+export function ResumePdf({
+  resume,
+  profile,
+  educations,
+  experiences,
+  download,
+}: Props) {
   function PdfLine() {
     return (
       <Text style={{ borderBottom: 1.5, marginTop: 10, marginBottom: 5 }} />
@@ -159,8 +166,7 @@ export function ResumePdf({ resume, profile, educations, experiences }: Props) {
     </Document>
   );
 
-  const pdfAvailable = window.navigator.pdfViewerEnabled;
-  const showPdf = pdfAvailable && false;
+  const showPdf = !download && window.navigator.pdfViewerEnabled;
 
   if (showPdf) {
     return <PDFViewer style={styles.viewer}>{<MyDoc />}</PDFViewer>;
