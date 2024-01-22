@@ -4,6 +4,8 @@
 
 Add your profile, experiences, and skills and share this details across multiple resumes, ensuring each one perfectly fits your specific job applications.
 
+![my resumes picture](image.png)
+
 You can see the project running at [my-resumes.vercel.app](https://my-resumes.vercel.app/).
 
 # Details
