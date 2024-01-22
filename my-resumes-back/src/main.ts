@@ -35,17 +35,5 @@ async function bootstrap() {
   return { app };
 }
 
-// async function runMigrations() {
-//   if (process.env.IN_MEMORY_DB) return;
-//   console.log('Running migrations');
-//   const url = process.env.DATABASE_URL;
-//   execSync(`set DATABASE_URL=${url} && npx prisma migrate deploy`);
-// }
-
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 bootstrap();
-
-// module.exports = new Promise(async (resolve) => {
-//   const { app } = await bootstrap();
-//   resolve(app);
-// });

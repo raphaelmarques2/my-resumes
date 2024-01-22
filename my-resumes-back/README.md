@@ -1,73 +1,125 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# My Resumes - Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is the backend of the [My Resumes](https://github.com/raphaelmarques2/my-resumes) project.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The backend is a REST server to manage resumes and its contents.
 
-## Description
+# Technologies
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+These are the main technologies used on this project:
 
-## Installation
+- Node
+- TypeScript
+- NestJS
+- Jest
+- Supertest
+- Postgres
+- Prisma
+- Zod
+- Docker
+
+## Architecture and Modules
+
+The project uses a mix of **Clean Architecture** and **Hexagonal Architecture** organizing the features in **modules**, and applying concepts of **Domain Driven Design**.
+
+The modules are:
+
+- common - code used by many modules
+- auth - handle authentication and user entity
+- education - handle each education entity a resume can have
+- experience - handle each experience entity a resume can have
+- profile - handle a profile entity which a user can have
+- resume - handle each resume a user can have
+
+Each feature was created as an use-case. Each usecase uses the necessary entities, DTOs, repositories and services.
+
+## Database and Data Access
+
+This project uses Postgress as database, hosted on Vercel.
+
+Prisma was used to model and access the database, including the migrations.
+
+Each entity saved on the database is accessed using the repository pattern, with memory implementations (for tests) and prisma implementations (for production)
+
+## Validation
+
+The **Zod** lib was used to validate all input data. The validations is made on each use-case and at a controller level using a NestJS ValidationPipe.
+
+## Tests
+
+Jest and Supertest are used to create automated tests.
+
+The tests are focused on **integration tests** and **end-to-end tests**, including a only a few **unit tests**.
+
+The **integrations tests** (.spec.ts files) were created to cover each use-case, using repositories's memory implementations including mocks when it's necessary.
+
+The **end-to-end tests** (.test.ts files) were created for each route, using real repositories's implementations to access the database with Prisma.
+
+This way the **integration tests** cover all features and business logic (use cases), and the **end-to-end tests** cover all the infra technologies as controllers and database access.
+
+## Running the app
+
+### 1. Install the dependencies
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### 2. Start the database instances on Docker
+
+The docker-compose file has two databases, one for dev, other for tests
 
 ```bash
-# development
-$ npm run start
+$ docker-compose up
+```
 
-# watch mode
+### 3. Create an .env file
+
+Create a copy of .env.example file and rename it to .env
+Set all the a env variables, except sendgrid.
+
+### 4. Run the migrations to dev database
+
+```bash
+$ npm run prisma:migrate:deploy
+```
+
+### 5. Start the app
+
+It will run the app at http://localhost:3001
+
+```bash
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+# Running the tests
+
+After running the app, you need to prepare the testing database
+
+### 6. Run the migrations to test database
+
+Use the migration command with the testing database url
+
+Linux and MacOS:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+DATABASE_URL="postgresql://user:password@localhost:5433/db" npm run prisma:migrate:deploy
 ```
 
-## Support
+Windows Command Prompt:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+set DATABASE_URL="postgresql://user:password@localhost:5433/db" && npm run prisma:migrate:deploy
+```
 
-## Stay in touch
+Windows PowerShell:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+$env:DATABASE_URL="postgresql://user:password@localhost:5433/db"; npm run prisma:migrate:deploy
+```
 
-## License
+### 7. Running the tests
 
-Nest is [MIT licensed](LICENSE).
+```bash
+$ npm run test
+```
