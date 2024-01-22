@@ -75,7 +75,8 @@ $ docker-compose up
 
 ### 3. Create an .env file
 
-Create a copy of .env.example file and rename it to .env
+Create a copy of `.env.example` file and rename it to `.env`
+
 Set all the a env variables, except sendgrid.
 
 ### 4. Run the migrations to dev database

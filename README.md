@@ -14,18 +14,4 @@ The **backend** is a REST web server made in Node+NestJS using Postgres as datab
 
 The **frontend** is made with Astro with React components, and Tailwind CSS and DaisyUI for styling.
 
-You can see more details on the **[Backend project](https://github.com/raphaelmarques2/my-resumes/tree/main/my-resumes-back)** and the **[Frontend project](https://github.com/raphaelmarques2/my-resumes/tree/main/my-resumes-front)**.
-
-# [Frontend project](https://github.com/raphaelmarques2/my-resumes/tree/main/my-resumes-front)
-
-# Technologies
-
-### Backend
-
-### Frontend
-
-- Astro
-- React
-- Nanostores
-- Tailwind CSS
-- DaisyUI
+You can see more details on the **[BACKEND](https://github.com/raphaelmarques2/my-resumes/tree/main/my-resumes-back)** and the **[FRONTEND](https://github.com/raphaelmarques2/my-resumes/tree/main/my-resumes-front)** projects.
