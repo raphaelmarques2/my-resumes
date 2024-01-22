@@ -17,10 +17,8 @@ const experience = await backend.getExperience(experienceId);
 <SetSharedExperiences experiences={[experience]} client:load />
 
 <ResumeLayout resume={resume}>
-  <div class="flex space-x-4">
-    <div>
-      <EditExperience resumeId={id} client:load />
-    </div>
+  <div class="edit-resume-boxes">
+    <EditExperience resumeId={id} client:load />
     <div class="w-80 form-card relative">
       <PdfPreviewBadge />
       <ResumePdfPreview previewType="experience" client:load />

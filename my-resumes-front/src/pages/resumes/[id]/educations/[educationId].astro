@@ -17,7 +17,7 @@ const education = await backend.getEducation(educationId);
 <SetSharedEducations educations={[education]} client:load />
 
 <ResumeLayout resume={resume}>
-  <div class="flex space-x-4">
+  <div class="edit-resume-boxes">
     <EditEducation resumeId={id} client:load />
     <div class="w-80 form-card relative">
       <PdfPreviewBadge />

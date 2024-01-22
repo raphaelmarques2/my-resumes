@@ -32,3 +32,6 @@ p {
 .modal .modal-box {
   @apply border border-gray-200;
 }
+.edit-resume-boxes {
+  @apply flex space-y-4 flex-col md:flex-row md:space-y-0 md:space-x-4;
+}
